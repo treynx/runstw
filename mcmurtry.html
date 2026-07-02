@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lake McMurtry Trail Run | STRR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; color: #333; background-color: #fcfcfc; line-height: 1.6; }
+        a { text-decoration: none; color: inherit; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background-color: #fff; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .logo-img { height: 60px; width: auto; display: block; }
+        .logo-link { display: flex; align-items: center; }
+        nav ul { list-style: none; display: flex; gap: 30px; }
+        nav ul li a { font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+        nav ul li a:hover { color: #e65100; }
+        .dropdown { position: relative; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background-color: #fff; min-width: 250px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 10px 0; border-radius: 0 0 5px 5px; z-index: 1000; }
+        .dropdown:hover .dropdown-menu { display: flex; flex-direction: column; gap: 0; }
+        .dropdown-menu li { padding: 0; }
+        .dropdown-menu li a { display: block; padding: 12px 20px; font-size: 0.85rem; font-weight: 700; text-transform: none; }
+        .dropdown-menu li a:hover { background-color: #f5f5f5; }
+        .page-header { height: 60vh; background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1533560904424-a0c61dc306fc?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; text-align: center; color: #fff; padding-top: 80px; }
+        .page-header h1 { font-size: 3.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
+        .content { max-width: 800px; margin: 60px auto; padding: 0 40px; text-align: center; }
+        .content p { font-size: 1.2rem; margin-bottom: 20px; }
+        .btn { display: inline-block; padding: 15px 30px; background-color: #005b96; color: #fff; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; margin-top: 20px; border-radius: 4px; transition: background 0.3s; }
+        .btn:hover { background-color: #03396c; }
+        footer { background-color: #111; color: #fff; text-align: center; padding: 40px; margin-top: 60px; }
+        footer p { font-size: 0.9rem; color: #888; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo-link">
+            <img src="assets/runstw-logo.jpg" alt="RUN STW Logo" class="logo-img">
+        </a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="index.html#races">Our Races &#9662;</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="orange-dirt.html">Orange Dirt Trail Series</a></li>
+                        <li><a href="mcmurtry.html">Lake McMurtry Trail Run</a></li>
+                    </ul>
+                </li>
+                <li><a href="index.html#weekly-runs">Weekly Runs</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="page-header">
+        <h1>Lake McMurtry Trail Run</h1>
+    </section>
+
+    <section class="content">
+        <h2>Spring 2027 • East Recreation Area</h2>
+        <p style="margin-top:20px;">Experience the rolling terrain and shaded canopies of Lake McMurtry's finest trails. Test your endurance in one of Oklahoma's most scenic trail races.</p>
+        <a href="#" class="btn">Registration Coming Soon</a>
+    </section>
+
+    <footer>
+        <p>Stillwater Trail and Road Runners</p>
+        <p>&copy; 2027 runstw.com. All rights reserved.</p>
+    </footer>
+</body>
+</html>
