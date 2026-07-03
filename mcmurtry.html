@@ -1,70 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lake McMurtry Trail Run | STRR</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Montserrat', sans-serif; color: #333; background-color: #fcfcfc; line-height: 1.6; }
-        a { text-decoration: none; color: inherit; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background-color: #fff; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .logo-img { height: 60px; width: auto; display: block; }
-        .logo-link { display: flex; align-items: center; }
-        nav ul { list-style: none; display: flex; gap: 30px; }
-        nav ul li a { font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
-        nav ul li a:hover { color: #e65100; }
-        .dropdown { position: relative; }
-        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background-color: #fff; min-width: 250px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 10px 0; border-radius: 0 0 5px 5px; z-index: 1000; }
-        .dropdown:hover .dropdown-menu { display: flex; flex-direction: column; gap: 0; }
-        .dropdown-menu li { padding: 0; }
-        .dropdown-menu li a { display: block; padding: 12px 20px; font-size: 0.85rem; font-weight: 700; text-transform: none; }
-        .dropdown-menu li a:hover { background-color: #f5f5f5; }
-        .page-header { height: 60vh; background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1533560904424-a0c61dc306fc?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; text-align: center; color: #fff; padding-top: 80px; }
-        .page-header h1 { font-size: 3.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
-        .content { max-width: 800px; margin: 60px auto; padding: 0 40px; text-align: center; }
-        .content p { font-size: 1.2rem; margin-bottom: 20px; }
-        .btn { display: inline-block; padding: 15px 30px; background-color: #005b96; color: #fff; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; margin-top: 20px; border-radius: 4px; transition: background 0.3s; }
-        .btn:hover { background-color: #03396c; }
-        footer { background-color: #111; color: #fff; text-align: center; padding: 40px; margin-top: 60px; }
-        footer p { font-size: 0.9rem; color: #888; }
-    </style>
-</head>
-<body>
-    <header>
-        <a href="index.html" class="logo-link">
-            <img src="assets/runstw-logo.jpg" alt="RUN STW Logo" class="logo-img">
-        </a>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li class="dropdown">
-                    <a href="index.html#races">Our Races &#9662;</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="orange-dirt.html">Orange Dirt Trail Series</a></li>
-                        <li><a href="mcmurtry.html">Lake McMurtry Trail Run</a></li>
-                    </ul>
-                </li>
-                <li><a href="index.html#weekly-runs">Weekly Runs</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <section class="page-header">
-        <h1>Lake McMurtry Trail Run</h1>
+<section class="quick-stats" style="max-width: 1000px; margin: -40px auto 40px auto; background: #fff; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; z-index: 10; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; border-radius: 8px;">
+        <div>
+            <h3 style="color: #005b96; font-size: 1rem; text-transform: uppercase;">Location</h3>
+            <p style="font-weight: 700;">Lake McMurtry East Rec Area</p>
+        </div>
+        <div>
+            <h3 style="color: #005b96; font-size: 1rem; text-transform: uppercase;">Start Times</h3>
+            <p style="font-weight: 700;">50K: 7:00 AM<br>25K: 8:00 AM</p>
+        </div>
+        <div>
+            <h3 style="color: #005b96; font-size: 1rem; text-transform: uppercase;">Packet Pickup</h3>
+            <p style="font-weight: 700;">Friday: 5PM - 7PM<br>Race Day: 6AM - 7:45AM</p>
+        </div>
+        <div style="text-align: center;">
+            <a href="#" class="btn" style="margin-top: 0; padding: 10px 20px; width: 100%;">Register Now</a>
+        </div>
     </section>
 
-    <section class="content">
-        <h2>Spring 2027 • East Recreation Area</h2>
-        <p style="margin-top:20px;">Experience the rolling terrain and shaded canopies of Lake McMurtry's finest trails. Test your endurance in one of Oklahoma's most scenic trail races.</p>
-        <a href="#" class="btn">Registration Coming Soon</a>
-    </section>
+    <section class="content" style="max-width: 800px; margin: 0 auto 60px auto; padding: 0 20px;">
+        
+        <p style="font-size: 1.1rem; margin-bottom: 40px; text-align: center;">
+            Experience the rolling terrain and shaded canopies of Lake McMurtry's finest trails. Test your endurance in one of Oklahoma's most scenic, highly-runnable trail races.
+        </p>
 
-    <footer>
-        <p>Stillwater Trail and Road Runners</p>
-        <p>&copy; 2027 runstw.com. All rights reserved.</p>
-    </footer>
-</body>
-</html>
+        <h2 style="margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px;">Registration Pricing</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px; text-align: left;">
+            <tr style="background-color: #f5f5f5; border-bottom: 2px solid #ddd;">
+                <th style="padding: 12px;">Distance</th>
+                <th style="padding: 12px;">Until Jan 1</th>
+                <th style="padding: 12px;">Until Mar 1</th>
+                <th style="padding: 12px;">Race Day</th>
+            </tr>
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 12px; font-weight: 700;">50K</td>
+                <td style="padding: 12px;">$75</td>
+                <td style="padding: 12px;">$90</td>
+                <td style="padding: 12px;">$105</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 12px; font-weight: 700;">25K</td>
+                <td style="padding: 12px;">$55</td>
+                <td style="padding: 12px;">$70</td>
+                <td style="padding: 12px;">$85</td>
+            </tr>
+        </table>
+
+        <h2 style="margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px;">Race Details</h2>
+        
+        <details style="background: #f9f9f9; padding: 15px; margin-bottom: 10px; border-radius: 5px; cursor: pointer;">
+            <summary style="font-weight: 700; font-size: 1.1rem; outline: none;">▸ Course Map & Elevation</summary>
+            <div style="padding-top: 15px; line-height: 1.6;">
+                <p>The course features rolling single-track dirt trails. Total elevation gain is approximately 1,200 ft for the 25K.</p>
+                <div style="width: 100%; height: 200px; background: #ddd; display: flex; align-items: center; justify-content: center; margin-top: 10px; border-radius: 5px;">[Interactive Map Placeholder]</div>
+            </div>
+        </details>
+
+        <details style="background: #f9f9f9; padding: 15px; margin-bottom: 10px; border-radius: 5px; cursor: pointer;">
+            <summary style="font-weight: 700; font-size: 1.1rem; outline: none;">▸ Aid Stations & Cutoffs</summary>
+            <div style="padding-top: 15px; line-height: 1.6;">
+                <p>We are a cupless race. Please bring a reusable flask. Aid stations will be stocked with water, electrolytes, gels, and salty snacks.</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>Aid 1 (Mile 4.5):</strong> Water & Gels</li>
+                    <li><strong>Aid 2 (Mile 9.0):</strong> Full Aid (Cutoff: 10:30 AM)</li>
+                    <li><strong>Aid 3 (Mile 13.1):</strong> Water Only</li>
+                </ul>
+            </div>
+        </details>
+
+        <details style="background: #f9f9f9; padding: 15px; margin-bottom: 10px; border-radius: 5px; cursor: pointer;">
+            <summary style="font-weight: 700; font-size: 1.1rem; outline: none;">▸ Drop Bags & Crew</summary>
+            <div style="padding-top: 15px; line-height: 1.6;">
+                <p>50K runners may leave one drop bag at the Start/Finish line, which is accessible at the halfway point (Mile 15.5). Crews are only allowed at the Start/Finish area.</p>
+            </div>
+        </details>
+
+        <details style="background: #f9f9f9; padding: 15px; margin-bottom: 10px; border-radius: 5px; cursor: pointer;">
+            <summary style="font-weight: 700; font-size: 1.1rem; outline: none;">▸ Awards & Swag</summary>
+            <div style="padding-top: 15px; line-height: 1.6;">
+                <p>All finishers receive a custom wood medallion. Podium awards go to the top 3 Male/Female in both distances.</p>
+            </div>
+        </details>
+
+    </section>
