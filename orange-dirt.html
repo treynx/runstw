@@ -6,29 +6,53 @@
     <title>Orange Dirt Trail Series | STRR</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
+        /* --- GLOBAL STYLES --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Montserrat', sans-serif; color: #333; background-color: #fcfcfc; line-height: 1.6; }
         a { text-decoration: none; color: inherit; }
+
+        /* --- HEADER NAVIGATION --- */
         header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background-color: #fff; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .logo-img { height: 60px; width: auto; display: block; }
         .logo-link { display: flex; align-items: center; }
         nav ul { list-style: none; display: flex; gap: 30px; }
         nav ul li a { font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
         nav ul li a:hover { color: #e65100; }
+        
+        /* --- DROPDOWN --- */
         .dropdown { position: relative; }
         .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background-color: #fff; min-width: 250px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 10px 0; border-radius: 0 0 5px 5px; z-index: 1000; }
         .dropdown:hover .dropdown-menu { display: flex; flex-direction: column; gap: 0; }
         .dropdown-menu li { padding: 0; }
         .dropdown-menu li a { display: block; padding: 12px 20px; font-size: 0.85rem; font-weight: 700; text-transform: none; }
         .dropdown-menu li a:hover { background-color: #f5f5f5; }
+
+        /* --- PAGE HEADER --- */
         .page-header { height: 60vh; background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; text-align: center; color: #fff; padding-top: 80px; }
         .page-header h1 { font-size: 3.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
-        .content { max-width: 800px; margin: 60px auto; padding: 0 40px; text-align: center; }
-        .content p { font-size: 1.2rem; margin-bottom: 20px; }
-        .btn { display: inline-block; padding: 15px 30px; background-color: #e65100; color: #fff; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; margin-top: 20px; border-radius: 4px; transition: background 0.3s; }
+
+        /* --- BUTTONS --- */
+        .btn { display: inline-block; padding: 15px 30px; background-color: #e65100; color: #fff; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; border-radius: 4px; transition: background 0.3s; text-align: center; }
         .btn:hover { background-color: #bf4300; }
+
+        /* --- ACCORDIONS --- */
+        details { background: #f9f9f9; padding: 15px; margin-bottom: 10px; border-radius: 5px; cursor: pointer; border: 1px solid #eee; }
+        summary { font-weight: 700; font-size: 1.1rem; outline: none; display: flex; align-items: center; }
+        summary::-webkit-details-marker { display: none; }
+        details[open] summary { margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        
+        /* --- FOOTER --- */
         footer { background-color: #111; color: #fff; text-align: center; padding: 40px; margin-top: 60px; }
         footer p { font-size: 0.9rem; color: #888; }
+
+        /* --- MOBILE --- */
+        @media (max-width: 768px) {
+            header { flex-direction: column; padding: 15px; }
+            nav ul { margin-top: 15px; gap: 15px; flex-direction: column; text-align: center; }
+            .dropdown-menu { position: relative; box-shadow: none; display: flex; flex-direction: column; background-color: transparent; padding-left: 0; }
+            .dropdown:hover .dropdown-menu { display: flex; }
+            .quick-stats { grid-template-columns: 1fr; text-align: center; }
+        }
     </style>
 </head>
 <body>
@@ -56,13 +80,98 @@
         <h1>Orange Dirt Trail Series</h1>
     </section>
 
-    <section class="content">
-        <h2>Fall 2026 at Lake McMurtry</h2>
-        <p style="margin-top:20px;">Join us for the ultimate fall trail series. Technical single-track, beautiful lake views, and the best post-race community in Stillwater.</p>
-        <a href="#" class="btn">Registration Coming Soon</a>
+    <section class="quick-stats" style="max-width: 1000px; margin: -40px auto 40px auto; background: #fff; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; z-index: 10; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; border-radius: 8px;">
+        <div>
+            <h3 style="color: #e65100; font-size: 1rem; text-transform: uppercase;">Location</h3>
+            <p style="font-weight: 700;">East Side Pavilion<br>Lake McMurtry</p>
+        </div>
+        <div>
+            <h3 style="color: #e65100; font-size: 1rem; text-transform: uppercase;">Start Times</h3>
+            <p style="font-weight: 700; font-size: 0.9rem;">Marathon: 7:00 AM | Half: 7:30 AM<br>10K: 8:00 AM | 5K: 8:30 AM</p>
+        </div>
+        <div>
+            <h3 style="color: #e65100; font-size: 1rem; text-transform: uppercase;">Packet Pickup</h3>
+            <p style="font-weight: 700; font-size: 0.9rem;">Fri: 5-8 PM (Stonecloud Brewing)<br>Sat: 5:30 AM (Race Site)</p>
+        </div>
+        <div style="display: flex; align-items: center;">
+            <a href="https://runsignup.com/Race/OK/Stillwater/OrangeDirtTrailSeries" target="_blank" class="btn" style="width: 100%;">Register Now</a>
+        </div>
+    </section>
+
+    <section class="content" style="max-width: 800px; margin: 0 auto 60px auto; padding: 0 20px;">
+        
+        <p style="font-size: 1.1rem; margin-bottom: 40px; text-align: center;">
+            Join us for the ultimate fall trail series. Technical single-track, beautiful lake views, and the best post-race community in Stillwater. All proceeds benefit the Lake McMurtry Trail System!
+        </p>
+
+        <h2 style="margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px;">Registration Pricing</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px; text-align: left;">
+            <tr style="background-color: #f5f5f5; border-bottom: 2px solid #ddd;">
+                <th style="padding: 12px;">Distance</th>
+                <th style="padding: 12px;">Early Reg</th>
+                <th style="padding: 12px;">Standard Reg</th>
+                <th style="padding: 12px;">Race Day</th>
+            </tr>
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 12px; font-weight: 700;">Marathon</td>
+                <td style="padding: 12px;">$65</td>
+                <td style="padding: 12px;">$75</td>
+                <td style="padding: 12px;">$85</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 12px; font-weight: 700;">Half Marathon</td>
+                <td style="padding: 12px;">$55</td>
+                <td style="padding: 12px;">$65</td>
+                <td style="padding: 12px;">$75</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 12px; font-weight: 700;">10K</td>
+                <td style="padding: 12px;">$45</td>
+                <td style="padding: 12px;">$55</td>
+                <td style="padding: 12px;">$65</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 12px; font-weight: 700;">5K</td>
+                <td style="padding: 12px;">$35</td>
+                <td style="padding: 12px;">$45</td>
+                <td style="padding: 12px;">$55</td>
+            </tr>
+        </table>
+
+        <h2 style="margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px;">Race Details</h2>
+        
+        <details>
+            <summary>▸ Course Maps & Trail Colors</summary>
+            <div style="padding-top: 10px; line-height: 1.6;">
+                <p>All races are out and backs starting at the East Side pavilion (Red Trail Head).</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>5K & 10K:</strong> Yellow Trail</li>
+                    <li><strong>Half Marathon:</strong> Yellow & Red Trails</li>
+                    <li><strong>Marathon:</strong> Yellow, Red, Green, and Blue Trails</li>
+                </ul>
+            </div>
+        </details>
+
+        <details>
+            <summary>▸ Packet Pickup & Camping</summary>
+            <div style="padding-top: 10px; line-height: 1.6;">
+                <p><strong>Packet Pickup:</strong> Friday from 5-8 PM at Stonecloud Brewing in Stillwater (917 S Husband). Race day pickup begins at 5:30 AM.</p>
+                <p style="margin-top: 10px;"><strong>Accommodations:</strong> Primitive camping is available by the East Side Pavilion on Friday night. Bathrooms are available, but no showers. Call the lake directly to reserve a private site.</p>
+            </div>
+        </details>
+
+        <details>
+            <summary>▸ Awards & Swag</summary>
+            <div style="padding-top: 10px; line-height: 1.6;">
+                <p>All participants will receive a cool Finisher's Medal! Pre-registered runners receive a short sleeve t-shirt.</p>
+                <p style="margin-top: 10px;">Awards to the top three finishers in Female, Non-Binary, and Male categories following each race. Must be present to pick up awards.</p>
+            </div>
+        </details>
+
     </section>
 
     <footer>
+        <img src="assets/runstw-logo.jpg" alt="RUN STW Logo" style="height: 40px; margin-bottom: 10px; border-radius: 50%;">
         <p>Stillwater Trail and Road Runners</p>
         <p>&copy; 2026 runstw.com. All rights reserved.</p>
     </footer>
