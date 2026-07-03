@@ -2,21 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Orange Dirt Trail Series | STRR</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         /* --- GLOBAL STYLES --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Montserrat', sans-serif; color: #333; background-color: #fcfcfc; line-height: 1.6; }
+        body { font-family: 'Montserrat', sans-serif; color: #333; background-color: #fcfcfc; line-height: 1.6; overflow-x: hidden; }
         a { text-decoration: none; color: inherit; }
 
         /* --- HEADER NAVIGATION --- */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background-color: #fff; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .logo-img { height: 60px; width: auto; display: block; }
-        .logo-link { display: flex; align-items: center; }
-        nav ul { list-style: none; display: flex; gap: 30px; }
-        nav ul li a { font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background-color: #fff; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .logo-img { height: 50px; width: auto; display: block; }
+        .logo-link { display: flex; align-items: center; z-index: 1001; position: relative; }
+        
+        /* The Hamburger Icon (Hidden on Desktop) */
+        .menu-toggle { display: none; font-size: 1.8rem; cursor: pointer; z-index: 1001; position: relative; color: #333; }
+
+        nav ul { list-style: none; display: flex; gap: 30px; align-items: center; }
+        nav ul li a { font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; padding: 10px 0; display: block; }
         nav ul li a:hover { color: #e65100; }
         
         /* --- DROPDOWN --- */
@@ -29,29 +33,44 @@
 
         /* --- PAGE HEADER --- */
         .page-header { height: 60vh; background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; text-align: center; color: #fff; padding-top: 80px; }
-        .page-header h1 { font-size: 3.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
+        .page-header h1 { font-size: 3.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; padding: 0 20px; }
 
         /* --- BUTTONS --- */
         .btn { display: inline-block; padding: 15px 30px; background-color: #e65100; color: #fff; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; border-radius: 4px; transition: background 0.3s; text-align: center; }
         .btn:hover { background-color: #bf4300; }
 
         /* --- ACCORDIONS --- */
-        details { background: #f9f9f9; padding: 15px; margin-bottom: 10px; border-radius: 5px; cursor: pointer; border: 1px solid #eee; }
+        details { background: #f9f9f9; padding: 15px; margin-bottom: 10px; border-radius: 5px; cursor: pointer; border: 1px solid #eee; -webkit-tap-highlight-color: transparent; }
         summary { font-weight: 700; font-size: 1.1rem; outline: none; display: flex; align-items: center; }
         summary::-webkit-details-marker { display: none; }
         details[open] summary { margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
         
+        /* --- TABLES (Mobile Scroll Wrapper) --- */
+        .table-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 40px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 500px; }
+        th, td { padding: 12px; }
+
         /* --- FOOTER --- */
         footer { background-color: #111; color: #fff; text-align: center; padding: 40px; margin-top: 60px; }
         footer p { font-size: 0.9rem; color: #888; }
 
-        /* --- MOBILE --- */
+        /* --- TRUE MOBILE OPTIMIZATION --- */
         @media (max-width: 768px) {
-            header { flex-direction: column; padding: 15px; }
-            nav ul { margin-top: 15px; gap: 15px; flex-direction: column; text-align: center; }
-            .dropdown-menu { position: relative; box-shadow: none; display: flex; flex-direction: column; background-color: transparent; padding-left: 0; }
-            .dropdown:hover .dropdown-menu { display: flex; }
-            .quick-stats { grid-template-columns: 1fr; text-align: center; }
+            .page-header h1 { font-size: 2.2rem; }
+            .quick-stats { grid-template-columns: 1fr; text-align: center; margin: -30px 15px 40px 15px !important; padding: 20px !important; }
+            
+            /* Hamburger Menu Activation */
+            .menu-toggle { display: block; }
+            nav ul { 
+                position: fixed; top: 0; right: -100%; height: 100vh; width: 80%; max-width: 300px; 
+                background-color: #fff; flex-direction: column; justify-content: center; gap: 20px; 
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: right 0.3s ease; padding: 40px; 
+            }
+            nav ul.active { right: 0; }
+            
+            /* Mobile Dropdown Fix */
+            .dropdown-menu { position: relative; box-shadow: none; display: flex; flex-direction: column; background-color: transparent; padding-left: 15px; top: 0; min-width: auto; display: none; }
+            .dropdown.active .dropdown-menu { display: flex; }
         }
     </style>
 </head>
@@ -60,11 +79,14 @@
         <a href="index.html" class="logo-link">
             <img src="assets/runstw-logo.jpg" alt="RUN STW Logo" class="logo-img">
         </a>
+        
+        <div class="menu-toggle" id="mobile-menu-btn">☰</div>
+
         <nav>
-            <ul>
+            <ul id="nav-menu">
                 <li><a href="index.html">Home</a></li>
-                <li class="dropdown">
-                    <a href="index.html#races">Our Races &#9662;</a>
+                <li class="dropdown" id="race-dropdown">
+                    <a href="index.html#races" id="race-link">Our Races &#9662;</a>
                     <ul class="dropdown-menu">
                         <li><a href="orange-dirt.html">Orange Dirt Trail Series</a></li>
                         <li><a href="mcmurtry.html">Lake McMurtry Trail Run</a></li>
@@ -105,38 +127,41 @@
         </p>
 
         <h2 style="margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px;">Registration Pricing</h2>
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 40px; text-align: left;">
-            <tr style="background-color: #f5f5f5; border-bottom: 2px solid #ddd;">
-                <th style="padding: 12px;">Distance</th>
-                <th style="padding: 12px;">Early Reg</th>
-                <th style="padding: 12px;">Standard Reg</th>
-                <th style="padding: 12px;">Race Day</th>
-            </tr>
-            <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 12px; font-weight: 700;">Marathon</td>
-                <td style="padding: 12px;">$65</td>
-                <td style="padding: 12px;">$75</td>
-                <td style="padding: 12px;">$85</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 12px; font-weight: 700;">Half Marathon</td>
-                <td style="padding: 12px;">$55</td>
-                <td style="padding: 12px;">$65</td>
-                <td style="padding: 12px;">$75</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 12px; font-weight: 700;">10K</td>
-                <td style="padding: 12px;">$45</td>
-                <td style="padding: 12px;">$55</td>
-                <td style="padding: 12px;">$65</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 12px; font-weight: 700;">5K</td>
-                <td style="padding: 12px;">$35</td>
-                <td style="padding: 12px;">$45</td>
-                <td style="padding: 12px;">$55</td>
-            </tr>
-        </table>
+        
+        <div class="table-wrapper">
+            <table>
+                <tr style="background-color: #f5f5f5; border-bottom: 2px solid #ddd;">
+                    <th>Distance</th>
+                    <th>Early Reg</th>
+                    <th>Standard Reg</th>
+                    <th>Race Day</th>
+                </tr>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="font-weight: 700;">Marathon</td>
+                    <td>$65</td>
+                    <td>$75</td>
+                    <td>$85</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="font-weight: 700;">Half Marathon</td>
+                    <td>$55</td>
+                    <td>$65</td>
+                    <td>$75</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="font-weight: 700;">10K</td>
+                    <td>$45</td>
+                    <td>$55</td>
+                    <td>$65</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="font-weight: 700;">5K</td>
+                    <td>$35</td>
+                    <td>$45</td>
+                    <td>$55</td>
+                </tr>
+            </table>
+        </div>
 
         <h2 style="margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px;">Race Details</h2>
         
@@ -144,11 +169,13 @@
             <summary>▸ Course Maps & Trail Colors</summary>
             <div style="padding-top: 10px; line-height: 1.6;">
                 <p>All races are out and backs starting at the East Side pavilion (Red Trail Head).</p>
-                <ul style="margin-left: 20px; margin-top: 10px;">
+                <ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 15px;">
                     <li><strong>5K & 10K:</strong> Yellow Trail</li>
                     <li><strong>Half Marathon:</strong> Yellow & Red Trails</li>
                     <li><strong>Marathon:</strong> Yellow, Red, Green, and Blue Trails</li>
                 </ul>
+                
+                <iframe src="https://caltopo.com/m/E1ATG7U" style="width: 100%; height: 450px; border: none; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"></iframe>
             </div>
         </details>
 
@@ -175,5 +202,30 @@
         <p>Stillwater Trail and Road Runners</p>
         <p>&copy; 2026 runstw.com. All rights reserved.</p>
     </footer>
+
+    <script>
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const navMenu = document.getElementById('nav-menu');
+        const raceLink = document.getElementById('race-link');
+        const raceDropdown = document.getElementById('race-dropdown');
+
+        // Toggle the side menu when clicking the hamburger
+        menuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            if(navMenu.classList.contains('active')){
+                menuBtn.innerHTML = '✕'; // Changes to an X when open
+            } else {
+                menuBtn.innerHTML = '☰';
+            }
+        });
+
+        // Toggle the "Our Races" dropdown on mobile when tapped
+        raceLink.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                e.preventDefault(); // Stops it from jumping to the top of the page
+                raceDropdown.classList.toggle('active');
+            }
+        });
+    </script>
 </body>
 </html>
