@@ -104,26 +104,24 @@
     <section class="quick-stats" style="max-width: 1000px; margin: -40px auto 40px auto; background: #fff; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; z-index: 10; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; border-radius: 8px;">
         <div>
             <h3 style="color: #005b96; font-size: 1rem; text-transform: uppercase;">Location</h3>
-            <p style="font-weight: 700;">Lake McMurtry<br>East Rec Area</p>
+            <p id="stat-location" style="font-weight: 700;"></p>
         </div>
         <div>
             <h3 style="color: #005b96; font-size: 1rem; text-transform: uppercase;">Start Times</h3>
-            <p style="font-weight: 700;">50K: 7:00 AM<br>25K: 8:00 AM</p>
+            <p id="stat-start-times" style="font-weight: 700;"></p>
         </div>
         <div>
             <h3 style="color: #005b96; font-size: 1rem; text-transform: uppercase;">Packet Pickup</h3>
-            <p style="font-weight: 700;">Friday: 5PM - 7PM<br>Race Day: 6AM - 7:45AM</p>
+            <p id="stat-packet-pickup" style="font-weight: 700;"></p>
         </div>
         <div style="display: flex; align-items: center;">
-            <a href="#" class="btn" style="width: 100%;">Register Now</a>
+            <a href="#" id="register-link" class="btn" style="width: 100%;">Register Now</a>
         </div>
     </section>
 
     <section class="content" style="max-width: 800px; margin: 0 auto 60px auto; padding: 0 20px;">
         
-        <p style="font-size: 1.1rem; margin-bottom: 40px; text-align: center;">
-            Experience the rolling terrain and shaded canopies of Lake McMurtry's finest trails. Test your endurance in one of Oklahoma's most scenic, highly-runnable trail races.
-        </p>
+        <p id="intro-text" style="font-size: 1.1rem; margin-bottom: 40px; text-align: center;"></p>
 
         <h2 style="margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px;">Registration Pricing</h2>
         
@@ -135,56 +133,13 @@
                     <th>Until Mar 1</th>
                     <th>Race Day</th>
                 </tr>
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="font-weight: 700;">50K</td>
-                    <td>$75</td>
-                    <td>$90</td>
-                    <td>$105</td>
-                </tr>
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="font-weight: 700;">25K</td>
-                    <td>$55</td>
-                    <td>$70</td>
-                    <td>$85</td>
-                </tr>
+                <tbody id="pricing-rows"></tbody>
             </table>
         </div>
 
         <h2 style="margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px;">Race Details</h2>
         
-        <details>
-            <summary>▸ Course Map & Elevation</summary>
-            <div style="padding-top: 10px; line-height: 1.6;">
-                <p>The course features rolling single-track dirt trails. Total elevation gain is approximately 1,200 ft for the 25K.</p>
-                <div style="width: 100%; height: 200px; background: #ddd; display: flex; align-items: center; justify-content: center; margin-top: 10px; border-radius: 5px;">[Interactive Map Placeholder]</div>
-            </div>
-        </details>
-
-        <details>
-            <summary>▸ Aid Stations & Cutoffs</summary>
-            <div style="padding-top: 10px; line-height: 1.6;">
-                <p>We are a cupless race. Please bring a reusable flask. Aid stations will be stocked with water, electrolytes, gels, and salty snacks.</p>
-                <ul style="margin-left: 20px; margin-top: 10px;">
-                    <li><strong>Aid 1 (Mile 4.5):</strong> Water & Gels</li>
-                    <li><strong>Aid 2 (Mile 9.0):</strong> Full Aid (Cutoff: 10:30 AM)</li>
-                    <li><strong>Aid 3 (Mile 13.1):</strong> Water Only</li>
-                </ul>
-            </div>
-        </details>
-
-        <details>
-            <summary>▸ Drop Bags & Crew</summary>
-            <div style="padding-top: 10px; line-height: 1.6;">
-                <p>50K runners may leave one drop bag at the Start/Finish line, which is accessible at the halfway point (Mile 15.5). Crews are only allowed at the Start/Finish area.</p>
-            </div>
-        </details>
-
-        <details>
-            <summary>▸ Awards & Swag</summary>
-            <div style="padding-top: 10px; line-height: 1.6;">
-                <p>All finishers receive a custom wood medallion. Podium awards go to the top 3 Male/Female in both distances.</p>
-            </div>
-        </details>
+        <div id="accordion-container"></div>
 
     </section>
 
@@ -215,6 +170,36 @@
                 raceDropdown.classList.toggle('active');
             }
         });
+    </script>
+
+    <script>
+        // --- RENDER CONTENT FROM data/mcmurtry.json ---
+        fetch('data/mcmurtry.json')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('stat-location').innerHTML = data.location;
+                document.getElementById('stat-start-times').innerHTML = data.startTimes;
+                document.getElementById('stat-packet-pickup').innerHTML = data.packetPickup;
+                document.getElementById('register-link').href = data.registerLink;
+                document.getElementById('intro-text').textContent = data.intro;
+
+                document.getElementById('pricing-rows').innerHTML = data.pricing.map(row => `
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="font-weight: 700;">${row.distance}</td>
+                        <td>${row.jan1}</td>
+                        <td>${row.mar1}</td>
+                        <td>${row.raceDay}</td>
+                    </tr>
+                `).join('');
+
+                document.getElementById('accordion-container').innerHTML = data.accordions.map(acc => `
+                    <details>
+                        <summary>▸ ${acc.title}</summary>
+                        <div style="padding-top: 10px; line-height: 1.6;">${acc.content}</div>
+                    </details>
+                `).join('');
+            })
+            .catch(err => console.error('Failed to load McMurtry content:', err));
     </script>
 </body>
 </html>
