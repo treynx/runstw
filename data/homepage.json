@@ -1,0 +1,33 @@
+{
+  "events": [
+    {
+      "title": "Orange Dirt Trail Series",
+      "subtitle": "Lake McMurtry • Fall",
+      "link": "orange-dirt.html",
+      "image": "assets/orangedirtcover.jpg"
+    },
+    {
+      "title": "Lake McMurtry Trail Run",
+      "subtitle": "East Recreation Area • Spring",
+      "link": "mcmurtry.html",
+      "image": "assets/mcmurtrycover.jpg"
+    }
+  ],
+  "schedule": [
+    {
+      "day": "Tuesday",
+      "event": "Trail Tuesday",
+      "location": "Lake McMurtry @ 6:00 PM"
+    },
+    {
+      "day": "Wednesday",
+      "event": "Pub Run",
+      "location": "Stonecloud Brewing @ 6:30 PM"
+    },
+    {
+      "day": "Saturday",
+      "event": "Aspen Run",
+      "location": "Aspen Coffee Co. @ 7:00 AM"
+    }
+  ]
+}
