@@ -1,0 +1,91 @@
+backend:
+  name: github
+  repo: treynx/runstw
+  branch: main
+  base_url: https://runstw.vercel.app
+  auth_endpoint: api/auth
+
+media_folder: "assets"
+public_folder: "/assets"
+
+collections:
+  - name: "homepage"
+    label: "Homepage"
+    files:
+      - file: "data/homepage.json"
+        label: "Homepage Content"
+        name: "homepage"
+        fields:
+          - label: "Event Cards"
+            name: "events"
+            widget: "list"
+            summary: "{{title}}"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Subtitle", name: "subtitle", widget: "string" }
+              - { label: "Link (page filename)", name: "link", widget: "string" }
+              - { label: "Background Image", name: "image", widget: "image" }
+          - label: "Weekly Schedule"
+            name: "schedule"
+            widget: "list"
+            summary: "{{day}} - {{event}}"
+            fields:
+              - { label: "Day", name: "day", widget: "string" }
+              - { label: "Run Name", name: "event", widget: "string" }
+              - { label: "Location / Time", name: "location", widget: "string" }
+
+  - name: "orange_dirt"
+    label: "Orange Dirt Trail Series"
+    files:
+      - file: "data/orange-dirt.json"
+        label: "Orange Dirt Page"
+        name: "orange_dirt"
+        fields:
+          - { label: "Location (HTML allowed, e.g. <br> for line break)", name: "location", widget: "text" }
+          - { label: "Start Times (HTML allowed)", name: "startTimes", widget: "text" }
+          - { label: "Packet Pickup (HTML allowed)", name: "packetPickup", widget: "text" }
+          - { label: "Register Button Link", name: "registerLink", widget: "string" }
+          - { label: "Intro Paragraph", name: "intro", widget: "text" }
+          - label: "Pricing Table"
+            name: "pricing"
+            widget: "list"
+            summary: "{{distance}} - {{fee}}"
+            fields:
+              - { label: "Distance", name: "distance", widget: "string" }
+              - { label: "Fee", name: "fee", widget: "string" }
+          - label: "Race Detail Sections (accordions)"
+            name: "accordions"
+            widget: "list"
+            summary: "{{title}}"
+            fields:
+              - { label: "Section Title", name: "title", widget: "string" }
+              - { label: "Content (HTML allowed)", name: "content", widget: "text" }
+
+  - name: "mcmurtry"
+    label: "Lake McMurtry Trail Run"
+    files:
+      - file: "data/mcmurtry.json"
+        label: "McMurtry Page"
+        name: "mcmurtry"
+        fields:
+          - { label: "Location (HTML allowed, e.g. <br> for line break)", name: "location", widget: "text" }
+          - { label: "Start Times (HTML allowed)", name: "startTimes", widget: "text" }
+          - { label: "Packet Pickup (HTML allowed)", name: "packetPickup", widget: "text" }
+          - { label: "Register Button Link", name: "registerLink", widget: "string" }
+          - { label: "Intro Paragraph", name: "intro", widget: "text" }
+          - label: "Pricing Table"
+            name: "pricing"
+            widget: "list"
+            summary: "{{distance}}"
+            fields:
+              - { label: "Distance", name: "distance", widget: "string" }
+              - { label: "Fee - Until Jan 1", name: "jan1", widget: "string" }
+              - { label: "Fee - Until Mar 1", name: "mar1", widget: "string" }
+              - { label: "Fee - Race Day", name: "raceDay", widget: "string" }
+          - label: "Race Detail Sections (accordions)"
+            name: "accordions"
+            widget: "list"
+            summary: "{{title}}"
+            fields:
+              - { label: "Section Title", name: "title", widget: "string" }
+              - { label: "Content (HTML allowed)", name: "content", widget: "text" }
