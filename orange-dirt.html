@@ -105,26 +105,24 @@
     <section class="quick-stats" style="max-width: 1000px; margin: -40px auto 40px auto; background: #fff; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; z-index: 10; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; border-radius: 8px;">
         <div>
             <h3 style="color: #e65100; font-size: 1rem; text-transform: uppercase;">Location</h3>
-            <p style="font-weight: 700;">East Side Pavilion<br>Lake McMurtry</p>
+            <p id="stat-location" style="font-weight: 700;"></p>
         </div>
         <div>
             <h3 style="color: #e65100; font-size: 1rem; text-transform: uppercase;">Start Times</h3>
-            <p style="font-weight: 700; font-size: 0.9rem;">Marathon: 7:00 AM | Half: 7:30 AM<br>10K: 8:00 AM | 5K: 8:30 AM</p>
+            <p id="stat-start-times" style="font-weight: 700; font-size: 0.9rem;"></p>
         </div>
         <div>
             <h3 style="color: #e65100; font-size: 1rem; text-transform: uppercase;">Packet Pickup</h3>
-            <p style="font-weight: 700; font-size: 0.9rem;">Fri: 5-8 PM (Stonecloud Brewing)<br>Sat: 5:30 AM (Race Site)</p>
+            <p id="stat-packet-pickup" style="font-weight: 700; font-size: 0.9rem;"></p>
         </div>
         <div style="display: flex; align-items: center;">
-            <a href="https://runsignup.com/Race/OK/Stillwater/OrangeDirtTrailSeries" target="_blank" class="btn" style="width: 100%;">Register Now</a>
+            <a href="#" id="register-link" target="_blank" class="btn" style="width: 100%;">Register Now</a>
         </div>
     </section>
 
     <section class="content" style="max-width: 800px; margin: 0 auto 60px auto; padding: 0 20px;">
         
-        <p style="font-size: 1.1rem; margin-bottom: 40px; text-align: center;">
-            Join us for the ultimate fall trail series. Technical single-track, beautiful lake views, and the best post-race community in Stillwater. All proceeds benefit the Lake McMurtry Trail System!
-        </p>
+        <p id="intro-text" style="font-size: 1.1rem; margin-bottom: 40px; text-align: center;"></p>
 
         <h2 style="margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px;">Registration Pricing</h2>
         
@@ -134,56 +132,13 @@
                     <th>Distance</th>
                     <th>Registration Fee</th>
                 </tr>
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="font-weight: 700;">Marathon</td>
-                    <td>$70</td>
-                </tr>
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="font-weight: 700;">Half Marathon</td>
-                    <td>$60</td>
-                </tr>
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="font-weight: 700;">10K</td>
-                    <td>$50</td>
-                </tr>
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="font-weight: 700;">5K</td>
-                    <td>$40</td>
-                </tr>
+                <tbody id="pricing-rows"></tbody>
             </table>
         </div>
 
         <h2 style="margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px;">Race Details</h2>
         
-        <details>
-            <summary>▸ Course Maps & Trail Colors</summary>
-            <div style="padding-top: 10px; line-height: 1.6;">
-                <p>All races are out and backs starting at the East Side pavilion (Red Trail Head).</p>
-                <ul style="margin-left: 20px; margin-top: 10px; margin-bottom: 15px;">
-                    <li><strong>5K & 10K:</strong> Yellow Trail</li>
-                    <li><strong>Half Marathon:</strong> Yellow & Red Trails</li>
-                    <li><strong>Marathon:</strong> Yellow, Red, Green, and Blue Trails</li>
-                </ul>
-                
-                <iframe src="https://caltopo.com/m/E1ATG7U" style="width: 100%; height: 450px; border: none; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"></iframe>
-            </div>
-        </details>
-
-        <details>
-            <summary>▸ Packet Pickup & Camping</summary>
-            <div style="padding-top: 10px; line-height: 1.6;">
-                <p><strong>Packet Pickup:</strong> Friday from 5-8 PM at Stonecloud Brewing in Stillwater (917 S Husband). Race day pickup begins at 5:30 AM.</p>
-                <p style="margin-top: 10px;"><strong>Accommodations:</strong> Primitive camping is available by the East Side Pavilion on Friday night. Bathrooms are available, but no showers. Call the lake directly to reserve a private site.</p>
-            </div>
-        </details>
-
-        <details>
-            <summary>▸ Awards & Swag</summary>
-            <div style="padding-top: 10px; line-height: 1.6;">
-                <p>All participants will receive a cool Finisher's Medal! Pre-registered runners receive a short sleeve t-shirt.</p>
-                <p style="margin-top: 10px;">Awards to the top three finishers in Female, Non-Binary, and Male categories following each race. Must be present to pick up awards.</p>
-            </div>
-        </details>
+        <div id="accordion-container"></div>
 
     </section>
 
@@ -216,6 +171,34 @@
                 raceDropdown.classList.toggle('active');
             }
         });
+    </script>
+
+    <script>
+        // --- RENDER CONTENT FROM data/orange-dirt.json ---
+        fetch('data/orange-dirt.json')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('stat-location').innerHTML = data.location;
+                document.getElementById('stat-start-times').innerHTML = data.startTimes;
+                document.getElementById('stat-packet-pickup').innerHTML = data.packetPickup;
+                document.getElementById('register-link').href = data.registerLink;
+                document.getElementById('intro-text').textContent = data.intro;
+
+                document.getElementById('pricing-rows').innerHTML = data.pricing.map(row => `
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="font-weight: 700;">${row.distance}</td>
+                        <td>${row.fee}</td>
+                    </tr>
+                `).join('');
+
+                document.getElementById('accordion-container').innerHTML = data.accordions.map(acc => `
+                    <details>
+                        <summary>▸ ${acc.title}</summary>
+                        <div style="padding-top: 10px; line-height: 1.6;">${acc.content}</div>
+                    </details>
+                `).join('');
+            })
+            .catch(err => console.error('Failed to load Orange Dirt content:', err));
     </script>
 </body>
 </html>
