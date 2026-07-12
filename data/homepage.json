@@ -4,10 +4,11 @@
     {
       "day": "Tuesday",
       "event": "Trail Tuesday",
-      "location": "Lake McMurtry",
+      "location": "Lake McMurtry East Pavilion",
       "time": "6:00 PM",
       "mapLink": "https://www.google.com/maps/search/?api=1&query=Lake+McMurtry+East+Recreation+Area",
-      "description": "An easygoing evening on Lake McMurtry's single-track. We run in groups by pace and regroup along the way — nobody gets left in the woods. In the darker months, bring a headlamp."
+      "image": "/assets/weekly-trail-tuesday.jpeg",
+      "description": "All paces welcome — hikers, walkers, and runners with 1 mile, 3.5 mile, 7 mile, or out-and-back options. Meet at the East Pavilion. Lake McMurtry charges a $6 day pass if you don't have an annual pass. In the darker months, bring a headlamp."
     },
     {
       "day": "Wednesday",
@@ -15,6 +16,7 @@
       "location": "Stonecloud Brewing",
       "time": "6:30 PM",
       "mapLink": "https://www.google.com/maps/search/?api=1&query=Stonecloud+Brewing+Stillwater+OK",
+      "image": "/assets/weekly-pub-run.jpeg",
       "description": "A social road run from Stonecloud Brewing through downtown Stillwater. Routes are short and flexible, and the real point is the patio afterward. Walkers welcome."
     },
     {
@@ -23,6 +25,7 @@
       "location": "Aspen Coffee Co.",
       "time": "7:00 AM",
       "mapLink": "https://www.google.com/maps/search/?api=1&query=Aspen+Coffee+Co+Stillwater+OK",
+      "image": "/assets/weekly-aspen-run.jpeg",
       "description": "The Saturday morning staple. Meet at Aspen Coffee downtown for anything from an easy few miles to a long run, then stick around for coffee with the crew."
     }
   ]

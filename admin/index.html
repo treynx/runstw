@@ -85,7 +85,8 @@
     // --- HOMEPAGE PREVIEW: mirrors the "Weekly Schedule" section ---
     var HomepagePreview = createClass({
       render: function () {
-        var data = this.props.entry.get('data').toJS();
+        var self = this.props;
+        var data = self.entry.get('data').toJS();
         var schedule = data.schedule || [];
         return h('div', { style: { fontFamily: brand.font, padding: '20px', maxWidth: '800px', margin: '0 auto' } },
           h('h2', { style: { textAlign: 'center', fontWeight: 900, textTransform: 'uppercase', margin: '20px 0' } }, 'Weekly Runs'),
@@ -96,6 +97,7 @@
                 key: i,
                 style: { padding: '18px', marginBottom: '12px', background: '#fff', border: '1px solid ' + brand.border, borderLeft: '5px solid ' + brand.orange, borderRadius: '5px' }
               },
+                row.image ? h('img', { src: resolveImage(self, row.image), style: { width: '100%', height: '160px', objectFit: 'cover', borderRadius: '4px', marginBottom: '10px' } }) : null,
                 h('div', { style: { fontWeight: 900, color: brand.orange, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' } },
                   (row.day || '') + (row.time ? ' • ' + row.time : '')),
                 h('div', { style: { fontWeight: 900, textTransform: 'uppercase', fontSize: '1.2rem', margin: '4px 0' } }, row.event || ''),
