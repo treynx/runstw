@@ -41,6 +41,14 @@ collections:
         label: "Orange Dirt Page"
         name: "orange_dirt"
         fields:
+          - { label: "Top Banner Photo", name: "bannerImage", widget: "image" }
+          - label: "Quick Nav Buttons"
+            name: "quickLinks"
+            widget: "list"
+            summary: "{{label}}"
+            fields:
+              - { label: "Button Text", name: "label", widget: "string" }
+              - { label: "Link URL", name: "url", widget: "string" }
           - { label: "Location (HTML allowed, e.g. <br> for line break)", name: "location", widget: "text" }
           - { label: "Start Times (HTML allowed)", name: "startTimes", widget: "text" }
           - { label: "Packet Pickup (HTML allowed)", name: "packetPickup", widget: "text" }
@@ -61,6 +69,27 @@ collections:
               - { label: "Section Title", name: "title", widget: "string" }
               - { label: "Content (HTML allowed)", name: "content", widget: "text" }
 
+  - name: "event_template"
+    label: "Event Template (test)"
+    files:
+      - file: "data/event-template.json"
+        label: "Event Template Page"
+        name: "event_template"
+        fields:
+          - { label: "Top Banner Photo", name: "bannerImage", widget: "image" }
+          - { label: "Event Title", name: "eventTitle", widget: "string" }
+          - { label: "Action Bar Color (hex code, e.g. #e65100)", name: "actionBarColor", widget: "color" }
+          - { label: "Register Button Link", name: "registerLink", widget: "string" }
+          - { label: "Register Button Text", name: "registerButtonText", widget: "string" }
+          - { label: "Event Info (HTML allowed)", name: "eventInfo", widget: "text" }
+          - label: "Race Detail Sections (accordions)"
+            name: "accordions"
+            widget: "list"
+            summary: "{{title}}"
+            fields:
+              - { label: "Section Title", name: "title", widget: "string" }
+              - { label: "Content (HTML allowed)", name: "content", widget: "text" }
+
   - name: "mcmurtry"
     label: "Lake McMurtry Trail Run"
     files:
@@ -68,6 +97,7 @@ collections:
         label: "McMurtry Page"
         name: "mcmurtry"
         fields:
+          - { label: "Top Banner Photo", name: "bannerImage", widget: "image" }
           - { label: "Location (HTML allowed, e.g. <br> for line break)", name: "location", widget: "text" }
           - { label: "Start Times (HTML allowed)", name: "startTimes", widget: "text" }
           - { label: "Packet Pickup (HTML allowed)", name: "packetPickup", widget: "text" }
