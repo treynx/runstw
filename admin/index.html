@@ -26,6 +26,8 @@
     }
     #cms-loading img { height: 60px; width: auto; border-radius: 50%; }
     #cms-loading span { font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; color: #e65100; }
+    #cms-loading { transition: opacity 0.3s ease; }
+    #cms-loading.done { opacity: 0; pointer-events: none; }
   </style>
 </head>
 <body>
@@ -36,6 +38,21 @@
 
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   <script>
+    // --- REMOVE LOADING OVERLAY ONCE THE CMS UI RENDERS ---
+    (function () {
+      var overlay = document.getElementById('cms-loading');
+      var start = Date.now();
+      var poll = setInterval(function () {
+        var root = document.getElementById('nc-root');
+        var rendered = root && root.children.length > 0;
+        if (rendered || Date.now() - start > 5000) {
+          clearInterval(poll);
+          overlay.classList.add('done');
+          setTimeout(function () { overlay.remove(); }, 400);
+        }
+      }, 100);
+    })();
+
     // --- BRAND THEME FOR THE LIVE PREVIEW PANE ---
     // Matches the fonts/colors used on runstw.com so editors see content
     // close to how it will actually render on the site.
