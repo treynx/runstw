@@ -163,7 +163,8 @@
         // --- RENDER EVENTS (race cards + nav dropdown) FROM data/events.json ---
         fetch('data/events.json')
             .then(res => res.json())
-            .then(events => {
+            .then(data => {
+                const events = data.events;
                 document.getElementById('dropdown-menu').innerHTML = events.map(e => `
                     <li><a href="${e.slug}.html">${e.navLabel}</a></li>
                 `).join('');
