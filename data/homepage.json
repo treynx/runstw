@@ -1,29 +1,9 @@
 {
-  "events": [
-    {
-      "title": "Orange Dirt Trail Series",
-      "subtitle": "Lake McMurtry • Fall",
-      "link": "orange-dirt.html",
-      "image": "assets/orangedirtcover.jpg"
-    },
-    {
-      "title": "Lake McMurtry Trail Run",
-      "subtitle": "East Recreation Area • Spring",
-      "link": "mcmurtry.html",
-      "image": "assets/mcmurtrycover.jpg"
-    },
-    {
-      "title": "1 Mile Track PR",
-      "subtitle": "Coming soon August 2026",
-      "image": "/assets/1710779291890-850-218.jpeg",
-      "link": "track.html"
-    }
-  ],
   "schedule": [
     {
       "day": "Tuesday",
       "event": "Trail Tuesday",
-      "location": "Lake McMurtry @ 6:00 PM."
+      "location": "Lake McMurtry @ 6:00 PM"
     },
     {
       "day": "Wednesday",
