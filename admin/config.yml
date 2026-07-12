@@ -64,6 +64,8 @@ collections:
                 widget: "string"
                 hint: "Lowercase, no spaces, e.g. fall-classic. This becomes the page filename: fall-classic.html. Changing this after publishing creates a NEW page and leaves the old one behind."
               - { label: "Event Title", name: "eventTitle", widget: "string" }
+              - { label: "Event Date", name: "eventDate", widget: "datetime", required: false, hint: "Optional. When set, the race becomes eligible for Google's event listings in search results." }
+              - { label: "Venue", name: "venue", widget: "string", required: false, hint: "Optional, for Google. e.g. Lake McMurtry East Recreation Area" }
               - { label: "Nav Menu Label", name: "navLabel", widget: "string" }
               - { label: "Show on Homepage?", name: "showOnHomepage", widget: "boolean", default: true }
               - { label: "Homepage Card Subtitle", name: "homepageSubtitle", widget: "string" }
