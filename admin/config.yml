@@ -19,9 +19,17 @@ collections:
     label: "Homepage"
     files:
       - file: "data/homepage.json"
-        label: "Weekly Runs"
+        label: "Homepage & Weekly Runs"
         name: "homepage"
         fields:
+          - label: "Homepage Hero"
+            name: "hero"
+            widget: "object"
+            collapsed: false
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Tagline", name: "tagline", widget: "string" }
+              - { label: "Background Photo", name: "image", widget: "image" }
           - label: "Weekly Runs Intro"
             name: "weeklyIntro"
             widget: "text"

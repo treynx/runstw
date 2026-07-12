@@ -88,7 +88,18 @@
         var self = this.props;
         var data = self.entry.get('data').toJS();
         var schedule = data.schedule || [];
+        var hero = data.hero || {};
         return h('div', { style: { fontFamily: brand.font, padding: '20px', maxWidth: '800px', margin: '0 auto' } },
+          h('div', {
+            style: {
+              backgroundImage: 'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4))' + (hero.image ? ', url(' + resolveImage(self, hero.image) + ')' : ''),
+              backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: brand.dark,
+              color: '#fff', textAlign: 'center', padding: '60px 20px', marginBottom: '30px'
+            }
+          },
+            h('div', { style: { fontWeight: 900, fontSize: '1.8rem', textTransform: 'uppercase', letterSpacing: '2px' } }, hero.title || ''),
+            h('div', { style: { marginTop: '8px' } }, hero.tagline || '')
+          ),
           h('h2', { style: { textAlign: 'center', fontWeight: 900, textTransform: 'uppercase', margin: '20px 0' } }, 'Weekly Runs'),
           data.weeklyIntro ? h('p', { style: { textAlign: 'center', color: brand.muted, marginBottom: '25px' } }, data.weeklyIntro) : null,
           h('div', {},
