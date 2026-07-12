@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 90px; }
         body { font-family: 'Montserrat', sans-serif; color: #333; background-color: #fcfcfc; line-height: 1.6; overflow-x: hidden; }
         a { text-decoration: none; color: inherit; }
 
@@ -81,7 +82,7 @@
                     <ul class="dropdown-menu" id="dropdown-menu"></ul>
                 </li>
                 <li><a href="index.html#weekly-runs">Weekly Runs</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="mailto:info@runstw.com">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -106,7 +107,12 @@
 
     <footer>
         <img src="assets/runstw-logo.jpg" alt="RUN STW Logo" style="height: 40px; margin-bottom: 10px; border-radius: 50%;">
-        <p>Stillwater Trail and Road Runners</p>
+        <div class="social-links" style="margin: 15px 0; display: flex; justify-content: center; gap: 20px;">
+            <a href="https://www.facebook.com/groups/stillwatertrailandroadrunners" target="_blank" style="color: #fff; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;">Facebook</a>
+            <a href="https://www.instagram.com/stwtrailandroadrunners/" target="_blank" style="color: #fff; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;">Instagram</a>
+            <a href="mailto:info@runstw.com" style="color: #fff; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;">Email</a>
+        </div>
+        <p>Stillwater Trail and Road Runners &bull; <a href="mailto:info@runstw.com" style="color:#888;">info@runstw.com</a></p>
         <p>&copy; 2026 runstw.com. All rights reserved.</p>
     </footer>
 
@@ -127,14 +133,24 @@
                 raceDropdown.classList.toggle('active');
             }
         });
+
+        // Close the mobile menu after tapping any real link so it
+        // doesn't stay covering the page you just navigated to.
+        navMenu.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (link && link.id !== 'race-link' && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                menuBtn.innerHTML = '☰';
+            }
+        });
     </script>
 
     <script>
         // --- POPULATE NAV DROPDOWN FROM THE EVENTS REGISTRY ---
         fetch('data/events.json')
             .then(res => res.json())
-            .then(events => {
-                document.getElementById('dropdown-menu').innerHTML = events.map(e => `
+            .then(data => {
+                document.getElementById('dropdown-menu').innerHTML = data.events.map(e => `
                     <li><a href="${e.slug}.html">${e.navLabel}</a></li>
                 `).join('');
             })

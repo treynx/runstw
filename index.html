@@ -4,10 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Stillwater Trail and Road Runners | STRR</title>
+    <meta name="description" content="Stillwater Trail and Road Runners (STRR) — trail races, road runs, and weekly group runs in Stillwater, Oklahoma. Everyone welcome, every pace.">
+    <link rel="icon" type="image/jpeg" href="assets/runstw-logo.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://runstw.com/">
+    <meta property="og:title" content="Stillwater Trail and Road Runners">
+    <meta property="og:description" content="Trail races, road runs, and weekly group runs in Stillwater, Oklahoma. Community in every stride.">
+    <meta property="og:image" content="https://runstw.com/assets/group.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         /* --- GLOBAL STYLES --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 90px; }
         body { font-family: 'Montserrat', sans-serif; color: #333; background-color: #fcfcfc; line-height: 1.6; overflow-x: hidden; }
         a { text-decoration: none; color: inherit; }
 
@@ -100,7 +108,7 @@
                     <ul class="dropdown-menu" id="dropdown-menu"></ul>
                 </li>
                 <li><a href="#weekly-runs">Weekly Runs</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="mailto:info@runstw.com">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -130,9 +138,10 @@
         <div class="social-links">
             <a href="https://www.facebook.com/groups/stillwatertrailandroadrunners" target="_blank">Facebook</a>
             <a href="https://www.instagram.com/stwtrailandroadrunners/" target="_blank">Instagram</a>
+            <a href="mailto:info@runstw.com">Email</a>
         </div>
 
-        <p>Stillwater Trail and Road Runners</p>
+        <p>Stillwater Trail and Road Runners &bull; <a href="mailto:info@runstw.com" style="color:#888;">info@runstw.com</a></p>
         <p>&copy; 2026 runstw.com. All rights reserved.</p>
     </footer>
 
@@ -153,8 +162,18 @@
 
         raceLink.addEventListener('click', (e) => {
             if (window.innerWidth <= 768) {
-                e.preventDefault(); 
+                e.preventDefault();
                 raceDropdown.classList.toggle('active');
+            }
+        });
+
+        // Close the mobile menu after tapping any real link so it
+        // doesn't stay covering the page you just navigated to.
+        navMenu.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (link && link.id !== 'race-link' && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                menuBtn.innerHTML = '☰';
             }
         });
     </script>
