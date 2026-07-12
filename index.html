@@ -97,10 +97,7 @@
                 <li><a href="index.html">Home</a></li>
                 <li class="dropdown" id="race-dropdown">
                     <a href="#races" id="race-link">Our Races &#9662;</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="orange-dirt.html">Orange Dirt Trail Series</a></li>
-                        <li><a href="mcmurtry.html">Lake McMurtry Trail Run</a></li>
-                    </ul>
+                    <ul class="dropdown-menu" id="dropdown-menu"></ul>
                 </li>
                 <li><a href="#weekly-runs">Weekly Runs</a></li>
                 <li><a href="#">Contact</a></li>
@@ -110,7 +107,7 @@
 
     <section class="hero">
         <h1>Stillwater Trail and Road Runners</h1>
-        <p></p>
+        <p>Pounding pavement. Taming trails. Community in every stride.</p>
     </section>
 
     <section id="races">
@@ -163,20 +160,30 @@
     </script>
 
     <script>
-        // --- RENDER CONTENT FROM data/homepage.json ---
-        fetch('data/homepage.json')
+        // --- RENDER EVENTS (race cards + nav dropdown) FROM data/events.json ---
+        fetch('data/events.json')
             .then(res => res.json())
-            .then(data => {
+            .then(events => {
+                document.getElementById('dropdown-menu').innerHTML = events.map(e => `
+                    <li><a href="${e.slug}.html">${e.navLabel}</a></li>
+                `).join('');
+
                 const raceGrid = document.getElementById('race-grid');
-                raceGrid.innerHTML = data.events.map(ev => `
-                    <a href="${ev.link}" class="race-card" style="background-image: url('${ev.image}');">
+                raceGrid.innerHTML = events.filter(e => e.showOnHomepage).map(e => `
+                    <a href="${e.slug}.html" class="race-card" style="background-image: url('${e.bannerImage}');">
                         <div class="race-content">
-                            <h2>${ev.title}</h2>
-                            <p>${ev.subtitle}</p>
+                            <h2>${e.eventTitle}</h2>
+                            <p>${e.homepageSubtitle}</p>
                         </div>
                     </a>
                 `).join('');
+            })
+            .catch(err => console.error('Failed to load events:', err));
 
+        // --- RENDER WEEKLY SCHEDULE FROM data/homepage.json ---
+        fetch('data/homepage.json')
+            .then(res => res.json())
+            .then(data => {
                 const calendar = document.getElementById('calendar-container');
                 calendar.innerHTML = data.schedule.map(row => `
                     <div class="calendar-row">
@@ -186,7 +193,7 @@
                     </div>
                 `).join('');
             })
-            .catch(err => console.error('Failed to load homepage content:', err));
+            .catch(err => console.error('Failed to load schedule:', err));
     </script>
 </body>
 </html>
