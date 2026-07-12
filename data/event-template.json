@@ -1,0 +1,22 @@
+{
+  "bannerImage": "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=2000&auto=format&fit=crop",
+  "eventTitle": "New Event Name",
+  "actionBarColor": "#e65100",
+  "registerLink": "https://runsignup.com/",
+  "registerButtonText": "Register Now",
+  "eventInfo": "<p>Write your event description here. This is a good place to cover the vibe of the race, the course, and why people should come run it.</p>",
+  "accordions": [
+    {
+      "title": "Course Map & Details",
+      "content": "<p>Add course details here.</p>"
+    },
+    {
+      "title": "Packet Pickup",
+      "content": "<p>Add packet pickup info here.</p>"
+    },
+    {
+      "title": "Awards & Swag",
+      "content": "<p>Add awards info here.</p>"
+    }
+  ]
+}
