@@ -54,6 +54,13 @@
         .race-content h2 { font-size: 2.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; }
         .race-content p { font-size: 1.1rem; font-weight: 700; }
 
+        /* --- MERCH BAND --- */
+        .merch-band { background-color: #e65100; color: #fff; text-align: center; padding: 70px 20px; margin-top: 80px; }
+        .merch-band h2 { font-size: 2.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
+        .merch-band p { font-size: 1.1rem; margin-bottom: 30px; }
+        .merch-btn { display: inline-block; padding: 16px 45px; background-color: #fff; color: #e65100; font-weight: 900; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; transition: transform 0.2s; }
+        .merch-btn:hover { transform: scale(1.05); }
+
         /* --- COMMUNITY CALENDAR --- */
         .calendar-container { max-width: 1000px; margin: 0 auto; padding: 0 40px 80px 40px; }
         .calendar-row { display: flex; justify-content: space-between; align-items: center; padding: 25px 0; border-bottom: 1px solid #ddd; }
@@ -108,6 +115,7 @@
                     <ul class="dropdown-menu" id="dropdown-menu"></ul>
                 </li>
                 <li><a href="#weekly-runs">Weekly Runs</a></li>
+                <li><a href="https://www.bonfire.com/stillwater-trail-and-road-runners/" target="_blank">Merch</a></li>
                 <li><a href="mailto:info@runstw.com">Contact</a></li>
             </ul>
         </nav>
@@ -123,6 +131,12 @@
         <div class="race-grid" id="race-grid">
             <!-- Populated from data/homepage.json -->
         </div>
+    </section>
+
+    <section class="merch-band" id="merch">
+        <h2>Rep the Club</h2>
+        <p>Tees, hoodies, and more &mdash; every purchase supports the club.</p>
+        <a class="merch-btn" href="https://www.bonfire.com/stillwater-trail-and-road-runners/" target="_blank">Shop STRR Merch</a>
     </section>
 
     <section id="weekly-runs">
