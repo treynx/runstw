@@ -1,9 +1,6 @@
 {
-  "eventTitle": "Lake McMurtry Trail Run",
-  "bannerImage": "https://images.unsplash.com/photo-1533560904424-a0c61dc306fc?q=80&w=2000&auto=format&fit=crop",
-  "actionBarColor": "#005b96",
-  "registerLink": "#",
   "registerButtonText": "Register Now",
+  "actionBarColor": "#005b96",
   "eventInfo": "<p>Experience the rolling terrain and shaded canopies of Lake McMurtry's finest trails. Test your endurance in one of Oklahoma's most scenic, highly-runnable trail races.</p><p><strong>Location:</strong> Lake McMurtry, East Rec Area<br><strong>Start Times:</strong> 50K 7:00 AM | 25K 8:00 AM</p>",
   "accordions": [
     {
@@ -22,5 +19,8 @@
       "title": "Awards & Swag",
       "content": "<p>All finishers receive a custom wood medallion. Podium awards go to the top 3 Male/Female in both distances.</p>"
     }
-  ]
+  ],
+  "bannerImage": "/assets/mcmurtrycover.jpg",
+  "registerLink": "#",
+  "eventTitle": "Lake McMurtry Trail Run"
 }
