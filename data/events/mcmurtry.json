@@ -1,25 +1,8 @@
 {
-  "registerButtonText": "Register Now",
+  "registerButtonText": "Registration Coming Soon",
   "actionBarColor": "#005b96",
-  "eventInfo": "<p>Experience the rolling terrain and shaded canopies of Lake McMurtry's finest trails. Test your endurance in one of Oklahoma's most scenic, highly-runnable trail races.</p><p><strong>Location:</strong> Lake McMurtry, East Rec Area<br><strong>Start Times:</strong> 50K 7:00 AM | 25K 8:00 AM</p>",
-  "accordions": [
-    {
-      "title": "Registration Pricing",
-      "content": "<table style=\"width:100%; border-collapse: collapse;\"><tr style=\"background:#f5f5f5; border-bottom: 2px solid #ddd;\"><th style=\"padding:10px; text-align:left;\">Distance</th><th style=\"padding:10px; text-align:left;\">Until Jan 1</th><th style=\"padding:10px; text-align:left;\">Until Mar 1</th><th style=\"padding:10px; text-align:left;\">Race Day</th></tr><tr style=\"border-bottom:1px solid #eee;\"><td style=\"padding:10px;\">50K</td><td style=\"padding:10px;\">$75</td><td style=\"padding:10px;\">$90</td><td style=\"padding:10px;\">$105</td></tr><tr><td style=\"padding:10px;\">25K</td><td style=\"padding:10px;\">$55</td><td style=\"padding:10px;\">$70</td><td style=\"padding:10px;\">$85</td></tr></table>"
-    },
-    {
-      "title": "Aid Stations & Cutoffs",
-      "content": "<p>We are a cupless race. Please bring a reusable flask. Aid stations will be stocked with water, electrolytes, gels, and salty snacks.</p><ul style=\"margin-left: 20px; margin-top: 10px;\"><li><strong>Aid 1 (Mile 4.5):</strong> Water & Gels</li><li><strong>Aid 2 (Mile 9.0):</strong> Full Aid (Cutoff: 10:30 AM)</li><li><strong>Aid 3 (Mile 13.1):</strong> Water Only</li></ul>"
-    },
-    {
-      "title": "Drop Bags & Crew",
-      "content": "<p>50K runners may leave one drop bag at the Start/Finish line, accessible at the halfway point (Mile 15.5). Crews are only allowed at the Start/Finish area.</p>"
-    },
-    {
-      "title": "Awards & Swag",
-      "content": "<p>All finishers receive a custom wood medallion. Podium awards go to the top 3 Male/Female in both distances.</p>"
-    }
-  ],
+  "eventInfo": "<p><strong>Big news:</strong> Stillwater Trail and Road Runners is taking the reins of the Lake McMurtry Trail Run &mdash; the oldest trail race in Oklahoma.</p><p>The race returns in <strong>April 2027</strong> on the rolling single-track and shaded canopies of Lake McMurtry's east side trails. Full race details, distances, and registration are coming soon &mdash; watch this page and our <a href='https://www.facebook.com/groups/stillwatertrailandroadrunners' target='_blank' style='color:#005b96; font-weight:700;'>Facebook group</a> for announcements.</p>",
+  "accordions": [],
   "bannerImage": "/assets/mcmurtrycover.jpg",
   "registerLink": "#",
   "eventTitle": "Lake McMurtry Trail Run"

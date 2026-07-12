@@ -172,18 +172,28 @@
 
                 document.getElementById('action-bar').style.backgroundColor = data.actionBarColor;
                 const registerBtn = document.getElementById('register-btn');
-                registerBtn.href = data.registerLink;
                 registerBtn.textContent = data.registerButtonText;
                 registerBtn.style.color = data.actionBarColor;
+                if (data.registerLink && data.registerLink !== '#') {
+                    registerBtn.href = data.registerLink;
+                } else {
+                    registerBtn.removeAttribute('href');
+                    registerBtn.style.cursor = 'default';
+                }
 
                 document.getElementById('event-info-body').innerHTML = data.eventInfo;
 
-                document.getElementById('accordion-container').innerHTML = data.accordions.map(acc => `
-                    <details>
-                        <summary>▸ ${acc.title}</summary>
-                        <div style="padding-top: 10px; line-height: 1.6;">${acc.content}</div>
-                    </details>
-                `).join('');
+                const accordions = data.accordions || [];
+                if (accordions.length) {
+                    document.getElementById('accordion-container').innerHTML = accordions.map(acc => `
+                        <details>
+                            <summary>▸ ${acc.title}</summary>
+                            <div style="padding-top: 10px; line-height: 1.6;">${acc.content}</div>
+                        </details>
+                    `).join('');
+                } else {
+                    document.querySelector('.details-section').style.display = 'none';
+                }
             })
             .catch(err => console.error('Failed to load event content:', err));
     </script>
