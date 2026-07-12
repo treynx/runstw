@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Event | STRR</title>
+    <title>Contact | STRR</title>
+    <meta name="description" content="Get in touch with Stillwater Trail and Road Runners.">
+    <link rel="icon" type="image/jpeg" href="assets/runstw-logo.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -17,7 +19,8 @@
         .logo-link { display: flex; align-items: center; z-index: 1001; position: relative; }
         .menu-toggle { display: none; order: 3; font-size: 1.8rem; cursor: pointer; z-index: 1001; position: relative; color: #333; }
         nav ul { list-style: none; display: flex; gap: 30px; align-items: center; }
-        nav ul li a { font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; padding: 10px 0; display: block; }
+        nav ul li a { font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; padding: 10px 0; display: block; }
+        nav ul li a:hover { color: #e65100; }
         .dropdown { position: relative; }
         .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background-color: #fff; min-width: 250px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 10px 0; border-radius: 0 0 5px 5px; z-index: 1000; }
         .dropdown:hover .dropdown-menu { display: flex; flex-direction: column; gap: 0; }
@@ -25,37 +28,40 @@
         .dropdown-menu li a { display: block; padding: 12px 20px; font-size: 0.85rem; font-weight: 700; text-transform: none; }
         .dropdown-menu li a:hover { background-color: #f5f5f5; }
 
-        /* --- TOP BANNER (photo) --- */
-        .banner { height: 55vh; background-color: #333; background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; text-align: center; color: #fff; padding-top: 80px; }
-        .banner h1 { font-size: 3rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; padding: 0 20px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-
-        /* --- ACTION BAR (solid color, register button) --- */
-        .action-bar { background-color: #e65100; padding: 30px 20px; display: flex; justify-content: center; align-items: center; }
-        .action-bar .btn { display: inline-block; padding: 16px 45px; background-color: #fff; font-weight: 900; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; transition: transform 0.2s; }
-        .action-bar .btn:hover { transform: scale(1.05); }
-
-        /* --- EVENT INFO --- */
-        .event-info { max-width: 800px; margin: 0 auto; padding: 60px 20px; }
-        .event-info h2 { font-size: 2rem; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; }
-        .event-info-body { font-size: 1.1rem; }
-        .event-info-body p { margin-bottom: 15px; }
-
-        /* --- ACCORDIONS --- */
-        .details-section { max-width: 800px; margin: 0 auto; padding: 0 20px 60px 20px; }
-        .details-section h2 { font-size: 2rem; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; }
-        details { background: #f9f9f9; padding: 15px; margin-bottom: 10px; border-radius: 5px; cursor: pointer; border: 1px solid #eee; -webkit-tap-highlight-color: transparent; }
-        summary { font-weight: 700; font-size: 1.1rem; outline: none; display: flex; align-items: center; }
-        summary::-webkit-details-marker { display: none; }
-        details[open] summary { margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        /* --- CONTACT PAGE --- */
+        .contact-wrap { max-width: 640px; margin: 0 auto; padding: 140px 20px 80px 20px; }
+        .contact-wrap h1 { font-size: 2.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; text-align: center; margin-bottom: 10px; }
+        .contact-wrap .intro { text-align: center; color: #666; margin-bottom: 40px; }
+        .contact-form label { display: block; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .contact-form input, .contact-form textarea {
+            width: 100%; padding: 14px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px;
+            font-family: 'Montserrat', sans-serif; font-size: 1rem; background: #fff;
+        }
+        .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: #e65100; }
+        .contact-form textarea { min-height: 160px; resize: vertical; }
+        .contact-form button {
+            display: block; width: 100%; padding: 16px; background-color: #e65100; color: #fff; border: none;
+            border-radius: 4px; font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1.1rem;
+            text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: transform 0.2s;
+        }
+        .contact-form button:hover { transform: scale(1.02); }
+        .success-note {
+            display: none; background: #e8f5e9; border: 1px solid #a5d6a7; color: #1b5e20;
+            padding: 20px; border-radius: 4px; text-align: center; font-weight: 700; margin-bottom: 30px;
+        }
+        .alt-contact { text-align: center; margin-top: 30px; color: #666; font-size: 0.95rem; }
+        .alt-contact a { color: #e65100; font-weight: 700; }
 
         /* --- FOOTER --- */
         footer { background-color: #111; color: #fff; text-align: center; padding: 40px; }
+        .social-links { margin: 15px 0; display: flex; justify-content: center; gap: 20px; }
+        .social-links a { color: #fff; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; transition: color 0.3s; }
+        .social-links a:hover { color: #e65100; }
         footer p { font-size: 0.9rem; color: #888; }
 
         /* --- MOBILE --- */
         @media (max-width: 768px) {
-            .banner h1 { font-size: 2rem; }
-            .action-bar .btn { width: 100%; text-align: center; }
+            .contact-wrap h1 { font-size: 1.8rem; }
             .menu-toggle { display: block; }
             nav ul {
                 position: fixed; top: 0; right: -100%; height: 100vh; width: 80%; max-width: 300px;
@@ -69,6 +75,7 @@
     </style>
 </head>
 <body>
+
     <header>
         <a href="index.html" class="logo-link">
             <img src="assets/runstw-logo.jpg" alt="RUN STW Logo" class="logo-img">
@@ -88,30 +95,41 @@
         </nav>
     </header>
 
-    <section class="banner" id="banner">
-        <h1 id="banner-title">Event Name</h1>
-    </section>
+    <div class="contact-wrap">
+        <h1>Get In Touch</h1>
+        <p class="intro">Questions about a race, a weekly run, or the club? Send us a note and we'll get back to you.</p>
 
-    <section class="action-bar" id="action-bar">
-        <a href="#" id="register-btn" class="btn" target="_blank">Register Now</a>
-    </section>
+        <div class="success-note" id="success-note">
+            Thanks! Your message is on its way &mdash; we'll get back to you soon. 🏃
+        </div>
 
-    <section class="event-info">
-        <h2>Event Info</h2>
-        <div class="event-info-body" id="event-info-body"></div>
-    </section>
+        <form class="contact-form" id="contact-form" action="https://formsubmit.co/info@runstw.com" method="POST">
+            <input type="hidden" name="_subject" value="New message from runstw.com">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="https://runstw.com/contact.html?sent=1">
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 
-    <section class="details-section">
-        <h2>Race Details</h2>
-        <div id="accordion-container"></div>
-    </section>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required></textarea>
+
+            <button type="submit">Send Message</button>
+        </form>
+
+        <p class="alt-contact">Prefer email? Write us directly at <a href="mailto:info@runstw.com">info@runstw.com</a>.</p>
+    </div>
 
     <footer>
         <img src="assets/runstw-logo.jpg" alt="RUN STW Logo" style="height: 40px; margin-bottom: 10px; border-radius: 50%;">
-        <div class="social-links" style="margin: 15px 0; display: flex; justify-content: center; gap: 20px;">
-            <a href="https://www.facebook.com/groups/stillwatertrailandroadrunners" target="_blank" style="color: #fff; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;">Facebook</a>
-            <a href="https://www.instagram.com/stwtrailandroadrunners/" target="_blank" style="color: #fff; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;">Instagram</a>
-            <a href="mailto:info@runstw.com" style="color: #fff; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px;">Email</a>
+        <div class="social-links">
+            <a href="https://www.facebook.com/groups/stillwatertrailandroadrunners" target="_blank">Facebook</a>
+            <a href="https://www.instagram.com/stwtrailandroadrunners/" target="_blank">Instagram</a>
+            <a href="mailto:info@runstw.com">Email</a>
         </div>
         <p>Stillwater Trail and Road Runners &bull; <a href="mailto:info@runstw.com" style="color:#888;">info@runstw.com</a></p>
         <p>&copy; 2026 runstw.com. All rights reserved.</p>
@@ -135,8 +153,6 @@
             }
         });
 
-        // Close the mobile menu after tapping any real link so it
-        // doesn't stay covering the page you just navigated to.
         navMenu.addEventListener('click', (e) => {
             const link = e.target.closest('a');
             if (link && link.id !== 'race-link' && navMenu.classList.contains('active')) {
@@ -147,7 +163,7 @@
     </script>
 
     <script>
-        // --- POPULATE NAV DROPDOWN FROM THE EVENTS REGISTRY ---
+        // Populate the races dropdown
         fetch('data/events.json')
             .then(res => res.json())
             .then(data => {
@@ -157,35 +173,11 @@
             })
             .catch(err => console.error('Failed to load nav events:', err));
 
-        // --- RENDER THIS PAGE'S CONTENT ---
-        // The slug is derived from this file's own name, so this template
-        // works unmodified for every generated event page.
-        const slug = location.pathname.split('/').pop().replace('.html', '');
-
-        fetch(`data/events/${slug}.json`)
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('banner').style.backgroundImage =
-                    `linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('${data.bannerImage}')`;
-                document.getElementById('banner-title').textContent = data.eventTitle;
-                document.title = data.eventTitle + ' | STRR';
-
-                document.getElementById('action-bar').style.backgroundColor = data.actionBarColor;
-                const registerBtn = document.getElementById('register-btn');
-                registerBtn.href = data.registerLink;
-                registerBtn.textContent = data.registerButtonText;
-                registerBtn.style.color = data.actionBarColor;
-
-                document.getElementById('event-info-body').innerHTML = data.eventInfo;
-
-                document.getElementById('accordion-container').innerHTML = data.accordions.map(acc => `
-                    <details>
-                        <summary>▸ ${acc.title}</summary>
-                        <div style="padding-top: 10px; line-height: 1.6;">${acc.content}</div>
-                    </details>
-                `).join('');
-            })
-            .catch(err => console.error('Failed to load event content:', err));
+        // Returning from a successful submit (?sent=1): show confirmation
+        if (new URLSearchParams(location.search).has('sent')) {
+            document.getElementById('success-note').style.display = 'block';
+            document.getElementById('contact-form').style.display = 'none';
+        }
     </script>
 </body>
 </html>
