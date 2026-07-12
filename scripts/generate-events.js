@@ -7,7 +7,7 @@ const TEMPLATE_FILE = path.join(ROOT, 'templates', 'event-template.html');
 const EVENTS_DATA_DIR = path.join(ROOT, 'data', 'events');
 const MANIFEST_FILE = path.join(EVENTS_DATA_DIR, '_manifest.json');
 
-const events = JSON.parse(fs.readFileSync(EVENTS_FILE, 'utf8'));
+const events = JSON.parse(fs.readFileSync(EVENTS_FILE, 'utf8')).events;
 const template = fs.readFileSync(TEMPLATE_FILE, 'utf8');
 
 if (!fs.existsSync(EVENTS_DATA_DIR)) {
