@@ -114,7 +114,7 @@
                     <a href="#races" id="race-link">Our Races &#9662;</a>
                     <ul class="dropdown-menu" id="dropdown-menu"></ul>
                 </li>
-                <li><a href="#weekly-runs">Weekly Runs</a></li>
+                <li><a href="weekly-runs.html">Weekly Runs</a></li>
                 <li><a href="https://www.bonfire.com/stillwater-trail-and-road-runners/" target="_blank">Merch</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
@@ -223,9 +223,13 @@
                     <div class="calendar-row">
                         <div class="cal-date">&bull; ${row.day}</div>
                         <div class="cal-event">${row.event}</div>
-                        <div class="cal-location">${row.location}</div>
+                        <div class="cal-location">${row.location}${row.time ? ' @ ' + row.time : ''}</div>
                     </div>
-                `).join('');
+                `).join('') + `
+                    <div style="text-align:center; padding-top:35px;">
+                        <a href="weekly-runs.html" style="color:#e65100; font-weight:900; text-transform:uppercase; letter-spacing:1px; font-size:0.95rem;">More about our weekly runs &rarr;</a>
+                    </div>
+                `;
             })
             .catch(err => console.error('Failed to load schedule:', err));
     </script>

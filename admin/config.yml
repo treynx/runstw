@@ -19,9 +19,13 @@ collections:
     label: "Homepage"
     files:
       - file: "data/homepage.json"
-        label: "Weekly Schedule"
+        label: "Weekly Runs"
         name: "homepage"
         fields:
+          - label: "Weekly Runs Intro"
+            name: "weeklyIntro"
+            widget: "text"
+            hint: "Welcome paragraph at the top of the Weekly Runs page."
           - label: "Weekly Schedule"
             name: "schedule"
             widget: "list"
@@ -29,7 +33,10 @@ collections:
             fields:
               - { label: "Day", name: "day", widget: "string" }
               - { label: "Run Name", name: "event", widget: "string" }
-              - { label: "Location / Time", name: "location", widget: "string" }
+              - { label: "Time", name: "time", widget: "string", hint: "e.g. 6:00 PM. Update this when the seasonal schedule changes." }
+              - { label: "Location", name: "location", widget: "string" }
+              - { label: "Google Maps Link", name: "mapLink", widget: "string", required: false, hint: "Optional. Makes the location tap-to-open in Maps." }
+              - { label: "Description", name: "description", widget: "text", required: false, hint: "A couple of sentences shown on the Weekly Runs page." }
 
   - name: "events"
     label: "Events"

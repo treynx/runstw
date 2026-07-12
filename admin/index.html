@@ -88,16 +88,19 @@
         var data = this.props.entry.get('data').toJS();
         var schedule = data.schedule || [];
         return h('div', { style: { fontFamily: brand.font, padding: '20px', maxWidth: '800px', margin: '0 auto' } },
-          h('h2', { style: { textAlign: 'center', fontWeight: 900, textTransform: 'uppercase', margin: '20px 0' } }, 'Weekly Schedule'),
+          h('h2', { style: { textAlign: 'center', fontWeight: 900, textTransform: 'uppercase', margin: '20px 0' } }, 'Weekly Runs'),
+          data.weeklyIntro ? h('p', { style: { textAlign: 'center', color: brand.muted, marginBottom: '25px' } }, data.weeklyIntro) : null,
           h('div', {},
             schedule.map(function (row, i) {
               return h('div', {
                 key: i,
-                style: { display: 'flex', justifyContent: 'space-between', padding: '15px 0', borderBottom: '1px solid ' + brand.border }
+                style: { padding: '18px', marginBottom: '12px', background: '#fff', border: '1px solid ' + brand.border, borderLeft: '5px solid ' + brand.orange, borderRadius: '5px' }
               },
-                h('div', { style: { fontWeight: 700, color: brand.orange, width: '25%' } }, '• ' + (row.day || '')),
-                h('div', { style: { fontWeight: 900, textTransform: 'uppercase', width: '40%' } }, row.event || ''),
-                h('div', { style: { color: brand.muted, width: '35%', textAlign: 'right' } }, row.location || '')
+                h('div', { style: { fontWeight: 900, color: brand.orange, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' } },
+                  (row.day || '') + (row.time ? ' • ' + row.time : '')),
+                h('div', { style: { fontWeight: 900, textTransform: 'uppercase', fontSize: '1.2rem', margin: '4px 0' } }, row.event || ''),
+                h('div', { style: { fontWeight: 700 } }, '📍 ' + (row.location || '')),
+                row.description ? h('p', { style: { color: brand.muted, marginTop: '8px' } }, row.description) : null
               );
             })
           )

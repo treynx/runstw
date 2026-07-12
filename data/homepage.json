@@ -1,19 +1,29 @@
 {
+  "weeklyIntro": "Three runs, every week, every pace — walkers included. Show up, say hi, and someone will make sure you're never out there alone. First time? Just look for the group.",
   "schedule": [
     {
       "day": "Tuesday",
       "event": "Trail Tuesday",
-      "location": "Lake McMurtry @ 6:00 PM"
+      "location": "Lake McMurtry",
+      "time": "6:00 PM",
+      "mapLink": "https://www.google.com/maps/search/?api=1&query=Lake+McMurtry+East+Recreation+Area",
+      "description": "An easygoing evening on Lake McMurtry's single-track. We run in groups by pace and regroup along the way — nobody gets left in the woods. In the darker months, bring a headlamp."
     },
     {
       "day": "Wednesday",
       "event": "Pub Run",
-      "location": "Stonecloud Brewing @ 6:30 PM"
+      "location": "Stonecloud Brewing",
+      "time": "6:30 PM",
+      "mapLink": "https://www.google.com/maps/search/?api=1&query=Stonecloud+Brewing+Stillwater+OK",
+      "description": "A social road run from Stonecloud Brewing through downtown Stillwater. Routes are short and flexible, and the real point is the patio afterward. Walkers welcome."
     },
     {
       "day": "Saturday",
       "event": "Aspen Run",
-      "location": "Aspen Coffee Co. @ 7:00 AM"
+      "location": "Aspen Coffee Co.",
+      "time": "7:00 AM",
+      "mapLink": "https://www.google.com/maps/search/?api=1&query=Aspen+Coffee+Co+Stillwater+OK",
+      "description": "The Saturday morning staple. Meet at Aspen Coffee downtown for anything from an easy few miles to a long run, then stick around for coffee with the crew."
     }
   ]
 }

@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Contact | STRR</title>
-    <meta name="description" content="Get in touch with Stillwater Trail and Road Runners.">
+    <title>Weekly Runs | STRR</title>
+    <meta name="description" content="Free weekly group runs in Stillwater, Oklahoma — trails, roads, and every pace welcome. Tuesday trails at Lake McMurtry, Wednesday pub runs, Saturday coffee runs.">
     <link rel="icon" type="image/jpeg" href="assets/runstw-logo.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://runstw.com/weekly-runs.html">
+    <meta property="og:title" content="Weekly Runs | Stillwater Trail and Road Runners">
+    <meta property="og:description" content="Free weekly group runs in Stillwater, Oklahoma — trails, roads, and every pace welcome.">
+    <meta property="og:image" content="https://runstw.com/assets/group.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,29 +33,20 @@
         .dropdown-menu li a { display: block; padding: 12px 20px; font-size: 0.85rem; font-weight: 700; text-transform: none; }
         .dropdown-menu li a:hover { background-color: #f5f5f5; }
 
-        /* --- CONTACT PAGE --- */
-        .contact-wrap { max-width: 640px; margin: 0 auto; padding: 140px 20px 80px 20px; }
-        .contact-wrap h1 { font-size: 2.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; text-align: center; margin-bottom: 10px; }
-        .contact-wrap .intro { text-align: center; color: #666; margin-bottom: 40px; }
-        .contact-form label { display: block; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-        .contact-form input, .contact-form textarea {
-            width: 100%; padding: 14px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px;
-            font-family: 'Montserrat', sans-serif; font-size: 1rem; background: #fff;
-        }
-        .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: #e65100; }
-        .contact-form textarea { min-height: 160px; resize: vertical; }
-        .contact-form button {
-            display: block; width: 100%; padding: 16px; background-color: #e65100; color: #fff; border: none;
-            border-radius: 4px; font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1.1rem;
-            text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: transform 0.2s;
-        }
-        .contact-form button:hover { transform: scale(1.02); }
-        .success-note {
-            display: none; background: #e8f5e9; border: 1px solid #a5d6a7; color: #1b5e20;
-            padding: 20px; border-radius: 4px; text-align: center; font-weight: 700; margin-bottom: 30px;
-        }
-        .alt-contact { text-align: center; margin-top: 30px; color: #666; font-size: 0.95rem; }
-        .alt-contact a { color: #e65100; font-weight: 700; }
+        /* --- WEEKLY RUNS PAGE --- */
+        .runs-wrap { max-width: 760px; margin: 0 auto; padding: 140px 20px 60px 20px; }
+        .runs-wrap h1 { font-size: 2.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; text-align: center; margin-bottom: 10px; }
+        .runs-wrap .intro { text-align: center; color: #666; margin-bottom: 40px; font-size: 1.05rem; }
+        .run-card { background: #fff; border: 1px solid #eee; border-left: 5px solid #e65100; border-radius: 5px; padding: 25px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        .run-chip { display: inline-block; background: #e65100; color: #fff; font-weight: 900; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; padding: 6px 14px; border-radius: 4px; margin-bottom: 12px; }
+        .run-card h2 { font-size: 1.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 6px; }
+        .run-location { font-weight: 700; margin-bottom: 10px; }
+        .run-location a { color: #e65100; }
+        .run-location a:hover { text-decoration: underline; }
+        .run-card p.desc { color: #555; }
+        .fb-note { text-align: center; background: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 5px; padding: 20px; margin-top: 40px; color: #666; font-size: 0.95rem; }
+        .fb-note a { color: #e65100; font-weight: 700; }
+        .fb-note a:hover { text-decoration: underline; }
 
         /* --- FOOTER --- */
         footer { background-color: #111; color: #fff; text-align: center; padding: 40px; }
@@ -61,7 +57,7 @@
 
         /* --- MOBILE --- */
         @media (max-width: 768px) {
-            .contact-wrap h1 { font-size: 1.8rem; }
+            .runs-wrap h1 { font-size: 1.8rem; }
             .menu-toggle { display: block; }
             nav ul {
                 position: fixed; top: 0; right: -100%; height: 100vh; width: 80%; max-width: 300px;
@@ -95,33 +91,14 @@
         </nav>
     </header>
 
-    <div class="contact-wrap">
-        <h1>Get In Touch</h1>
-        <p class="intro">Questions about a race, a weekly run, or the club? Send us a note and we'll get back to you.</p>
-
-        <div class="success-note" id="success-note">
-            Thanks! Your message is on its way &mdash; we'll get back to you soon. 🏃
+    <div class="runs-wrap">
+        <h1>Weekly Runs</h1>
+        <p class="intro" id="runs-intro"></p>
+        <div id="runs-list"></div>
+        <div class="fb-note">
+            Times and meeting spots can shift with the seasons. Week-to-week details are always posted in our
+            <a href="https://www.facebook.com/groups/stillwatertrailandroadrunners" target="_blank">Facebook group</a>.
         </div>
-
-        <form class="contact-form" id="contact-form" action="https://formsubmit.co/info@runstw.com" method="POST">
-            <input type="hidden" name="_subject" value="New message from runstw.com">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_next" value="https://runstw.com/contact.html?sent=1">
-            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
-
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" required>
-
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
-
-            <label for="message">Message</label>
-            <textarea id="message" name="message" required></textarea>
-
-            <button type="submit">Send Message</button>
-        </form>
-
-        <p class="alt-contact">Prefer email? Write us directly at <a href="mailto:info@runstw.com">info@runstw.com</a>.</p>
     </div>
 
     <footer>
@@ -173,11 +150,23 @@
             })
             .catch(err => console.error('Failed to load nav events:', err));
 
-        // Returning from a successful submit (?sent=1): show confirmation
-        if (new URLSearchParams(location.search).has('sent')) {
-            document.getElementById('success-note').style.display = 'block';
-            document.getElementById('contact-form').style.display = 'none';
-        }
+        // Render the weekly runs from the same data the homepage uses
+        fetch('data/homepage.json')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('runs-intro').textContent = data.weeklyIntro || '';
+                document.getElementById('runs-list').innerHTML = data.schedule.map(run => `
+                    <div class="run-card">
+                        <span class="run-chip">${run.day}${run.time ? ' &bull; ' + run.time : ''}</span>
+                        <h2>${run.event}</h2>
+                        <div class="run-location">📍 ${run.mapLink
+                            ? `<a href="${run.mapLink}" target="_blank">${run.location}</a>`
+                            : run.location}</div>
+                        ${run.description ? `<p class="desc">${run.description}</p>` : ''}
+                    </div>
+                `).join('');
+            })
+            .catch(err => console.error('Failed to load weekly runs:', err));
     </script>
 </body>
 </html>
