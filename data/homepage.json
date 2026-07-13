@@ -1,10 +1,10 @@
 {
   "hero": {
     "title": "Stillwater Trail and Road Runners",
-    "tagline": "Pounding pavement. Taming trails. Community in every stride.",
+    "tagline": "all paces, all levels, all welcome.",
     "image": "/assets/group.jpg"
   },
-  "weeklyIntro": "Three runs, every week, every pace — walkers included. Show up, say hi, and someone will make sure you're never out there alone. First time? Just look for the group.",
+  "weeklyIntro": "Three runs, every week, every pace. Show up, say hi, and someone will make sure you're never out there alone. ",
   "schedule": [
     {
       "day": "Tuesday",
