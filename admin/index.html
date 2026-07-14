@@ -142,10 +142,12 @@
                   display: 'flex', alignItems: 'flex-end', padding: '20px'
                 }
               },
-                h('div', { style: { color: '#fff' } },
-                  h('div', { style: { fontWeight: 900, fontSize: '1.4rem', textTransform: 'uppercase' } }, evt.eventTitle),
-                  h('div', { style: { fontWeight: 700 } }, evt.homepageSubtitle)
-                )
+                evt.eventLogo
+                  ? h('img', { src: resolveImage(self, evt.eventLogo), alt: evt.eventTitle, style: { maxWidth: '70%', maxHeight: '65%', objectFit: 'contain', margin: '0 auto', alignSelf: 'center' } })
+                  : h('div', { style: { color: '#fff' } },
+                      h('div', { style: { fontWeight: 900, fontSize: '1.4rem', textTransform: 'uppercase' } }, evt.eventTitle),
+                      h('div', { style: { fontWeight: 700 } }, evt.homepageSubtitle)
+                    )
               );
             })
           ),

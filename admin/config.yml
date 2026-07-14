@@ -70,6 +70,7 @@ collections:
               - { label: "Show on Homepage?", name: "showOnHomepage", widget: "boolean", default: true }
               - { label: "Homepage Card Subtitle", name: "homepageSubtitle", widget: "string" }
               - { label: "Top Banner Photo", name: "bannerImage", widget: "image" }
+              - { label: "Event Logo (over banner)", name: "eventLogo", widget: "image", required: false, hint: "Optional. Shown centered over the banner photo in place of the text title. Transparent PNG works best." }
               - { label: "Action Bar Color", name: "actionBarColor", widget: "color" }
               - { label: "Register Button Link", name: "registerLink", widget: "string" }
               - { label: "Register Button Text", name: "registerButtonText", widget: "string" }
