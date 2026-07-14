@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/mcmurtry.html", "destination": "/mcmurtrytrailrun.html", "permanent": true },
+    { "source": "/mcmurtry", "destination": "/mcmurtrytrailrun.html", "permanent": true }
+  ]
+}
