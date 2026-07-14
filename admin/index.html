@@ -156,11 +156,19 @@
               evt.registerLink ? h('a', {
                 href: evt.registerLink,
                 style: {
+                  display: 'inline-block', margin: '10px 10px 10px 0', padding: '12px 24px',
+                  backgroundColor: accentColor, color: '#fff', fontWeight: 700,
+                  textTransform: 'uppercase', textDecoration: 'none', borderRadius: '50px'
+                }
+              }, '» ' + (evt.registerButtonText || 'Register Now')) : null,
+              evt.volunteerLink ? h('a', {
+                href: evt.volunteerLink,
+                style: {
                   display: 'inline-block', margin: '10px 0', padding: '12px 24px',
                   backgroundColor: accentColor, color: '#fff', fontWeight: 700,
-                  textTransform: 'uppercase', textDecoration: 'none', borderRadius: '4px'
+                  textTransform: 'uppercase', textDecoration: 'none', borderRadius: '50px'
                 }
-              }, evt.registerButtonText || 'Register Now') : null,
+              }, '✎ ' + (evt.volunteerButtonText || 'Volunteer')) : null,
               h('div', { dangerouslySetInnerHTML: { __html: evt.eventInfo || '' } }),
               (evt.accordions || []).map(function (acc, j) {
                 return h('div', { key: j, style: { marginTop: '20px', borderBottom: '1px solid ' + brand.border, paddingBottom: '15px' } },

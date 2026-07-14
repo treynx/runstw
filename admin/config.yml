@@ -73,6 +73,8 @@ collections:
               - { label: "Action Bar Color", name: "actionBarColor", widget: "color" }
               - { label: "Register Button Link", name: "registerLink", widget: "string" }
               - { label: "Register Button Text", name: "registerButtonText", widget: "string" }
+              - { label: "Volunteer Link", name: "volunteerLink", widget: "string", required: false, hint: "Optional. When filled in, a Volunteer button appears next to Register (e.g. your RunSignUp volunteer page)." }
+              - { label: "Volunteer Button Text", name: "volunteerButtonText", widget: "string", required: false, default: "Volunteer" }
               - { label: "Event Info (HTML allowed)", name: "eventInfo", widget: "text" }
               - label: "Race Detail Sections (accordions)"
                 name: "accordions"

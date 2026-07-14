@@ -30,7 +30,9 @@
       "venue": "Lake McMurtry East Recreation Area",
       "navLabel": "Orange Dirt Trail Series",
       "registerLink": "https://runsignup.com/Race/OK/Stillwater/OrangeDirtTrailSeries",
-      "eventTitle": "Orange Dirt Trail Series"
+      "eventTitle": "Orange Dirt Trail Series",
+      "volunteerLink": "https://runsignup.com/Race/Volunteer/OK/Stillwater/OrangeDirtTrailSeries",
+      "volunteerButtonText": "Volunteer"
     },
     {
       "registerButtonText": "Registration Coming Soon",
