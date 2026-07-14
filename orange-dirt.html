@@ -55,6 +55,18 @@
         .event-info-body { font-size: 1.1rem; }
         .event-info-body p { margin-bottom: 15px; }
 
+        /* --- PHOTO GALLERY --- */
+        .gallery-section { max-width: 800px; margin: 0 auto; padding: 0 20px 60px 20px; }
+        .gallery-section h2 { font-size: 2rem; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; }
+        .gallery-strip { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 12px; }
+        .gallery-strip a { flex: 0 0 auto; scroll-snap-align: start; }
+        .gallery-strip img { height: 260px; width: auto; max-width: 80vw; object-fit: cover; border-radius: 5px; display: block; }
+        .gallery-strip::-webkit-scrollbar { height: 8px; }
+        .gallery-strip::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+        .gallery-link { margin-top: 10px; font-weight: 700; }
+        .gallery-link a { color: #e65100; }
+        .gallery-link a:hover { text-decoration: underline; }
+
         /* --- ACCORDIONS --- */
         .details-section { max-width: 800px; margin: 0 auto; padding: 0 20px 60px 20px; }
         .details-section h2 { font-size: 2rem; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; }
@@ -115,6 +127,14 @@
     <section class="event-info">
         <h2>Event Info</h2>
         <div class="event-info-body" id="event-info-body"></div>
+    </section>
+
+    <section class="gallery-section" id="gallery-section" hidden>
+        <h2>On the Trail</h2>
+        <div class="gallery-strip" id="gallery-strip"></div>
+        <p class="gallery-link" id="gallery-link-wrap" hidden>
+            <a id="gallery-link" target="_blank">See all race photos &rarr;</a>
+        </p>
     </section>
 
     <section class="details-section">
@@ -215,6 +235,19 @@
                 }
 
                 document.getElementById('event-info-body').innerHTML = data.eventInfo;
+
+                const gallery = data.gallery || [];
+                if (gallery.length) {
+                    document.getElementById('gallery-section').hidden = false;
+                    // Each photo opens full-size in a new tab
+                    document.getElementById('gallery-strip').innerHTML = gallery.map(src => `
+                        <a href="${src}" target="_blank"><img src="${src}" alt="${data.eventTitle} race photo" loading="lazy"></a>
+                    `).join('');
+                    if (data.galleryLink) {
+                        document.getElementById('gallery-link-wrap').hidden = false;
+                        document.getElementById('gallery-link').href = data.galleryLink;
+                    }
+                }
 
                 const accordions = data.accordions || [];
                 if (accordions.length) {

@@ -77,6 +77,13 @@ collections:
               - { label: "Volunteer Link", name: "volunteerLink", widget: "string", required: false, hint: "Optional. When filled in, a Volunteer button appears next to Register (e.g. your RunSignUp volunteer page)." }
               - { label: "Volunteer Button Text", name: "volunteerButtonText", widget: "string", required: false, default: "Volunteer" }
               - { label: "Event Info (HTML allowed)", name: "eventInfo", widget: "text" }
+              - label: "Photo Gallery"
+                name: "gallery"
+                widget: "list"
+                required: false
+                hint: "6-8 favorite shots from the race. Shown as a swipeable strip on the event page."
+                field: { label: "Photo", name: "image", widget: "image" }
+              - { label: "Full Photo Gallery Link", name: "galleryLink", widget: "string", required: false, hint: "Optional. e.g. your RunSignUp photo album — shown as a 'See all race photos' link under the strip." }
               - label: "Race Detail Sections (accordions)"
                 name: "accordions"
                 widget: "list"
