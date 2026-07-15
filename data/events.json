@@ -55,7 +55,7 @@
       "eventTitle": "Lake McMurtry Trail Run"
     },
     {
-      "registerButtonText": "Registration coming soon",
+      "registerButtonText": "Register",
       "homepageSubtitle": "All Out for One Mile.",
       "actionBarColor": "#f70404",
       "eventInfo": "August 2026",
@@ -64,7 +64,7 @@
       "bannerImage": "/assets/1710779291890-850-218.jpeg",
       "venue": "Stillwater Junior High School Track",
       "navLabel": "1 Mile PR",
-      "registerLink": "runstw.com",
+      "registerLink": "https://runsignup.com/Race/OK/Stillwater/TheAbsoluteSendOneMileChallenge",
       "eventTitle": "1 Mile PR"
     }
   ]
