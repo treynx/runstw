@@ -1,10 +1,10 @@
 {
   "registerButtonText": "Register",
-  "eventLogo": "/assets/img_4578.png",
+  "eventLogo": "",
   "actionBarColor": "#45657f",
   "eventDate": "2026-08-07T19:00:00.000-05:00",
-  "eventInfo": "August 2026",
-  "bannerImage": "/assets/1710779291890-850-218.jpeg",
+  "eventInfo": "Crush your PR and run your fastest mile! \n\nJoin us to challenge yourself and claim your 1 Mile PR. \n\nPrice: $15\nTime:7:30PM EDT-9:00PM CDT\n\nLocation:\nStillwater Junior High School\n\n1900 N Skyline St, Stillwater, OK 74075",
+  "bannerImage": "/assets/img_4578.png",
   "venue": "Stillwater Junior High School Track",
   "registerLink": "https://runsignup.com/Race/OK/Stillwater/TheAbsoluteSendOneMileChallenge",
   "eventTitle": "The Absolute Send "
