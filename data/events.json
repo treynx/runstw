@@ -56,6 +56,7 @@
     },
     {
       "registerButtonText": "Register",
+      "eventLogo": "/assets/img_4578.png",
       "homepageSubtitle": "All Out for One Mile.",
       "actionBarColor": "#f70404",
       "eventDate": "2026-08-07T19:00:00.000-05:00",
