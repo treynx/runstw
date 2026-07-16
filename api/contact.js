@@ -1,23 +1,17 @@
 // Contact form backend: verifies a reCAPTCHA v3 token server-side, then
 // hands the message to FormSubmit for delivery to info@runstw.com.
 //
-// Environment variables (set in Vercel):
-//   RECAPTCHA_SITE_KEY  - public key, served to the page so it can load reCAPTCHA
-//   RECAPTCHA_SECRET    - private key, used here to verify tokens (never sent to the browser)
+// Environment variable (set in Vercel):
+//   RECAPTCHA_SECRET - private key used here to verify tokens (never sent to the browser)
 //
-// If RECAPTCHA_SECRET is not set, verification is skipped and the honeypot
-// alone guards the form, so the page keeps working before the keys are added.
+// The public site key is embedded directly in contact.html. If RECAPTCHA_SECRET
+// is not set, verification is skipped and the honeypot alone guards the form, so
+// the page keeps working before the secret is added.
 
 const RECAPTCHA_MIN_SCORE = 0.5;
 const CONTACT_EMAIL = 'info@runstw.com';
 
 export default async function handler(req, res) {
-  // GET: hand the public site key to the page so it can load reCAPTCHA.
-  if (req.method === 'GET') {
-    res.status(200).json({ siteKey: process.env.RECAPTCHA_SITE_KEY || '' });
-    return;
-  }
-
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
     return;

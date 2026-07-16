@@ -184,20 +184,16 @@
             .catch(err => console.error('Failed to load nav events:', err));
 
         // --- CONTACT FORM: reCAPTCHA v3 + server-verified submit ---
-        let recaptchaSiteKey = '';
+        // Public reCAPTCHA v3 site key. Safe to expose — it only lets the page
+        // request a score token. The matching SECRET key lives solely in Vercel's
+        // env (RECAPTCHA_SECRET) and never reaches the browser.
+        const recaptchaSiteKey = '6LeNc1ctAAAAAHzYuFjdX003XL4r3P4HK-uRo6vN';
 
-        // Ask our backend for the public site key; load reCAPTCHA if configured.
-        fetch('/api/contact')
-            .then(res => res.json())
-            .then(cfg => {
-                if (cfg && cfg.siteKey) {
-                    recaptchaSiteKey = cfg.siteKey;
-                    const s = document.createElement('script');
-                    s.src = 'https://www.google.com/recaptcha/api.js?render=' + recaptchaSiteKey;
-                    document.head.appendChild(s);
-                }
-            })
-            .catch(() => { /* form still works via honeypot if this fails */ });
+        (function loadRecaptcha() {
+            const s = document.createElement('script');
+            s.src = 'https://www.google.com/recaptcha/api.js?render=' + recaptchaSiteKey;
+            document.head.appendChild(s);
+        })();
 
         const contactForm = document.getElementById('contact-form');
         const submitBtn = document.getElementById('submit-btn');
