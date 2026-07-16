@@ -84,6 +84,7 @@ collections:
                 hint: "6-8 favorite shots from the race. Shown as a swipeable strip on the event page."
                 field: { label: "Photo", name: "image", widget: "image" }
               - { label: "Full Photo Gallery Link", name: "galleryLink", widget: "string", required: false, hint: "Optional. e.g. your RunSignUp photo album — shown as a 'See all race photos' link under the strip." }
+              - { label: "Instagram Feed ID (Behold)", name: "instagramFeedId", widget: "string", required: false, hint: "Optional. The feed-id from your Behold.so embed code (the value inside feed-id=\"...\"). When set, an Instagram feed appears on this event page." }
               - label: "Race Detail Sections (accordions)"
                 name: "accordions"
                 widget: "list"

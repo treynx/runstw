@@ -70,6 +70,10 @@
         /* --- ACCORDIONS --- */
         .details-section { max-width: 800px; margin: 0 auto; padding: 0 20px 60px 20px; }
         .details-section h2 { font-size: 2rem; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; }
+
+        /* --- INSTAGRAM FEED (Behold) --- */
+        .instagram-section { max-width: 800px; margin: 0 auto; padding: 0 20px 60px 20px; }
+        .instagram-section h2 { font-size: 2rem; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; }
         details { background: #f9f9f9; padding: 15px; margin-bottom: 10px; border-radius: 5px; cursor: pointer; border: 1px solid #eee; -webkit-tap-highlight-color: transparent; }
         summary { font-weight: 700; font-size: 1.1rem; outline: none; display: flex; align-items: center; }
         summary::-webkit-details-marker { display: none; }
@@ -140,6 +144,11 @@
     <section class="details-section">
         <h2>Race Details</h2>
         <div id="accordion-container"></div>
+    </section>
+
+    <section class="instagram-section" id="instagram-section" hidden>
+        <h2>Follow Along</h2>
+        <div id="behold-container"></div>
     </section>
 
     <footer>
@@ -259,6 +268,21 @@
                     `).join('');
                 } else {
                     document.querySelector('.details-section').style.display = 'none';
+                }
+
+                // Instagram feed via Behold — only when a feed ID is set in the CMS
+                if (data.instagramFeedId) {
+                    document.getElementById('instagram-section').hidden = false;
+                    const widget = document.createElement('behold-widget');
+                    widget.setAttribute('feed-id', data.instagramFeedId);
+                    document.getElementById('behold-container').appendChild(widget);
+                    if (!window.__bhldScript) {
+                        window.__bhldScript = true;
+                        const s = document.createElement('script');
+                        s.type = 'module';
+                        s.src = 'https://w.behold.so/widget.js';
+                        document.head.appendChild(s);
+                    }
                 }
             })
             .catch(err => console.error('Failed to load event content:', err));
