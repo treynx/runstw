@@ -55,6 +55,10 @@
         }
         .alt-contact { text-align: center; margin-top: 30px; color: #666; font-size: 0.95rem; }
         .alt-contact a { color: #e65100; font-weight: 700; }
+        .form-error { display: none; text-align: center; margin-top: 20px; color: #b71c1c; font-weight: 700; }
+        .form-error.show { display: block; }
+        .recaptcha-note { text-align: center; margin-top: 20px; color: #999; font-size: 0.8rem; }
+        .recaptcha-note a { color: #999; text-decoration: underline; }
 
         /* --- FOOTER --- */
         footer { background-color: #111; color: #fff; text-align: center; padding: 40px; }
@@ -107,11 +111,8 @@
             Thanks! Your message is on its way &mdash; we'll get back to you soon. 🏃
         </div>
 
-        <form class="contact-form" id="contact-form" action="https://formsubmit.co/info@runstw.com" method="POST">
-            <input type="hidden" name="_subject" value="New message from runstw.com">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_next" value="https://runstw.com/contact.html?sent=1">
-            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+        <form class="contact-form" id="contact-form" novalidate>
+            <input type="text" name="_honey" id="honey" style="display:none" tabindex="-1" autocomplete="off">
 
             <label for="name">Name</label>
             <input type="text" id="name" name="name" required>
@@ -122,10 +123,15 @@
             <label for="message">Message</label>
             <textarea id="message" name="message" required></textarea>
 
-            <button type="submit">Send Message</button>
+            <button type="submit" id="submit-btn">Send Message</button>
         </form>
 
+        <p class="form-error" id="form-error"></p>
+
         <p class="alt-contact">Prefer email? Write us directly at <a href="mailto:info@runstw.com">info@runstw.com</a>.</p>
+        <p class="recaptcha-note">This site is protected by reCAPTCHA and the Google
+            <a href="https://policies.google.com/privacy" target="_blank">Privacy Policy</a> and
+            <a href="https://policies.google.com/terms" target="_blank">Terms of Service</a> apply.</p>
     </div>
 
     <footer>
@@ -177,11 +183,72 @@
             })
             .catch(err => console.error('Failed to load nav events:', err));
 
-        // Returning from a successful submit (?sent=1): show confirmation
-        if (new URLSearchParams(location.search).has('sent')) {
-            document.getElementById('success-note').style.display = 'block';
-            document.getElementById('contact-form').style.display = 'none';
+        // --- CONTACT FORM: reCAPTCHA v3 + server-verified submit ---
+        let recaptchaSiteKey = '';
+
+        // Ask our backend for the public site key; load reCAPTCHA if configured.
+        fetch('/api/contact')
+            .then(res => res.json())
+            .then(cfg => {
+                if (cfg && cfg.siteKey) {
+                    recaptchaSiteKey = cfg.siteKey;
+                    const s = document.createElement('script');
+                    s.src = 'https://www.google.com/recaptcha/api.js?render=' + recaptchaSiteKey;
+                    document.head.appendChild(s);
+                }
+            })
+            .catch(() => { /* form still works via honeypot if this fails */ });
+
+        const contactForm = document.getElementById('contact-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const formError = document.getElementById('form-error');
+
+        function getRecaptchaToken() {
+            if (!recaptchaSiteKey || !window.grecaptcha) return Promise.resolve('');
+            return new Promise(resolve => {
+                grecaptcha.ready(() => {
+                    grecaptcha.execute(recaptchaSiteKey, { action: 'contact' })
+                        .then(resolve)
+                        .catch(() => resolve(''));
+                });
+            });
         }
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!contactForm.checkValidity()) { contactForm.reportValidity(); return; }
+
+            formError.classList.remove('show');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending…';
+
+            try {
+                const token = await getRecaptchaToken();
+                const res = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
+                        message: document.getElementById('message').value,
+                        _honey: document.getElementById('honey').value,
+                        token: token,
+                    }),
+                });
+                const data = await res.json().catch(() => ({}));
+                if (res.ok && data.success) {
+                    document.getElementById('success-note').style.display = 'block';
+                    contactForm.style.display = 'none';
+                } else {
+                    throw new Error((data && data.error) || 'Something went wrong.');
+                }
+            } catch (err) {
+                formError.textContent = err.message + ' You can also email us at info@runstw.com.';
+                formError.classList.add('show');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message';
+            }
+        });
     </script>
 </body>
 </html>
