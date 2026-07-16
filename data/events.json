@@ -58,6 +58,7 @@
       "registerButtonText": "Register",
       "homepageSubtitle": "All Out for One Mile.",
       "actionBarColor": "#f70404",
+      "eventDate": "2026-08-07T19:00:00.000-05:00",
       "eventInfo": "August 2026",
       "showOnHomepage": true,
       "slug": "1mile-pr",
@@ -65,7 +66,7 @@
       "venue": "Stillwater Junior High School Track",
       "navLabel": "1 Mile PR",
       "registerLink": "https://runsignup.com/Race/OK/Stillwater/TheAbsoluteSendOneMileChallenge",
-      "eventTitle": "1 Mile PR"
+      "eventTitle": "The Absolute Send - One Mile Challenge "
     }
   ]
 }
