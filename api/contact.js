@@ -1,15 +1,16 @@
-// Contact form backend: verifies a reCAPTCHA v3 token server-side, then
-// hands the message to FormSubmit for delivery to info@runstw.com.
+// Contact form reCAPTCHA gate: the browser sends the reCAPTCHA v3 token here,
+// this verifies it with Google, and replies whether the submission may proceed.
+// Actual email delivery happens in the browser (contact.html -> FormSubmit),
+// because FormSubmit blocks server-to-server calls.
 //
 // Environment variable (set in Vercel):
-//   RECAPTCHA_SECRET - private key used here to verify tokens (never sent to the browser)
+//   RECAPTCHA_SECRET - private key used to verify tokens (never sent to the browser)
 //
-// The public site key is embedded directly in contact.html. If RECAPTCHA_SECRET
-// is not set, verification is skipped and the honeypot alone guards the form, so
-// the page keeps working before the secret is added.
+// If RECAPTCHA_SECRET is not set, or Google can't be reached, this responds "ok"
+// so the form keeps working (the honeypot still guards it). It only blocks when
+// Google actively reports the token as spam / failed.
 
 const RECAPTCHA_MIN_SCORE = 0.5;
-const CONTACT_EMAIL = 'info@runstw.com';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -17,55 +18,31 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { name, email, message, token, _honey } = req.body || {};
-
-  // Honeypot: real people leave this blank. Pretend success and drop it.
-  if (_honey) {
-    res.status(200).json({ success: true });
-    return;
-  }
-
-  if (!name || !email || !message) {
-    res.status(400).json({ error: 'Please fill in your name, email, and message.' });
-    return;
-  }
-
+  const { token } = req.body || {};
   const secret = process.env.RECAPTCHA_SECRET;
-  if (secret) {
-    try {
-      const verifyRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ secret, response: token || '' }),
-      });
-      const verify = await verifyRes.json();
-      const scoreOk = typeof verify.score !== 'number' || verify.score >= RECAPTCHA_MIN_SCORE;
-      if (!verify.success || !scoreOk) {
-        res.status(400).json({ error: "That didn't pass our spam check. Please try again." });
-        return;
-      }
-    } catch (err) {
-      res.status(502).json({ error: 'Could not reach the spam checker. Please try again shortly.' });
-      return;
-    }
+
+  // Not configured yet -> don't block; honeypot still guards the form.
+  if (!secret) {
+    res.status(200).json({ ok: true, verified: false });
+    return;
   }
 
-  // Deliver via FormSubmit's AJAX endpoint (info@runstw.com already activated).
   try {
-    const mailRes = await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
+    const verifyRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({
-        name,
-        email,
-        message,
-        _subject: 'New message from runstw.com',
-        _template: 'table',
-      }),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ secret, response: token || '' }),
     });
-    if (!mailRes.ok) throw new Error('mail relay returned ' + mailRes.status);
-    res.status(200).json({ success: true });
+    const verify = await verifyRes.json();
+    const scoreOk = typeof verify.score !== 'number' || verify.score >= RECAPTCHA_MIN_SCORE;
+
+    if (verify.success && scoreOk) {
+      res.status(200).json({ ok: true, verified: true });
+    } else {
+      res.status(400).json({ ok: false, error: "That didn't pass our spam check. Please try again." });
+    }
   } catch (err) {
-    res.status(502).json({ error: 'Message could not be sent right now. Please email us directly.' });
+    // Transient outage reaching Google -> let it through rather than break the form.
+    res.status(200).json({ ok: true, verified: false });
   }
 }

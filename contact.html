@@ -210,6 +210,11 @@
             });
         }
 
+        function showSuccess() {
+            document.getElementById('success-note').style.display = 'block';
+            contactForm.style.display = 'none';
+        }
+
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!contactForm.checkValidity()) { contactForm.reportValidity(); return; }
@@ -218,26 +223,40 @@
             submitBtn.disabled = true;
             submitBtn.textContent = 'Sending…';
 
+            // Honeypot: real people leave this blank. Silently drop bots.
+            if (document.getElementById('honey').value) { showSuccess(); return; }
+
             try {
                 const token = await getRecaptchaToken();
-                const res = await fetch('/api/contact', {
+
+                // 1) Verify the reCAPTCHA token server-side. A 400 means it was
+                //    flagged as spam; anything else, we proceed (form stays usable
+                //    even if verification is unconfigured or briefly unreachable).
+                const verifyRes = await fetch('/api/contact', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token }),
+                });
+                if (verifyRes.status === 400) {
+                    const v = await verifyRes.json().catch(() => ({}));
+                    throw new Error(v.error || "That didn't pass our spam check. Please try again.");
+                }
+
+                // 2) Deliver the message via FormSubmit, from the browser.
+                const mailRes = await fetch('https://formsubmit.co/ajax/info@runstw.com', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
                     body: JSON.stringify({
                         name: document.getElementById('name').value,
                         email: document.getElementById('email').value,
                         message: document.getElementById('message').value,
-                        _honey: document.getElementById('honey').value,
-                        token: token,
+                        _subject: 'New message from runstw.com',
+                        _template: 'table',
                     }),
                 });
-                const data = await res.json().catch(() => ({}));
-                if (res.ok && data.success) {
-                    document.getElementById('success-note').style.display = 'block';
-                    contactForm.style.display = 'none';
-                } else {
-                    throw new Error((data && data.error) || 'Something went wrong.');
-                }
+                if (!mailRes.ok) throw new Error('Message could not be sent.');
+
+                showSuccess();
             } catch (err) {
                 formError.textContent = err.message + ' You can also email us at info@runstw.com.';
                 formError.classList.add('show');
