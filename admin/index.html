@@ -181,7 +181,7 @@
               (evt.accordions || []).map(function (acc, j) {
                 return h('div', { key: j, style: { marginTop: '20px', borderBottom: '1px solid ' + brand.border, paddingBottom: '15px' } },
                   h('h4', { style: { textTransform: 'uppercase', marginBottom: '10px' } }, acc.title),
-                  h('div', { dangerouslySetInnerHTML: { __html: acc.content || '' } })
+                  h('div', { dangerouslySetInnerHTML: { __html: window.marked ? marked.parse(acc.content || '') : (acc.content || '') } })
                 );
               }),
               evt.instagramFeedId ? h('div', { style: { marginTop: '20px', padding: '15px', background: '#f5f5f5', borderRadius: '5px', color: brand.muted } },

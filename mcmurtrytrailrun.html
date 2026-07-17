@@ -266,7 +266,7 @@
                     document.getElementById('accordion-container').innerHTML = accordions.map(acc => `
                         <details>
                             <summary>▸ ${acc.title}</summary>
-                            <div style="padding-top: 10px; line-height: 1.6;">${acc.content}</div>
+                            <div style="padding-top: 10px; line-height: 1.6;">${window.marked ? marked.parse(acc.content || '') : (acc.content || '')}</div>
                         </details>
                     `).join('');
                 } else {

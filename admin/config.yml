@@ -91,4 +91,4 @@ collections:
                 summary: "{{title}}"
                 fields:
                   - { label: "Section Title", name: "title", widget: "string" }
-                  - { label: "Content (HTML allowed)", name: "content", widget: "text" }
+                  - { label: "Content", name: "content", widget: "markdown", hint: "Use the toolbar for bold, bullet lists, and links. Existing pricing tables are preserved." }
