@@ -37,6 +37,7 @@
   </div>
 
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script src="../assets/vendor/marked.min.js"></script>
   <script>
     // --- REMOVE LOADING OVERLAY ONCE THE CMS UI RENDERS ---
     (function () {
@@ -171,7 +172,7 @@
                   textTransform: 'uppercase', textDecoration: 'none', borderRadius: '50px'
                 }
               }, '✎ ' + (evt.volunteerButtonText || 'Volunteer')) : null,
-              h('div', { dangerouslySetInnerHTML: { __html: evt.eventInfo || '' } }),
+              h('div', { dangerouslySetInnerHTML: { __html: window.marked ? marked.parse(evt.eventInfo || '') : (evt.eventInfo || '') } }),
               (evt.gallery && evt.gallery.length) ? h('div', { style: { display: 'flex', gap: '8px', overflowX: 'auto', margin: '15px 0' } },
                 evt.gallery.map(function (src, g) {
                   return h('img', { key: g, src: resolveImage(self, src), style: { height: '110px', borderRadius: '4px', flex: '0 0 auto' } });

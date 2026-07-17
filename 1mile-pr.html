@@ -17,6 +17,7 @@
     <meta property="og:image" content="https://runstw.com/assets/pr.png">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"1 Mile PR","startDate":"2026-08-07T19:00:00.000-05:00","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","description":"1 Mile PR Event body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 40px auto; padding: 0 20px; } h1 { color: #","image":["https://runstw.com/assets/pr.png"],"url":"https://runstw.com/1mile-pr.html","location":{"@type":"Place","name":"Stillwater Junior High School Track","address":{"@type":"PostalAddress","addressLocality":"Stillwater","addressRegion":"OK","addressCountry":"US"}},"organizer":{"@type":"Organization","name":"Stillwater Trail and Road Runners","url":"https://runstw.com"}}</script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="assets/vendor/marked.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; scroll-padding-top: 90px; }
@@ -243,7 +244,10 @@
                     volunteerBtn.hidden = false;
                 }
 
-                document.getElementById('event-info-body').innerHTML = data.eventInfo;
+                // Event Info is authored in the CMS rich-text editor (markdown).
+                // marked turns it into formatted HTML; existing HTML passes through.
+                const infoHtml = window.marked ? marked.parse(data.eventInfo || '') : (data.eventInfo || '');
+                document.getElementById('event-info-body').innerHTML = infoHtml;
 
                 const gallery = data.gallery || [];
                 if (gallery.length) {

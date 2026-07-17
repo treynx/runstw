@@ -76,7 +76,7 @@ collections:
               - { label: "Register Button Text", name: "registerButtonText", widget: "string" }
               - { label: "Volunteer Link", name: "volunteerLink", widget: "string", required: false, hint: "Optional. When filled in, a Volunteer button appears next to Register (e.g. your RunSignUp volunteer page)." }
               - { label: "Volunteer Button Text", name: "volunteerButtonText", widget: "string", required: false, default: "Volunteer" }
-              - { label: "Event Info (HTML allowed)", name: "eventInfo", widget: "text" }
+              - { label: "Event Info", name: "eventInfo", widget: "markdown", hint: "Use the toolbar for bold, headings, bullet lists, and links. Press Enter twice to start a new paragraph." }
               - label: "Photo Gallery"
                 name: "gallery"
                 widget: "list"

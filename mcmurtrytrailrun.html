@@ -16,6 +16,7 @@
     <meta property="og:description" content="Big news: Stillwater Trail and Road Runners is taking the reins of the Lake McMurtry Trail Run — the oldest trail race in Oklahoma. The race returns in Apr">
     <meta property="og:image" content="https://runstw.com/assets/mcmurtrycover.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="assets/vendor/marked.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; scroll-padding-top: 90px; }
@@ -242,7 +243,10 @@
                     volunteerBtn.hidden = false;
                 }
 
-                document.getElementById('event-info-body').innerHTML = data.eventInfo;
+                // Event Info is authored in the CMS rich-text editor (markdown).
+                // marked turns it into formatted HTML; existing HTML passes through.
+                const infoHtml = window.marked ? marked.parse(data.eventInfo || '') : (data.eventInfo || '');
+                document.getElementById('event-info-body').innerHTML = infoHtml;
 
                 const gallery = data.gallery || [];
                 if (gallery.length) {
