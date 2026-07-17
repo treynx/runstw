@@ -117,7 +117,11 @@
                 row.description ? h('p', { style: { color: brand.muted, marginTop: '8px' } }, row.description) : null
               );
             })
-          )
+          ),
+          data.featuredVideo ? h('div', { style: { textAlign: 'center', marginTop: '25px' } },
+            h('h2', { style: { fontWeight: 900, textTransform: 'uppercase', margin: '10px 0' } }, 'From the Trail'),
+            h('video', { src: resolveImage(self, data.featuredVideo), controls: true, muted: true, style: { maxWidth: '240px', width: '100%', borderRadius: '12px' } })
+          ) : (data.featuredReel ? h('p', { style: { textAlign: 'center', color: brand.muted, marginTop: '25px' } }, '📷 Featured reel: ' + data.featuredReel) : null)
         );
       }
     });

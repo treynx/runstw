@@ -75,9 +75,12 @@
         .race-content h2 { font-size: 2.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; }
         .race-content p { font-size: 1.1rem; font-weight: 700; }
 
-        /* --- FEATURED INSTAGRAM REEL --- */
-        .reel-wrap { display: flex; justify-content: center; padding: 0 20px 80px 20px; }
+        /* --- FEATURED INSTAGRAM REEL / VIDEO --- */
+        .reel-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 20px 80px 20px; }
         .reel-wrap .instagram-media { margin: 0 auto !important; }
+        .reel-video { width: 100%; max-width: 320px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.18); display: block; background: #000; }
+        .reel-ig-link { display: inline-block; margin-top: 16px; color: #e65100; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; }
+        .reel-ig-link:hover { text-decoration: underline; }
 
         /* --- COMMUNITY CALENDAR --- */
         .calendar-container { max-width: 1000px; margin: 0 auto; padding: 0 40px 80px 40px; }
@@ -257,10 +260,22 @@
                     </div>
                 `;
 
-                // --- FEATURED INSTAGRAM REEL ---
-                if (data.featuredReel) {
-                    document.getElementById('featured-reel').hidden = false;
-                    document.getElementById('reel-wrap').innerHTML =
+                // --- FEATURED VIDEO (autoplay) or INSTAGRAM REEL (embed) ---
+                const reelSection = document.getElementById('featured-reel');
+                const reelWrap = document.getElementById('reel-wrap');
+                if (data.featuredVideo) {
+                    // Self-hosted clip: autoplays muted + looping, right on the page.
+                    reelSection.hidden = false;
+                    const poster = data.featuredVideoPoster ? ` poster="${data.featuredVideoPoster}"` : '';
+                    const igLink = data.featuredReel
+                        ? `<a class="reel-ig-link" href="${data.featuredReel}" target="_blank">Watch on Instagram &#8599;</a>`
+                        : '';
+                    reelWrap.innerHTML =
+                        `<video class="reel-video" src="${data.featuredVideo}"${poster} autoplay muted loop playsinline preload="auto"></video>` + igLink;
+                } else if (data.featuredReel) {
+                    // Fallback: Instagram's own embed (static preview, click to play).
+                    reelSection.hidden = false;
+                    reelWrap.innerHTML =
                         `<blockquote class="instagram-media" data-instgrm-permalink="${data.featuredReel}" data-instgrm-version="14" style="max-width:540px; width:100%; min-width:326px; background:#FFF; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);"></blockquote>`;
                     if (window.instgrm) {
                         window.instgrm.Embeds.process();

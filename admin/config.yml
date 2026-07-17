@@ -34,7 +34,9 @@ collections:
             name: "weeklyIntro"
             widget: "text"
             hint: "Welcome paragraph at the top of the Weekly Runs page."
-          - { label: "Featured Instagram Reel URL", name: "featuredReel", widget: "string", required: false, hint: "Optional. Paste an Instagram reel or post URL to feature it on the homepage below the weekly schedule. Leave blank to hide the section." }
+          - { label: "Featured Video", name: "featuredVideo", widget: "file", required: false, hint: "Optional. Upload a short MP4 to autoplay (muted, looping) on the homepage below the weekly schedule. Takes priority over the reel URL. Keep it short and compressed." }
+          - { label: "Featured Video Poster", name: "featuredVideoPoster", widget: "image", required: false, hint: "Optional still image shown before the video plays." }
+          - { label: "Featured Instagram Reel URL", name: "featuredReel", widget: "string", required: false, hint: "Optional. If no video is uploaded, this reel/post URL is embedded instead. If a video IS uploaded, this becomes a 'Watch on Instagram' link under it. Leave both blank to hide the section." }
           - label: "Weekly Schedule"
             name: "schedule"
             widget: "list"
