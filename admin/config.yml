@@ -34,6 +34,7 @@ collections:
             name: "weeklyIntro"
             widget: "text"
             hint: "Welcome paragraph at the top of the Weekly Runs page."
+          - { label: "Featured Instagram Reel URL", name: "featuredReel", widget: "string", required: false, hint: "Optional. Paste an Instagram reel or post URL to feature it on the homepage below the weekly schedule. Leave blank to hide the section." }
           - label: "Weekly Schedule"
             name: "schedule"
             widget: "list"

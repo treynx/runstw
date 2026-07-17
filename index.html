@@ -75,6 +75,10 @@
         .race-content h2 { font-size: 2.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; }
         .race-content p { font-size: 1.1rem; font-weight: 700; }
 
+        /* --- FEATURED INSTAGRAM REEL --- */
+        .reel-wrap { display: flex; justify-content: center; padding: 0 20px 80px 20px; }
+        .reel-wrap .instagram-media { margin: 0 auto !important; }
+
         /* --- COMMUNITY CALENDAR --- */
         .calendar-container { max-width: 1000px; margin: 0 auto; padding: 0 40px 80px 40px; }
         .calendar-row { display: flex; justify-content: space-between; align-items: center; padding: 25px 0; border-bottom: 1px solid #ddd; }
@@ -151,6 +155,13 @@
         <h2 class="section-title">Weekly Schedule</h2>
         <div class="calendar-container" id="calendar-container">
             <!-- Populated from data/homepage.json -->
+        </div>
+    </section>
+
+    <section id="featured-reel" hidden>
+        <h2 class="section-title">From the Trail</h2>
+        <div class="reel-wrap" id="reel-wrap">
+            <!-- Instagram reel injected from data/homepage.json -->
         </div>
     </section>
 
@@ -245,6 +256,21 @@
                         <a href="weekly-runs.html" style="color:#e65100; font-weight:900; text-transform:uppercase; letter-spacing:1px; font-size:0.95rem;">More about our weekly runs &rarr;</a>
                     </div>
                 `;
+
+                // --- FEATURED INSTAGRAM REEL ---
+                if (data.featuredReel) {
+                    document.getElementById('featured-reel').hidden = false;
+                    document.getElementById('reel-wrap').innerHTML =
+                        `<blockquote class="instagram-media" data-instgrm-permalink="${data.featuredReel}" data-instgrm-version="14" style="max-width:540px; width:100%; min-width:326px; background:#FFF; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);"></blockquote>`;
+                    if (window.instgrm) {
+                        window.instgrm.Embeds.process();
+                    } else {
+                        const s = document.createElement('script');
+                        s.async = true;
+                        s.src = 'https://www.instagram.com/embed.js';
+                        document.body.appendChild(s);
+                    }
+                }
             })
             .catch(err => console.error('Failed to load schedule:', err));
     </script>
