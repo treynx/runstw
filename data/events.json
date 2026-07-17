@@ -28,6 +28,7 @@
           "content": "<p>All participants will receive a cool Finisher's Medal! Pre-registered runners receive a short sleeve t-shirt.</p><p style=\"margin-top: 10px;\">Awards to the top three finishers in Female, Non-Binary, and Male categories following each race.</p>"
         }
       ],
+      "instagramFeedId": "aB2LYoDEPb8QirGQZo2K",
       "slug": "orange-dirt",
       "bannerImage": "/assets/trail_series_composite_big.jpg",
       "venue": "Lake McMurtry East Recreation Area",
@@ -39,8 +40,7 @@
         "/assets/race_132887_178763_a5a2309f-e5a3-40f9-a466-3da1837cda02.jpg"
       ],
       "registerLink": "https://runsignup.com/Race/OK/Stillwater/OrangeDirtTrailSeries",
-      "eventTitle": "Orange Dirt Trail Series",
-      "instagramFeedId": "aB2LYoDEPb8QirGQZo2K"
+      "eventTitle": "Orange Dirt Trail Series"
     },
     {
       "registerButtonText": "Registration Coming Soon",
@@ -59,16 +59,16 @@
       "registerButtonText": "Register",
       "eventLogo": "",
       "homepageSubtitle": "- One Mile Challenge August 7th 8:00pm",
-      "actionBarColor": "#45657f",
+      "actionBarColor": "#9654c8",
       "eventDate": "2026-08-07T19:00:00.000-05:00",
       "eventInfo": "Crush your PR and run your fastest mile! \n\nJoin us to challenge yourself and claim your 1 Mile PR. \n\nPrice: $15\nTime:7:30PM EDT-9:00PM CDT\n\nLocation:\nStillwater Junior High School\n\n1900 N Skyline St, Stillwater, OK 74075",
       "showOnHomepage": true,
       "slug": "1mile-pr",
-      "bannerImage": "/assets/img_4578.png",
+      "bannerImage": "/assets/pr.png",
       "venue": "Stillwater Junior High School Track",
       "navLabel": "1 Mile PR",
       "registerLink": "https://runsignup.com/Race/OK/Stillwater/TheAbsoluteSendOneMileChallenge",
-      "eventTitle": "The Absolute Send "
+      "eventTitle": "1 Mile PR"
     }
   ]
 }
