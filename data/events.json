@@ -61,7 +61,7 @@
       "homepageSubtitle": "- One Mile Challenge August 7th 7:00pm",
       "actionBarColor": "#9654c8",
       "eventDate": "2026-08-07T19:00:00.000-05:00",
-      "eventInfo": "<title>1 Mile PR Event</title>\n    <style>\n        body {\n            font-family: Arial, sans-serif;\n            line-height: 1.6;\n            color: #333;\n            max-width: 600px;\n            margin: 40px auto;\n            padding: 0 20px;\n        }\n        h1 {\n            color: #111;\n            font-size: 24px;\n            margin-bottom: 20px;\n        }\n        p {\n            margin-bottom: 20px;\n        }\n        .details {\n            margin-top: 30px;\n            margin-bottom: 30px;\n        }\n        .details p {\n            margin-bottom: 10px;\n        }\n        .location {\n            margin-top: 30px;\n        }\n    </style>\n</head>\n<body>\n\n    <h1>Crush your PR and run your fastest mile!</h1>\n\n    <p>Join us to challenge yourself and claim your <b>1 Mile PR</b>.</p>\n\n    <div class=\"details\">\n        <p><b>Price:</b> $15</p>\n        <p><b>Time:</b> 7:30 PM EDT - 9:00 PM CDT</p>\n    </div>\n\n    <div class=\"location\">\n        <p><b>Location:</b><br>\n        Stillwater Junior High School<br>\n        1900 N Skyline St, Stillwater, OK 74075</p>\n    </div>\n\n</body>\n</html>",
+      "eventInfo": "**Crush your PR and run your fastest mile!** \n\n**Join us to challenge yourself and claim your 1 Mile PR.** \n\n**Price: $15**\nTime:7:30PM EDT-9:00PM CDT\n\n**Location:**\nStillwater Junior High School\n\n1900 N Skyline St, Stillwater, OK 74075",
       "showOnHomepage": true,
       "slug": "1mile-pr",
       "bannerImage": "/assets/pr.png",
