@@ -25,6 +25,10 @@ function escapeAttr(s) {
   return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+function escapeHtml(s) {
+  return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 function absoluteUrl(src) {
   if (!src) return '';
   return /^https?:\/\//.test(src) ? src : SITE_URL + (src.startsWith('/') ? src : '/' + src);
@@ -134,5 +138,32 @@ ${sitemapUrls.map((u) => `  <url><loc>${SITE_URL}/${u}</loc><lastmod>${today}</l
 `;
 fs.writeFileSync(SITEMAP_FILE, sitemap);
 console.log('Generated: sitemap.xml');
+
+// --- Bake the homepage weekly schedule into static HTML (readable by search/AI) ---
+try {
+  const home = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'homepage.json'), 'utf8'));
+  const rows = (home.schedule || []).map((row) => `            <div class="calendar-row">
+                <div class="cal-date">&bull; ${escapeHtml(row.day)}</div>
+                <div class="cal-event">${escapeHtml(row.event)}</div>
+                <div class="cal-location">${escapeHtml(row.location)}${row.time ? ' @ ' + escapeHtml(row.time) : ''}</div>
+            </div>`).join('\n');
+  const lead = home.weeklyIntro ? `        <p class="weekly-lead">${escapeHtml(home.weeklyIntro.trim())}</p>\n` : '';
+  const block = `\n${lead}        <div class="calendar-container">\n${rows}\n        </div>\n        <div class="weekly-more"><a href="weekly-runs.html">More about our weekly runs &rarr;</a></div>\n        `;
+
+  const homeFile = path.join(ROOT, 'index.html');
+  let html = fs.readFileSync(homeFile, 'utf8');
+  const sIdx = html.indexOf('<!-- WEEKLY_SCHEDULE_START');
+  const sCommentEnd = sIdx === -1 ? -1 : html.indexOf('-->', sIdx);
+  const eIdx = html.indexOf('<!-- WEEKLY_SCHEDULE_END -->');
+  if (sIdx !== -1 && sCommentEnd !== -1 && eIdx !== -1) {
+    html = html.slice(0, sCommentEnd + 3) + block + html.slice(eIdx);
+    fs.writeFileSync(homeFile, html);
+    console.log('Baked: homepage weekly schedule');
+  } else {
+    console.warn('Homepage schedule markers not found; skipped');
+  }
+} catch (err) {
+  console.warn('Could not bake homepage schedule:', err.message);
+}
 
 console.log('Done.');

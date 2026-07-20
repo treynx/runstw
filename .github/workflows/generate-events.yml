@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'data/events.json'
+      - 'data/homepage.json'
       - 'templates/event-template.html'
   workflow_dispatch:
 
