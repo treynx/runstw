@@ -55,6 +55,7 @@
         }
         .alt-contact { text-align: center; margin-top: 30px; color: #666; font-size: 0.95rem; }
         .alt-contact a { color: #e65100; font-weight: 700; }
+        .g-recaptcha { display: flex; justify-content: center; margin-bottom: 20px; }
         .form-error { display: none; text-align: center; margin-top: 20px; color: #b71c1c; font-weight: 700; }
         .form-error.show { display: block; }
         .recaptcha-note { text-align: center; margin-top: 20px; color: #999; font-size: 0.8rem; }
@@ -123,15 +124,14 @@
             <label for="message">Message</label>
             <textarea id="message" name="message" required></textarea>
 
+            <div class="g-recaptcha" data-sitekey="6LeNc1ctAAAAAHzYuFjdX003XL4r3P4HK-uRo6vN"></div>
+
             <button type="submit" id="submit-btn">Send Message</button>
         </form>
 
         <p class="form-error" id="form-error"></p>
 
         <p class="alt-contact">Prefer email? Write us directly at <a href="mailto:info@runstw.com">info@runstw.com</a>.</p>
-        <p class="recaptcha-note">This site is protected by reCAPTCHA and the Google
-            <a href="https://policies.google.com/privacy" target="_blank">Privacy Policy</a> and
-            <a href="https://policies.google.com/terms" target="_blank">Terms of Service</a> apply.</p>
     </div>
 
     <footer>
@@ -192,15 +192,15 @@
             })
             .catch(err => console.error('Failed to load nav events:', err));
 
-        // --- CONTACT FORM: reCAPTCHA v3 + server-verified submit ---
-        // Public reCAPTCHA v3 site key. Safe to expose — it only lets the page
-        // request a score token. The matching SECRET key lives solely in Vercel's
-        // env (RECAPTCHA_SECRET) and never reaches the browser.
-        const recaptchaSiteKey = '6LeNc1ctAAAAAHzYuFjdX003XL4r3P4HK-uRo6vN';
-
+        // --- CONTACT FORM: reCAPTCHA v2 checkbox + server-verified submit ---
+        // The visible "I'm not a robot" widget renders from the .g-recaptcha div
+        // above the submit button. The matching SECRET key lives solely in
+        // Vercel's env (RECAPTCHA_SECRET) and never reaches the browser.
         (function loadRecaptcha() {
             const s = document.createElement('script');
-            s.src = 'https://www.google.com/recaptcha/api.js?render=' + recaptchaSiteKey;
+            s.src = 'https://www.google.com/recaptcha/api.js';
+            s.async = true;
+            s.defer = true;
             document.head.appendChild(s);
         })();
 
@@ -209,14 +209,9 @@
         const formError = document.getElementById('form-error');
 
         function getRecaptchaToken() {
-            if (!recaptchaSiteKey || !window.grecaptcha) return Promise.resolve('');
-            return new Promise(resolve => {
-                grecaptcha.ready(() => {
-                    grecaptcha.execute(recaptchaSiteKey, { action: 'contact' })
-                        .then(resolve)
-                        .catch(() => resolve(''));
-                });
-            });
+            // v2: the token exists once the visitor has checked the box
+            if (!window.grecaptcha || !grecaptcha.getResponse) return '';
+            return grecaptcha.getResponse();
         }
 
         function showSuccess() {
@@ -236,7 +231,10 @@
             if (document.getElementById('honey').value) { showSuccess(); return; }
 
             try {
-                const token = await getRecaptchaToken();
+                const token = getRecaptchaToken();
+                if (window.grecaptcha && !token) {
+                    throw new Error("Please check the \"I'm not a robot\" box.");
+                }
 
                 // 1) Verify the reCAPTCHA token server-side. A 400 means it was
                 //    flagged as spam; anything else, we proceed (form stays usable
@@ -267,6 +265,7 @@
 
                 showSuccess();
             } catch (err) {
+                if (window.grecaptcha && grecaptcha.reset) grecaptcha.reset();
                 formError.textContent = err.message + ' You can also email us at info@runstw.com.';
                 formError.classList.add('show');
                 submitBtn.disabled = false;
