@@ -85,8 +85,6 @@
         /* --- WEEKLY RUNS (live schedule) --- */
         .ws-wrap { max-width: 680px; margin: 0 auto; padding: 0 20px 80px 20px; }
         .weekly-lead { text-align: center; color: #666; margin: 0 auto 6px auto; max-width: 560px; }
-        .ws-day-head { margin: 30px 2px 12px; font-size: 0.85rem; font-weight: 900; color: #999; text-transform: uppercase; letter-spacing: 0.12em; }
-        .ws-day-head.today { color: #e65100; }
         .ws-card { background: #fff; border: 1px solid #eee; border-left: 5px solid #e65100; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 14px; overflow: hidden; }
         .ws-card.ws-cancelled { border-left-color: #c62828; }
         .ws-row { display: block; width: 100%; text-align: left; border: 0; background: none; color: inherit; font: inherit; padding: 18px 20px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
@@ -376,20 +374,9 @@
             return out.sort((a, b) => a.start - b.start);
         }
 
-        function dayLabel(d) {
-            const today = new Date(); today.setHours(0, 0, 0, 0);
-            const that = new Date(d); that.setHours(0, 0, 0, 0);
-            const diff = Math.round((that - today) / 864e5);
-            if (diff === 0) return 'Today';
-            if (diff === 1) return 'Tomorrow';
-            return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-        }
-
         function render() {
-            let last = '', html = '';
+            let html = '';
             occurrences().forEach((o, i) => {
-                const lbl = dayLabel(o.start);
-                if (lbl !== last) { last = lbl; html += '<div class="ws-day-head' + (lbl === 'Today' ? ' today' : '') + '">' + lbl + '</div>'; }
                 const fullDate = o.start.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
                 const chip = o.cancelled
                     ? '<span class="ws-cancel-chip">Cancelled</span>'
