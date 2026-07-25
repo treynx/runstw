@@ -25,6 +25,7 @@
       "cancellations": [],
       "location": "Stonecloud Brewing",
       "mapLink": "https://www.google.com/maps/search/?api=1&query=Stonecloud+Brewing+Stillwater+OK",
+      "venueLogo": "/assets/sc-mediakit_s-color-logo2.png",
       "event": "Pub Run",
       "type": "Social",
       "image": "/assets/weekly-pub-run.jpeg",
