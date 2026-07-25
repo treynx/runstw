@@ -54,6 +54,12 @@
         .fb-note a { color: #e65100; font-weight: 700; }
         .fb-note a:hover { text-decoration: underline; }
 
+        /* --- RECENT ACTIVITY (Strava club widget) --- */
+        .activity-section { margin-top: 40px; text-align: center; }
+        .activity-heading { font-size: 1.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
+        .activity-wrap { display: flex; justify-content: center; }
+        .activity-wrap iframe { border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); max-width: 100%; }
+
         /* --- FOOTER --- */
         footer { background-color: #111; color: #fff; text-align: center; padding: 40px; }
         .social-links { margin: 15px 0; display: flex; justify-content: center; gap: 20px; }
@@ -102,6 +108,10 @@
         <h1>Weekly Runs</h1>
         <p class="intro" id="runs-intro"></p>
         <div id="runs-list"></div>
+        <section class="activity-section" id="activity-section" hidden>
+            <h2 class="activity-heading">Recent Activity</h2>
+            <div class="activity-wrap" id="activity-wrap"></div>
+        </section>
         <div class="fb-note">
             Times and meeting spots can shift with the seasons. Week-to-week details are always posted in our
             <a href="https://www.facebook.com/groups/stillwatertrailandroadrunners" target="_blank">Facebook group</a>.
@@ -184,6 +194,11 @@
                         </div>
                     </div>
                 `).join('');
+
+                if (data.stravaEmbed) {
+                    document.getElementById('activity-section').hidden = false;
+                    document.getElementById('activity-wrap').innerHTML = data.stravaEmbed;
+                }
             })
             .catch(err => console.error('Failed to load weekly runs:', err));
     </script>

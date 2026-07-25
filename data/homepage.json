@@ -51,5 +51,6 @@
   ],
   "featuredReel": "",
   "featuredVideo": "",
-  "featuredVideoPoster": ""
+  "featuredVideoPoster": "",
+  "stravaEmbed": "<iframe allowtransparency='true' frameborder='0' height='454' scrolling='no' src='https://www.strava.com/clubs/1589382/latest-rides/aca60cf981b87a681a19bc891c91a0a72d684a7f?show_rides=true' width='300'></iframe>"
 }
