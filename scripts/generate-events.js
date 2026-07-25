@@ -175,11 +175,13 @@ try {
 
   // Crawlable fallback: full schedule as static text. The widget replaces
   // this at runtime; crawlers and no-JS visitors read it as-is.
+  const CLOCK_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 3h6"/></svg>';
+  const PIN_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.3-7-11a7 7 0 0 1 14 0c0 5.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>';
   const fallback = runs.map((r) => `            <div class="ws-card">
                 <div class="ws-body">
                     <div class="ws-top"><span class="ws-name">${escapeHtml(r.name)}</span>${r.venueLogo ? `<img class="ws-logo" src="${escapeAttr(r.venueLogo)}" alt="${escapeAttr(r.location)} logo" loading="lazy">` : (r.type ? `<span class="ws-type">${escapeHtml(r.type)}</span>` : '')}</div>
-                    <div class="ws-when">${escapeHtml(r.dayName)}s &bull; ${escapeHtml(r.time)}</div>
-                    <div class="ws-where">${r.map ? `<a href="${escapeAttr(r.map)}" target="_blank" rel="noopener">${escapeHtml(r.location)}</a>` : escapeHtml(r.location)}</div>
+                    <div class="ws-irow">${CLOCK_SVG}<div><span class="ws-big">${escapeHtml(r.dayName)}s &bull; ${escapeHtml(r.time)}</span></div></div>
+                    <div class="ws-irow">${PIN_SVG}<div><span class="ws-big">${r.map ? `<a href="${escapeAttr(r.map)}" target="_blank" rel="noopener">${escapeHtml(r.location)}</a>` : escapeHtml(r.location)}</span><div class="ws-subline">Stillwater, OK</div></div></div>
                     ${r.about ? `<p class="ws-about">${escapeHtml(r.about)}</p>` : ''}
                 </div>
             </div>`).join('\n');

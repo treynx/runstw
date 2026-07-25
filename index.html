@@ -97,14 +97,15 @@
         .ws-type { flex: none; background: #f5f5f5; color: #666; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 12px; border-radius: 50px; }
         .ws-logo { flex: none; width: 88px; height: 88px; object-fit: contain; border-radius: 8px; background: #fff; }
         .ws-cancel-chip { flex: none; background: #c62828; color: #fff; font-weight: 900; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 12px; border-radius: 50px; }
-        .ws-when { margin-top: 12px; font-weight: 700; font-size: 1.05rem; }
+        .ws-irow { display: flex; gap: 12px; margin-top: 12px; align-items: flex-start; }
+        .ws-irow svg { width: 20px; height: 20px; flex: none; margin-top: 3px; stroke: #999; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .ws-big { font-weight: 700; font-size: 1.05rem; }
         .ws-cancelled .ws-time { text-decoration: line-through; color: #999; }
         .ws-wx { font-weight: 600; color: #666; font-size: 0.9rem; margin-left: 8px; white-space: nowrap; }
-        .ws-sub { color: #888; font-size: 0.85rem; margin-top: 2px; font-weight: 400; }
-        .ws-where { margin-top: 8px; font-weight: 700; }
-        .ws-where a { color: #e65100; }
-        .ws-where a:hover { text-decoration: underline; }
-        .ws-reason { margin-top: 8px; color: #c62828; font-weight: 700; font-size: 0.9rem; }
+        .ws-subline { color: #888; font-size: 0.85rem; margin-top: 2px; font-weight: 400; }
+        .ws-irow a { color: inherit; text-decoration: none; }
+        .ws-irow a:hover { color: #e65100; text-decoration: underline; }
+        .ws-reason { margin-top: 6px; color: #c62828; font-weight: 700; font-size: 0.9rem; }
         .ws-detail { display: none; border-top: 1px solid #eee; padding: 14px 20px 16px; background: #fafafa; }
         .ws-card.open .ws-detail { display: block; }
         .ws-about { color: #555; font-size: 0.95rem; }
@@ -186,24 +187,24 @@
             <div class="ws-card">
                 <div class="ws-body">
                     <div class="ws-top"><span class="ws-name">Trail Tuesday</span><img class="ws-logo" src="/assets/bb1loccl_400x400.png" alt="Lake McMurtry East Pavilion logo" loading="lazy"></div>
-                    <div class="ws-when">Tuesdays &bull; 6:00 PM</div>
-                    <div class="ws-where"><a href="https://maps.app.goo.gl/tJwKnPDvp3f5uHVP6" target="_blank" rel="noopener">Lake McMurtry East Pavilion</a></div>
+                    <div class="ws-irow"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 3h6"/></svg><div><span class="ws-big">Tuesdays &bull; 6:00 PM</span></div></div>
+                    <div class="ws-irow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.3-7-11a7 7 0 0 1 14 0c0 5.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg><div><span class="ws-big"><a href="https://maps.app.goo.gl/tJwKnPDvp3f5uHVP6" target="_blank" rel="noopener">Lake McMurtry East Pavilion</a></span><div class="ws-subline">Stillwater, OK</div></div></div>
                     <p class="ws-about">All paces welcome — hikers, walkers, and runners with 1 mile, 3.5 mile, 7 mile, or out-and-back options. Meet at the East Pavilion. Lake McMurtry charges a $6 day pass if you don't have an annual pass. In the darker months, bring a headlamp.</p>
                 </div>
             </div>
             <div class="ws-card">
                 <div class="ws-body">
                     <div class="ws-top"><span class="ws-name">Pub Run</span><img class="ws-logo" src="/assets/sc-mediakit_s-color-logo2.png" alt="Stonecloud Brewing logo" loading="lazy"></div>
-                    <div class="ws-when">Wednesdays &bull; 6:30 PM</div>
-                    <div class="ws-where"><a href="https://www.google.com/maps/search/?api=1&amp;query=Stonecloud+Brewing+Stillwater+OK" target="_blank" rel="noopener">Stonecloud Brewing</a></div>
+                    <div class="ws-irow"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 3h6"/></svg><div><span class="ws-big">Wednesdays &bull; 6:30 PM</span></div></div>
+                    <div class="ws-irow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.3-7-11a7 7 0 0 1 14 0c0 5.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg><div><span class="ws-big"><a href="https://www.google.com/maps/search/?api=1&amp;query=Stonecloud+Brewing+Stillwater+OK" target="_blank" rel="noopener">Stonecloud Brewing</a></span><div class="ws-subline">Stillwater, OK</div></div></div>
                     <p class="ws-about">A social road run from Stonecloud Brewing through downtown Stillwater. Routes are short and flexible, and the real point is the patio afterward. Walkers welcome.</p>
                 </div>
             </div>
             <div class="ws-card">
                 <div class="ws-body">
                     <div class="ws-top"><span class="ws-name">Aspen Run</span><img class="ws-logo" src="/assets/aspen-logo_orig.png" alt="Aspen Coffee Co. logo" loading="lazy"></div>
-                    <div class="ws-when">Saturdays &bull; 7:00 AM</div>
-                    <div class="ws-where"><a href="https://maps.app.goo.gl/7E1UXJM6JxDLsmUL9" target="_blank" rel="noopener">Aspen Coffee Co.</a></div>
+                    <div class="ws-irow"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 3h6"/></svg><div><span class="ws-big">Saturdays &bull; 7:00 AM</span></div></div>
+                    <div class="ws-irow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.3-7-11a7 7 0 0 1 14 0c0 5.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg><div><span class="ws-big"><a href="https://maps.app.goo.gl/7E1UXJM6JxDLsmUL9" target="_blank" rel="noopener">Aspen Coffee Co.</a></span><div class="ws-subline">Stillwater, OK</div></div></div>
                     <p class="ws-about">The Saturday morning staple. Meet at Aspen Coffee downtown for anything from an easy few miles to a long run, then stick around for coffee with the crew.</p>
                 </div>
             </div>
@@ -354,7 +355,9 @@
         const esc = t => String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         const dateKey = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
         const hourKey = d => dateKey(d) + 'T' + pad(d.getHours()) + ':00';
-        const fmtTime = d => d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).toLowerCase().replace(' ', '');
+        const fmtTime = d => d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        const CLOCK = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 3h6"/></svg>';
+        const PIN = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.3-7-11a7 7 0 0 1 14 0c0 5.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>';
 
         function occurrences() {
             const out = [];
@@ -396,13 +399,17 @@
                 html += '<div class="ws-card' + (o.cancelled ? ' ws-cancelled' : '') + '" id="ws-c' + i + '">'
                     + '<' + (hasDetail ? 'button class="ws-row" aria-expanded="false"' : 'div class="ws-row" style="cursor:default"') + '>'
                     + '<div class="ws-top"><span class="ws-name">' + esc(o.ev.name) + '</span>' + chip + '</div>'
-                    + '<div class="ws-when"><span class="ws-time">' + fmtTime(o.start) + '</span>'
-                    + (o.cancelled ? '' : '<span class="ws-wx" id="ws-wx' + i + '"></span>')
-                    + '<div class="ws-sub">' + fullDate + '</div></div>'
-                    + '<div class="ws-where">' + (o.ev.map
+                    + '<div class="ws-irow">' + CLOCK
+                    + '<div><span class="ws-big"><span class="ws-time">' + fmtTime(o.start) + '</span>'
+                    + (o.cancelled ? '' : '<span class="ws-wx" id="ws-wx' + i + '"></span>') + '</span>'
+                    + '<div class="ws-subline">' + fullDate + '</div></div></div>'
+                    + '<div class="ws-irow">' + PIN
+                    + '<div><span class="ws-big">' + (o.ev.map
                         ? '<a href="' + esc(o.ev.map) + '" target="_blank" rel="noopener">' + esc(o.ev.location) + '</a>'
-                        : esc(o.ev.location)) + '</div>'
+                        : esc(o.ev.location)) + '</span>'
+                    + '<div class="ws-subline">Stillwater, OK</div>'
                     + (o.cancelled && o.reason ? '<div class="ws-reason">' + esc(o.reason) + '</div>' : '')
+                    + '</div></div>'
                     + '</' + (hasDetail ? 'button' : 'div') + '>'
                     + (hasDetail ? '<div class="ws-detail"><p class="ws-about">' + esc(o.ev.about) + '</p></div>' : '')
                     + '</div>';
