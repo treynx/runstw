@@ -82,15 +82,33 @@
         .reel-ig-link { display: inline-block; margin-top: 16px; color: #e65100; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; }
         .reel-ig-link:hover { text-decoration: underline; }
 
-        /* --- COMMUNITY CALENDAR --- */
-        .calendar-container { max-width: 1000px; margin: 0 auto; padding: 0 40px; }
-        .calendar-row { display: flex; justify-content: space-between; align-items: center; padding: 25px 0; border-bottom: 1px solid #ddd; }
-        .calendar-row:first-child { border-top: 1px solid #ddd; }
-        .cal-date { font-weight: 700; font-size: 1.2rem; width: 18%; color: #e65100; }
-        .cal-event { font-weight: 900; font-size: 1.2rem; text-transform: uppercase; width: 42%; }
-        .cal-location { font-weight: 400; width: 40%; text-align: right; color: #666; }
-        .weekly-lead { max-width: 760px; margin: 0 auto 30px auto; text-align: center; color: #666; padding: 0 20px; }
-        .weekly-more { text-align: center; padding: 35px 20px 80px; }
+        /* --- WEEKLY RUNS (live schedule) --- */
+        .ws-wrap { max-width: 680px; margin: 0 auto; padding: 0 20px 80px 20px; }
+        .weekly-lead { text-align: center; color: #666; margin: 0 auto 6px auto; max-width: 560px; }
+        .ws-day-head { margin: 30px 2px 12px; font-size: 0.85rem; font-weight: 900; color: #999; text-transform: uppercase; letter-spacing: 0.12em; }
+        .ws-day-head.today { color: #e65100; }
+        .ws-card { background: #fff; border: 1px solid #eee; border-left: 5px solid #e65100; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 14px; overflow: hidden; }
+        .ws-card.ws-cancelled { border-left-color: #c62828; }
+        .ws-row { display: block; width: 100%; text-align: left; border: 0; background: none; color: inherit; font: inherit; padding: 18px 20px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .ws-row:focus-visible { outline: 2px solid #e65100; outline-offset: -2px; border-radius: 5px; }
+        .ws-body { padding: 18px 20px; }
+        .ws-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .ws-name { font-size: 1.15rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.02em; min-width: 0; }
+        .ws-type { flex: none; background: #f5f5f5; color: #666; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 12px; border-radius: 50px; }
+        .ws-cancel-chip { flex: none; background: #c62828; color: #fff; font-weight: 900; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 12px; border-radius: 50px; }
+        .ws-when { margin-top: 12px; font-weight: 700; font-size: 1.05rem; }
+        .ws-cancelled .ws-time { text-decoration: line-through; color: #999; }
+        .ws-wx { font-weight: 600; color: #666; font-size: 0.9rem; margin-left: 8px; white-space: nowrap; }
+        .ws-sub { color: #888; font-size: 0.85rem; margin-top: 2px; font-weight: 400; }
+        .ws-where { margin-top: 8px; font-weight: 700; }
+        .ws-where a { color: #e65100; }
+        .ws-where a:hover { text-decoration: underline; }
+        .ws-reason { margin-top: 8px; color: #c62828; font-weight: 700; font-size: 0.9rem; }
+        .ws-detail { display: none; border-top: 1px solid #eee; padding: 14px 20px 16px; background: #fafafa; }
+        .ws-card.open .ws-detail { display: block; }
+        .ws-about { color: #555; font-size: 0.95rem; }
+        .ws-body .ws-about { margin-top: 10px; }
+        .weekly-more { text-align: center; padding-top: 28px; }
         .weekly-more a { color: #e65100; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; font-size: 0.95rem; }
 
         /* --- FOOTER --- */
@@ -104,8 +122,6 @@
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.2rem; }
             .race-grid { grid-template-columns: 1fr; padding: 0 20px; }
-            .calendar-row { flex-direction: column; align-items: flex-start; gap: 10px; }
-            .cal-date, .cal-event, .cal-location { width: 100%; text-align: left; }
             
             /* Hamburger Menu Activation */
             .menu-toggle { display: block; }
@@ -159,28 +175,41 @@
     </section>
 
     <section id="weekly-runs">
-        <h2 class="section-title">Weekly Schedule</h2>
+        <h2 class="section-title">Weekly Runs</h2>
+        <div class="ws-wrap">
         <!-- WEEKLY_SCHEDULE_START — baked from data/homepage.json by scripts/generate-events.js; do not hand-edit -->
         <p class="weekly-lead">Three runs, every week, every pace. Show up, say hi, and someone will make sure you're never out there alone.</p>
-        <div class="calendar-container">
-            <div class="calendar-row">
-                <div class="cal-date">&bull; Tuesday</div>
-                <div class="cal-event">Trail Tuesday</div>
-                <div class="cal-location">Lake McMurtry East Pavilion @ 6:00 PM</div>
+        <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"SportsOrganization","@id":"https://runstw.com/#org","name":"Stillwater Trail and Road Runners","url":"https://runstw.com","areaServed":"Stillwater, OK"},{"@type":"Event","name":"Trail Tuesday","organizer":{"@id":"https://runstw.com/#org"},"eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","isAccessibleForFree":true,"eventSchedule":{"@type":"Schedule","byDay":"https://schema.org/Tuesday","startTime":"18:00:00","scheduleTimezone":"America/Chicago","repeatFrequency":"P1W"},"location":{"@type":"Place","name":"Lake McMurtry East Pavilion","address":{"@type":"PostalAddress","addressLocality":"Stillwater","addressRegion":"OK","addressCountry":"US"}}},{"@type":"Event","name":"Pub Run","organizer":{"@id":"https://runstw.com/#org"},"eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","isAccessibleForFree":true,"eventSchedule":{"@type":"Schedule","byDay":"https://schema.org/Wednesday","startTime":"18:30:00","scheduleTimezone":"America/Chicago","repeatFrequency":"P1W"},"location":{"@type":"Place","name":"Stonecloud Brewing","address":{"@type":"PostalAddress","addressLocality":"Stillwater","addressRegion":"OK","addressCountry":"US"}}},{"@type":"Event","name":"Aspen Run","organizer":{"@id":"https://runstw.com/#org"},"eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","isAccessibleForFree":true,"eventSchedule":{"@type":"Schedule","byDay":"https://schema.org/Saturday","startTime":"07:00:00","scheduleTimezone":"America/Chicago","repeatFrequency":"P1W"},"location":{"@type":"Place","name":"Aspen Coffee Co.","address":{"@type":"PostalAddress","addressLocality":"Stillwater","addressRegion":"OK","addressCountry":"US"}}}]}</script>
+        <script>window.STRR_SCHEDULE = [{"name":"Trail Tuesday","type":"Trail","dayNum":2,"dayName":"Tuesday","time":"6:00 PM","time24":"18:00","location":"Lake McMurtry East Pavilion","map":"https://maps.app.goo.gl/tJwKnPDvp3f5uHVP6","lat":36.204,"lon":-97.155,"about":"All paces welcome — hikers, walkers, and runners with 1 mile, 3.5 mile, 7 mile, or out-and-back options. Meet at the East Pavilion. Lake McMurtry charges a $6 day pass if you don't have an annual pass. In the darker months, bring a headlamp.","cancellations":[]},{"name":"Pub Run","type":"Social","dayNum":3,"dayName":"Wednesday","time":"6:30 PM","time24":"18:30","location":"Stonecloud Brewing","map":"https://www.google.com/maps/search/?api=1&query=Stonecloud+Brewing+Stillwater+OK","lat":36.116,"lon":-97.059,"about":"A social road run from Stonecloud Brewing through downtown Stillwater. Routes are short and flexible, and the real point is the patio afterward. Walkers welcome.","cancellations":[]},{"name":"Aspen Run","type":"Coffee","dayNum":6,"dayName":"Saturday","time":"7:00 AM","time24":"07:00","location":"Aspen Coffee Co.","map":"https://maps.app.goo.gl/7E1UXJM6JxDLsmUL9","lat":36.116,"lon":-97.058,"about":"The Saturday morning staple. Meet at Aspen Coffee downtown for anything from an easy few miles to a long run, then stick around for coffee with the crew.","cancellations":[]}];</script>
+        <div id="ws-list" aria-live="polite">
+            <div class="ws-card">
+                <div class="ws-body">
+                    <div class="ws-top"><span class="ws-name">Trail Tuesday</span><span class="ws-type">Trail</span></div>
+                    <div class="ws-when">Tuesdays &bull; 6:00 PM</div>
+                    <div class="ws-where"><a href="https://maps.app.goo.gl/tJwKnPDvp3f5uHVP6" target="_blank" rel="noopener">Lake McMurtry East Pavilion</a></div>
+                    <p class="ws-about">All paces welcome — hikers, walkers, and runners with 1 mile, 3.5 mile, 7 mile, or out-and-back options. Meet at the East Pavilion. Lake McMurtry charges a $6 day pass if you don't have an annual pass. In the darker months, bring a headlamp.</p>
+                </div>
             </div>
-            <div class="calendar-row">
-                <div class="cal-date">&bull; Wednesday</div>
-                <div class="cal-event">Pub Run</div>
-                <div class="cal-location">Stonecloud Brewing @ 6:30 PM</div>
+            <div class="ws-card">
+                <div class="ws-body">
+                    <div class="ws-top"><span class="ws-name">Pub Run</span><span class="ws-type">Social</span></div>
+                    <div class="ws-when">Wednesdays &bull; 6:30 PM</div>
+                    <div class="ws-where"><a href="https://www.google.com/maps/search/?api=1&amp;query=Stonecloud+Brewing+Stillwater+OK" target="_blank" rel="noopener">Stonecloud Brewing</a></div>
+                    <p class="ws-about">A social road run from Stonecloud Brewing through downtown Stillwater. Routes are short and flexible, and the real point is the patio afterward. Walkers welcome.</p>
+                </div>
             </div>
-            <div class="calendar-row">
-                <div class="cal-date">&bull; Saturday</div>
-                <div class="cal-event">Aspen Run</div>
-                <div class="cal-location">Aspen Coffee Co. @ 7:00 AM</div>
+            <div class="ws-card">
+                <div class="ws-body">
+                    <div class="ws-top"><span class="ws-name">Aspen Run</span><span class="ws-type">Coffee</span></div>
+                    <div class="ws-when">Saturdays &bull; 7:00 AM</div>
+                    <div class="ws-where"><a href="https://maps.app.goo.gl/7E1UXJM6JxDLsmUL9" target="_blank" rel="noopener">Aspen Coffee Co.</a></div>
+                    <p class="ws-about">The Saturday morning staple. Meet at Aspen Coffee downtown for anything from an easy few miles to a long run, then stick around for coffee with the crew.</p>
+                </div>
             </div>
         </div>
-        <div class="weekly-more"><a href="weekly-runs.html">More about our weekly runs &rarr;</a></div>
         <!-- WEEKLY_SCHEDULE_END -->
+            <div class="weekly-more"><a href="weekly-runs.html">More about our weekly runs &rarr;</a></div>
+        </div>
     </section>
 
     <section id="featured-reel" hidden>
@@ -306,6 +335,137 @@
                 }
             })
             .catch(err => console.error('Failed to load schedule:', err));
+    </script>
+
+    <script>
+    // --- LIVE WEEKLY SCHEDULE WIDGET ---
+    // Upgrades the baked schedule into dated occurrences for the next 10 days
+    // (Today / Tomorrow / weekday headers), honors CMS cancellations, and adds
+    // a weather forecast per run. The baked HTML stays for crawlers and as the
+    // no-JS fallback; this replaces it only when it can render.
+    (function () {
+        const RUNS = window.STRR_SCHEDULE || [];
+        const list = document.getElementById('ws-list');
+        if (!RUNS.length || !list) return;
+
+        const DAYS_AHEAD = 10;
+        const pad = n => String(n).padStart(2, '0');
+        const esc = t => String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        const dateKey = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+        const hourKey = d => dateKey(d) + 'T' + pad(d.getHours()) + ':00';
+        const fmtTime = d => d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).toLowerCase().replace(' ', '');
+
+        function occurrences() {
+            const out = [];
+            const winStart = new Date(); winStart.setHours(0, 0, 0, 0);
+            for (const ev of RUNS) {
+                if (ev.dayNum == null || !ev.time24) continue;
+                const parts = ev.time24.split(':');
+                for (let i = 0; i < DAYS_AHEAD; i++) {
+                    const d = new Date(winStart); d.setDate(winStart.getDate() + i);
+                    if (d.getDay() !== ev.dayNum) continue;
+                    const start = new Date(d); start.setHours(+parts[0], +parts[1], 0, 0);
+                    const cx = (ev.cancellations || []).find(c => c.date === dateKey(start));
+                    out.push({ ev, start, cancelled: !!cx, reason: cx ? cx.reason : '' });
+                }
+            }
+            return out.sort((a, b) => a.start - b.start);
+        }
+
+        function dayLabel(d) {
+            const today = new Date(); today.setHours(0, 0, 0, 0);
+            const that = new Date(d); that.setHours(0, 0, 0, 0);
+            const diff = Math.round((that - today) / 864e5);
+            if (diff === 0) return 'Today';
+            if (diff === 1) return 'Tomorrow';
+            return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+        }
+
+        function render() {
+            let last = '', html = '';
+            occurrences().forEach((o, i) => {
+                const lbl = dayLabel(o.start);
+                if (lbl !== last) { last = lbl; html += '<div class="ws-day-head' + (lbl === 'Today' ? ' today' : '') + '">' + lbl + '</div>'; }
+                const fullDate = o.start.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+                const chip = o.cancelled
+                    ? '<span class="ws-cancel-chip">Cancelled</span>'
+                    : (o.ev.type ? '<span class="ws-type">' + esc(o.ev.type) + '</span>' : '');
+                const hasDetail = !!o.ev.about && !o.cancelled;
+                html += '<div class="ws-card' + (o.cancelled ? ' ws-cancelled' : '') + '" id="ws-c' + i + '">'
+                    + '<' + (hasDetail ? 'button class="ws-row" aria-expanded="false"' : 'div class="ws-row" style="cursor:default"') + '>'
+                    + '<div class="ws-top"><span class="ws-name">' + esc(o.ev.name) + '</span>' + chip + '</div>'
+                    + '<div class="ws-when"><span class="ws-time">' + fmtTime(o.start) + '</span>'
+                    + (o.cancelled ? '' : '<span class="ws-wx" id="ws-wx' + i + '"></span>')
+                    + '<div class="ws-sub">' + fullDate + '</div></div>'
+                    + '<div class="ws-where">' + (o.ev.map
+                        ? '<a href="' + esc(o.ev.map) + '" target="_blank" rel="noopener">' + esc(o.ev.location) + '</a>'
+                        : esc(o.ev.location)) + '</div>'
+                    + (o.cancelled && o.reason ? '<div class="ws-reason">' + esc(o.reason) + '</div>' : '')
+                    + '</' + (hasDetail ? 'button' : 'div') + '>'
+                    + (hasDetail ? '<div class="ws-detail"><p class="ws-about">' + esc(o.ev.about) + '</p></div>' : '')
+                    + '</div>';
+            });
+            if (!html) return;
+            list.innerHTML = html;
+            list.querySelectorAll('button.ws-row').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    if (e.target.tagName === 'A') return;
+                    const c = btn.closest('.ws-card');
+                    c.classList.toggle('open');
+                    btn.setAttribute('aria-expanded', c.classList.contains('open'));
+                });
+            });
+            hydrateWeather();
+        }
+        window.STRR_renderSchedule = render;
+
+        const wxCache = {};
+        function forecast(lat, lon) {
+            const key = lat + ',' + lon;
+            if (wxCache[key]) return wxCache[key];
+            const url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon
+                + '&hourly=temperature_2m,weather_code,is_day&temperature_unit=fahrenheit'
+                + '&timezone=auto&forecast_days=16';
+            const p = fetch(url).then(r => { if (!r.ok) throw 0; return r.json(); }).then(j => {
+                const m = {};
+                j.hourly.time.forEach((t, i) => m[t] = { temp: Math.round(j.hourly.temperature_2m[i]), code: j.hourly.weather_code[i], day: j.hourly.is_day[i] });
+                return m;
+            }).catch(() => null);
+            wxCache[key] = p; return p;
+        }
+        function wxIcon(code, day) {
+            if (code === 0 || code === 1) return day ? '\u2600\uFE0F' : '\uD83C\uDF19';
+            if (code === 2) return day ? '\u26C5' : '\u2601\uFE0F';
+            if (code === 3) return '\u2601\uFE0F';
+            if (code === 45 || code === 48) return '\uD83C\uDF2B\uFE0F';
+            if (code >= 51 && code <= 67) return '\uD83C\uDF27\uFE0F';
+            if ((code >= 71 && code <= 77) || code === 85 || code === 86) return '\uD83C\uDF28\uFE0F';
+            if (code >= 80 && code <= 82) return '\uD83C\uDF27\uFE0F';
+            if (code >= 95) return '\u26C8\uFE0F';
+            return day ? '\u2600\uFE0F' : '\uD83C\uDF19';
+        }
+        async function hydrateWeather() {
+            const occ = occurrences();
+            for (let i = 0; i < occ.length; i++) {
+                const o = occ[i];
+                if (o.cancelled || o.ev.lat == null || o.ev.lon == null) continue;
+                const el = document.getElementById('ws-wx' + i);
+                if (!el) continue;
+                const fc = await forecast(o.ev.lat, o.ev.lon);
+                if (!fc) continue;
+                const at = fc[hourKey(o.start)];
+                if (at) el.textContent = wxIcon(at.code, at.day) + ' ' + at.temp + '\u00B0';
+            }
+        }
+
+        function scheduleMidnightRefresh() {
+            const next = new Date(); next.setHours(24, 0, 0, 0);
+            setTimeout(() => { render(); scheduleMidnightRefresh(); }, next - Date.now() + 1000);
+        }
+
+        render();
+        scheduleMidnightRefresh();
+    })();
     </script>
 </body>
 </html>

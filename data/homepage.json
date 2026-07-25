@@ -13,7 +13,11 @@
       "time": "6:00 PM",
       "mapLink": "https://maps.app.goo.gl/tJwKnPDvp3f5uHVP6",
       "image": "/assets/weekly-trail-tuesday.jpeg",
-      "description": "All paces welcome — hikers, walkers, and runners with 1 mile, 3.5 mile, 7 mile, or out-and-back options. Meet at the East Pavilion. Lake McMurtry charges a $6 day pass if you don't have an annual pass. In the darker months, bring a headlamp."
+      "description": "All paces welcome — hikers, walkers, and runners with 1 mile, 3.5 mile, 7 mile, or out-and-back options. Meet at the East Pavilion. Lake McMurtry charges a $6 day pass if you don't have an annual pass. In the darker months, bring a headlamp.",
+      "type": "Trail",
+      "lat": "36.204",
+      "lon": "-97.155",
+      "cancellations": []
     },
     {
       "day": "Wednesday",
@@ -22,7 +26,11 @@
       "time": "6:30 PM",
       "mapLink": "https://www.google.com/maps/search/?api=1&query=Stonecloud+Brewing+Stillwater+OK",
       "image": "/assets/weekly-pub-run.jpeg",
-      "description": "A social road run from Stonecloud Brewing through downtown Stillwater. Routes are short and flexible, and the real point is the patio afterward. Walkers welcome."
+      "description": "A social road run from Stonecloud Brewing through downtown Stillwater. Routes are short and flexible, and the real point is the patio afterward. Walkers welcome.",
+      "type": "Social",
+      "lat": "36.116",
+      "lon": "-97.059",
+      "cancellations": []
     },
     {
       "day": "Saturday",
@@ -31,7 +39,11 @@
       "time": "7:00 AM",
       "mapLink": "https://maps.app.goo.gl/7E1UXJM6JxDLsmUL9",
       "image": "/assets/weekly-aspen-run.jpeg",
-      "description": "The Saturday morning staple. Meet at Aspen Coffee downtown for anything from an easy few miles to a long run, then stick around for coffee with the crew."
+      "description": "The Saturday morning staple. Meet at Aspen Coffee downtown for anything from an easy few miles to a long run, then stick around for coffee with the crew.",
+      "type": "Coffee",
+      "lat": "36.116",
+      "lon": "-97.058",
+      "cancellations": []
     }
   ],
   "featuredReel": "",

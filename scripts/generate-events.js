@@ -139,16 +139,72 @@ ${sitemapUrls.map((u) => `  <url><loc>${SITE_URL}/${u}</loc><lastmod>${today}</l
 fs.writeFileSync(SITEMAP_FILE, sitemap);
 console.log('Generated: sitemap.xml');
 
-// --- Bake the homepage weekly schedule into static HTML (readable by search/AI) ---
+// --- Bake the homepage weekly schedule: crawlable fallback cards + live-widget data + schema ---
 try {
   const home = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'homepage.json'), 'utf8'));
-  const rows = (home.schedule || []).map((row) => `            <div class="calendar-row">
-                <div class="cal-date">&bull; ${escapeHtml(row.day)}</div>
-                <div class="cal-event">${escapeHtml(row.event)}</div>
-                <div class="cal-location">${escapeHtml(row.location)}${row.time ? ' @ ' + escapeHtml(row.time) : ''}</div>
+  const DAY_NUMS = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6 };
+
+  function to24h(t) {
+    const m = /(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?/i.exec(t || '');
+    if (!m) return null;
+    let h = parseInt(m[1], 10);
+    const min = m[2] ? parseInt(m[2], 10) : 0;
+    const ap = (m[3] || '').toUpperCase();
+    if (ap === 'PM' && h !== 12) h += 12;
+    if (ap === 'AM' && h === 12) h = 0;
+    return `${String(h).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
+  }
+
+  const runs = (home.schedule || []).map((r) => ({
+    name: r.event || '',
+    type: r.type || '',
+    dayNum: DAY_NUMS[String(r.day || '').trim().toLowerCase()] ?? null,
+    dayName: r.day || '',
+    time: r.time || '',
+    time24: to24h(r.time),
+    location: r.location || '',
+    map: r.mapLink || '',
+    lat: r.lat ? Number(r.lat) : null,
+    lon: r.lon ? Number(r.lon) : null,
+    about: r.description || '',
+    cancellations: (r.cancellations || [])
+      .map((c) => ({ date: String(c.date || '').slice(0, 10), reason: c.reason || '' }))
+      .filter((c) => c.date),
+  })).filter((r) => r.name);
+
+  // Crawlable fallback: full schedule as static text. The widget replaces
+  // this at runtime; crawlers and no-JS visitors read it as-is.
+  const fallback = runs.map((r) => `            <div class="ws-card">
+                <div class="ws-body">
+                    <div class="ws-top"><span class="ws-name">${escapeHtml(r.name)}</span>${r.type ? `<span class="ws-type">${escapeHtml(r.type)}</span>` : ''}</div>
+                    <div class="ws-when">${escapeHtml(r.dayName)}s &bull; ${escapeHtml(r.time)}</div>
+                    <div class="ws-where">${r.map ? `<a href="${escapeAttr(r.map)}" target="_blank" rel="noopener">${escapeHtml(r.location)}</a>` : escapeHtml(r.location)}</div>
+                    ${r.about ? `<p class="ws-about">${escapeHtml(r.about)}</p>` : ''}
+                </div>
             </div>`).join('\n');
+
+  // schema.org recurring events; cancellations become exceptDate entries
+  const cap = (w) => w ? w.charAt(0).toUpperCase() + w.slice(1).toLowerCase() : '';
+  const graph = [
+    { '@type': 'SportsOrganization', '@id': `${SITE_URL}/#org`, name: 'Stillwater Trail and Road Runners', url: SITE_URL, areaServed: 'Stillwater, OK' },
+    ...runs.filter((r) => r.time24 && r.dayNum !== null).map((r) => ({
+      '@type': 'Event',
+      name: r.name,
+      organizer: { '@id': `${SITE_URL}/#org` },
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      isAccessibleForFree: true,
+      eventSchedule: Object.assign(
+        { '@type': 'Schedule', byDay: 'https://schema.org/' + cap(r.dayName.trim()), startTime: r.time24 + ':00', scheduleTimezone: 'America/Chicago', repeatFrequency: 'P1W' },
+        r.cancellations.length ? { exceptDate: r.cancellations.map((c) => c.date) } : {}
+      ),
+      location: { '@type': 'Place', name: r.location, address: { '@type': 'PostalAddress', addressLocality: 'Stillwater', addressRegion: 'OK', addressCountry: 'US' } },
+    })),
+  ];
+
+  // \u003c-escape so no string can break out of the inline <script> blocks
+  const jsonForScript = (obj) => JSON.stringify(obj).replace(/</g, '\\u003c');
   const lead = home.weeklyIntro ? `        <p class="weekly-lead">${escapeHtml(home.weeklyIntro.trim())}</p>\n` : '';
-  const block = `\n${lead}        <div class="calendar-container">\n${rows}\n        </div>\n        <div class="weekly-more"><a href="weekly-runs.html">More about our weekly runs &rarr;</a></div>\n        `;
+  const block = `\n${lead}        <script type="application/ld+json">${jsonForScript({ '@context': 'https://schema.org', '@graph': graph })}</script>\n        <script>window.STRR_SCHEDULE = ${jsonForScript(runs)};</script>\n        <div id="ws-list" aria-live="polite">\n${fallback}\n        </div>\n        `;
 
   const homeFile = path.join(ROOT, 'index.html');
   let html = fs.readFileSync(homeFile, 'utf8');

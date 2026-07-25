@@ -114,7 +114,9 @@
                   (row.day || '') + (row.time ? ' • ' + row.time : '')),
                 h('div', { style: { fontWeight: 900, textTransform: 'uppercase', fontSize: '1.2rem', margin: '4px 0' } }, row.event || ''),
                 h('div', { style: { fontWeight: 700 } }, '📍 ' + (row.location || '')),
-                row.description ? h('p', { style: { color: brand.muted, marginTop: '8px' } }, row.description) : null
+                row.description ? h('p', { style: { color: brand.muted, marginTop: '8px' } }, row.description) : null,
+                (row.cancellations && row.cancellations.length) ? h('div', { style: { color: '#c62828', fontWeight: 700, marginTop: '8px', fontSize: '0.9rem' } },
+                  '🚫 Cancelled: ' + row.cancellations.map(function (c) { return (c.date || '') + (c.reason ? ' — ' + c.reason : ''); }).join(', ')) : null
               );
             })
           ),

@@ -48,7 +48,19 @@ collections:
               - { label: "Location", name: "location", widget: "string" }
               - { label: "Google Maps Link", name: "mapLink", widget: "string", required: false, hint: "Optional. Makes the location tap-to-open in Maps." }
               - { label: "Photo", name: "image", widget: "image", required: false, hint: "Optional. Shown at the top of this run's card on the Weekly Runs page." }
-              - { label: "Description", name: "description", widget: "text", required: false, hint: "A couple of sentences shown on the Weekly Runs page." }
+              - { label: "Description", name: "description", widget: "text", required: false, hint: "A couple of sentences shown on the Weekly Runs page and in the homepage card's expandable details." }
+              - { label: "Type Label", name: "type", widget: "string", required: false, hint: "Optional chip on the homepage card, e.g. Trail, Social, Coffee." }
+              - { label: "Latitude", name: "lat", widget: "string", required: false, hint: "Optional. With longitude, shows a weather forecast next to the start time. e.g. 36.204" }
+              - { label: "Longitude", name: "lon", widget: "string", required: false, hint: "e.g. -97.155" }
+              - label: "Cancellations"
+                name: "cancellations"
+                widget: "list"
+                required: false
+                summary: "{{date}} {{reason}}"
+                hint: "Cancel a single date (holiday, weather). The homepage shows that date as CANCELLED with your reason. Delete the entry to un-cancel."
+                fields:
+                  - { label: "Date", name: "date", widget: "datetime", time_format: false, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD" }
+                  - { label: "Reason (shown on the site)", name: "reason", widget: "string", required: false, hint: "e.g. Iced trails — see Facebook" }
 
   - name: "events"
     label: "Events"
