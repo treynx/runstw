@@ -158,6 +158,7 @@ try {
   const runs = (home.schedule || []).map((r) => ({
     name: r.event || '',
     type: r.type || '',
+    venueLogo: r.venueLogo || '',
     dayNum: DAY_NUMS[String(r.day || '').trim().toLowerCase()] ?? null,
     dayName: r.day || '',
     time: r.time || '',
@@ -176,7 +177,7 @@ try {
   // this at runtime; crawlers and no-JS visitors read it as-is.
   const fallback = runs.map((r) => `            <div class="ws-card">
                 <div class="ws-body">
-                    <div class="ws-top"><span class="ws-name">${escapeHtml(r.name)}</span>${r.type ? `<span class="ws-type">${escapeHtml(r.type)}</span>` : ''}</div>
+                    <div class="ws-top"><span class="ws-name">${escapeHtml(r.name)}</span>${r.venueLogo ? `<img class="ws-logo" src="${escapeAttr(r.venueLogo)}" alt="${escapeAttr(r.location)} logo" loading="lazy">` : (r.type ? `<span class="ws-type">${escapeHtml(r.type)}</span>` : '')}</div>
                     <div class="ws-when">${escapeHtml(r.dayName)}s &bull; ${escapeHtml(r.time)}</div>
                     <div class="ws-where">${r.map ? `<a href="${escapeAttr(r.map)}" target="_blank" rel="noopener">${escapeHtml(r.location)}</a>` : escapeHtml(r.location)}</div>
                     ${r.about ? `<p class="ws-about">${escapeHtml(r.about)}</p>` : ''}

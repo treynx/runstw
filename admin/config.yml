@@ -49,7 +49,8 @@ collections:
               - { label: "Google Maps Link", name: "mapLink", widget: "string", required: false, hint: "Optional. Makes the location tap-to-open in Maps." }
               - { label: "Photo", name: "image", widget: "image", required: false, hint: "Optional. Shown at the top of this run's card on the Weekly Runs page." }
               - { label: "Description", name: "description", widget: "text", required: false, hint: "A couple of sentences shown on the Weekly Runs page and in the homepage card's expandable details." }
-              - { label: "Type Label", name: "type", widget: "string", required: false, hint: "Optional chip on the homepage card, e.g. Trail, Social, Coffee." }
+              - { label: "Venue Logo", name: "venueLogo", widget: "image", required: false, hint: "Optional. Shows next to this run's card on the homepage schedule instead of the Type Label chip. e.g. the coffee shop or brewery logo." }
+              - { label: "Type Label", name: "type", widget: "string", required: false, hint: "Optional chip on the homepage card, e.g. Trail, Social, Coffee. Only shown when there's no Venue Logo." }
               - { label: "Latitude", name: "lat", widget: "string", required: false, hint: "Optional. With longitude, shows a weather forecast next to the start time. e.g. 36.204" }
               - { label: "Longitude", name: "lon", widget: "string", required: false, hint: "e.g. -97.155" }
               - label: "Cancellations"
