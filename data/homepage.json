@@ -7,6 +7,7 @@
   "weeklyIntro": "Three runs, every week, every pace. Show up, say hi, and someone will make sure you're never out there alone. ",
   "schedule": [
     {
+      "slug": "trail-tuesday",
       "lon": "-97.155",
       "time": "6:00 PM",
       "cancellations": [],
@@ -18,25 +19,25 @@
       "image": "/assets/weekly-trail-tuesday.jpeg",
       "day": "Tuesday",
       "description": "All paces welcome — hikers, walkers, and runners with 1 mile, 3.5 mile, 7 mile, or out-and-back options. Meet at the East Pavilion. Lake McMurtry charges a $6 day pass if you don't have an annual pass. In the darker months, bring a headlamp.",
-      "lat": "36.204",
-      "slug": "trail-tuesday"
+      "lat": "36.204"
     },
     {
+      "slug": "pub-run",
       "lon": "-97.059",
       "time": "6:30 PM",
       "cancellations": [],
       "location": "Stonecloud Brewing",
       "mapLink": "https://www.google.com/maps/search/?api=1&query=Stonecloud+Brewing+Stillwater+OK",
       "venueLogo": "/assets/sc-mediakit_s-color-logo2.png",
-      "event": "Pub Run",
+      "event": "Wednesday Pub Run",
       "type": "Social",
       "image": "/assets/weekly-pub-run.jpeg",
       "day": "Wednesday",
-      "description": "A social road run from Stonecloud Brewing through downtown Stillwater. Routes are short and flexible, and the real point is the patio afterward. Walkers welcome.",
-      "lat": "36.116",
-      "slug": "pub-run"
+      "description": "A social road run from Stonecloud Brewing at 6:30pm — run or walk whatever distance you're feeling, then stick around for drinks and conversation. Every pace welcome, come see us!",
+      "lat": "36.116"
     },
     {
+      "slug": "aspen-run",
       "lon": "-97.058",
       "time": "7:00 AM",
       "cancellations": [],
@@ -48,8 +49,7 @@
       "image": "/assets/weekly-aspen-run.jpeg",
       "day": "Saturday",
       "description": "The Saturday morning staple. Meet at Aspen Coffee downtown for anything from an easy few miles to a long run, then stick around for coffee with the crew.",
-      "lat": "36.116",
-      "slug": "aspen-run"
+      "lat": "36.116"
     }
   ],
   "featuredReel": "",
