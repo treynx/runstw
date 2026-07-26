@@ -45,6 +45,7 @@ collections:
             fields:
               - { label: "Day", name: "day", widget: "string" }
               - { label: "Run Name", name: "event", widget: "string" }
+              - { label: "URL Slug", name: "slug", widget: "string", hint: "Lowercase, no spaces, e.g. trail-tuesday. This becomes the page filename (trail-tuesday.html) and its Weekly Runs dropdown entry." }
               - { label: "Time", name: "time", widget: "string", hint: "e.g. 6:00 PM. Update this when the seasonal schedule changes." }
               - { label: "Location", name: "location", widget: "string" }
               - { label: "Google Maps Link", name: "mapLink", widget: "string", required: false, hint: "Optional. Makes the location tap-to-open in Maps." }

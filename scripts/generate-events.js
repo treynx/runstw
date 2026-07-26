@@ -6,6 +6,9 @@ const EVENTS_FILE = path.join(ROOT, 'data', 'events.json');
 const TEMPLATE_FILE = path.join(ROOT, 'templates', 'event-template.html');
 const EVENTS_DATA_DIR = path.join(ROOT, 'data', 'events');
 const MANIFEST_FILE = path.join(EVENTS_DATA_DIR, '_manifest.json');
+const HOMEPAGE_FILE = path.join(ROOT, 'data', 'homepage.json');
+const WEEKLY_RUN_TEMPLATE_FILE = path.join(ROOT, 'templates', 'weekly-run-template.html');
+const WEEKLY_MANIFEST_FILE = path.join(ROOT, 'data', '_weekly-runs-manifest.json');
 const SITEMAP_FILE = path.join(ROOT, 'sitemap.xml');
 const SITE_URL = 'https://runstw.com';
 
@@ -34,7 +37,10 @@ function absoluteUrl(src) {
   return /^https?:\/\//.test(src) ? src : SITE_URL + (src.startsWith('/') ? src : '/' + src);
 }
 
-// Static <head> SEO block baked into each generated page so crawlers get
+// <-escape so no string can break out of an inline <script> block
+const jsonForScript = (obj) => JSON.stringify(obj).replace(/</g, '\\u003c');
+
+// Static <head> SEO block baked into each generated race page so crawlers get
 // real titles/descriptions without executing the page's JavaScript.
 function buildSeoHead(event) {
   const title = `${event.eventTitle} | STRR`;
@@ -82,6 +88,57 @@ function buildSeoHead(event) {
   return head;
 }
 
+// Static <head> SEO block for an individual weekly-run page, plus a
+// standalone recurring-Event schema (this run is the page's primary entity).
+function buildWeeklyRunSeoHead(run) {
+  const title = `${run.name} | Weekly Run | STRR`;
+  const description = stripHtml(run.about).slice(0, 155) || `Join us for ${run.name} in Stillwater, Oklahoma.`;
+  const pageUrl = `${SITE_URL}/${run.slug}.html`;
+  const image = absoluteUrl(run.image);
+  const cap = (w) => (w ? w.charAt(0).toUpperCase() + w.slice(1).toLowerCase() : '');
+
+  let head = [
+    `<title>${escapeAttr(title)}</title>`,
+    `    <meta name="description" content="${escapeAttr(description)}">`,
+    `    <link rel="canonical" href="${pageUrl}">`,
+    `    <link rel="icon" href="/favicon.ico" sizes="48x48">`,
+    `    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">`,
+    `    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">`,
+    `    <link rel="apple-touch-icon" href="/apple-touch-icon.png">`,
+    `    <meta property="og:type" content="website">`,
+    `    <meta property="og:url" content="${pageUrl}">`,
+    `    <meta property="og:title" content="${escapeAttr(title)}">`,
+    `    <meta property="og:description" content="${escapeAttr(description)}">`,
+    `    <meta property="og:image" content="${escapeAttr(image)}">`,
+  ].join('\n');
+
+  if (run.time24 && run.dayNum !== null) {
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'Event',
+      name: run.name,
+      description: description,
+      image: image ? [image] : undefined,
+      url: pageUrl,
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      isAccessibleForFree: true,
+      eventSchedule: Object.assign(
+        { '@type': 'Schedule', byDay: 'https://schema.org/' + cap(run.dayName.trim()), startTime: run.time24 + ':00', scheduleTimezone: 'America/Chicago', repeatFrequency: 'P1W' },
+        run.cancellations.length ? { exceptDate: run.cancellations.map((c) => c.date) } : {}
+      ),
+      location: { '@type': 'Place', name: run.location, address: { '@type': 'PostalAddress', addressLocality: 'Stillwater', addressRegion: 'OK', addressCountry: 'US' } },
+      organizer: { '@type': 'Organization', name: 'Stillwater Trail and Road Runners', url: SITE_URL },
+    };
+    head += `\n    <script type="application/ld+json">${JSON.stringify(schema)}</script>`;
+  }
+
+  return head;
+}
+
+const CLOCK_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 3h6"/></svg>';
+const PIN_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.3-7-11a7 7 0 0 1 14 0c0 5.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>';
+
+// --- 1. Generate race event pages from data/events.json ---
 const events = JSON.parse(fs.readFileSync(EVENTS_FILE, 'utf8')).events;
 const template = fs.readFileSync(TEMPLATE_FILE, 'utf8');
 
@@ -128,20 +185,11 @@ events.forEach((event) => {
 
 fs.writeFileSync(MANIFEST_FILE, JSON.stringify(currentSlugs, null, 2));
 
-// Sitemap: static pages + every generated event page
-const today = new Date().toISOString().slice(0, 10);
-const sitemapUrls = ['', 'weekly-runs.html', 'contact.html', ...currentSlugs.map((s) => `${s}.html`)];
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${sitemapUrls.map((u) => `  <url><loc>${SITE_URL}/${u}</loc><lastmod>${today}</lastmod></url>`).join('\n')}
-</urlset>
-`;
-fs.writeFileSync(SITEMAP_FILE, sitemap);
-console.log('Generated: sitemap.xml');
-
-// --- Bake the homepage weekly schedule: crawlable fallback cards + live-widget data + schema ---
+// --- 2. Compute the weekly-run data shared by the individual run pages and the homepage bake ---
+let runs = [];
+let weeklyHome = null;
 try {
-  const home = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'homepage.json'), 'utf8'));
+  weeklyHome = JSON.parse(fs.readFileSync(HOMEPAGE_FILE, 'utf8'));
   const DAY_NUMS = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6 };
 
   function to24h(t) {
@@ -155,10 +203,12 @@ try {
     return `${String(h).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
   }
 
-  const runs = (home.schedule || []).map((r) => ({
+  runs = (weeklyHome.schedule || []).map((r) => ({
     name: r.event || '',
+    slug: r.slug || '',
     type: r.type || '',
     venueLogo: r.venueLogo || '',
+    image: r.image || '',
     dayNum: DAY_NUMS[String(r.day || '').trim().toLowerCase()] ?? null,
     dayName: r.day || '',
     time: r.time || '',
@@ -172,12 +222,89 @@ try {
       .map((c) => ({ date: String(c.date || '').slice(0, 10), reason: c.reason || '' }))
       .filter((c) => c.date),
   })).filter((r) => r.name);
+} catch (err) {
+  console.warn('Could not read data/homepage.json for weekly runs:', err.message);
+}
 
-  // Crawlable fallback: full schedule as static text. The widget replaces
-  // this at runtime; crawlers and no-JS visitors read it as-is.
-  const CLOCK_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 3h6"/></svg>';
-  const PIN_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.3-7-11a7 7 0 0 1 14 0c0 5.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>';
-  const fallback = runs.map((r) => `            <div class="ws-card">
+// --- 3. Generate an individual page for each weekly run ---
+const currentRunSlugs = runs.map((r) => r.slug).filter(Boolean);
+
+let weeklyManifest = [];
+if (fs.existsSync(WEEKLY_MANIFEST_FILE)) {
+  weeklyManifest = JSON.parse(fs.readFileSync(WEEKLY_MANIFEST_FILE, 'utf8'));
+}
+
+// Remove pages for runs that were deleted or renamed
+weeklyManifest.forEach((slug) => {
+  if (!currentRunSlugs.includes(slug)) {
+    const htmlPath = path.join(ROOT, `${slug}.html`);
+    if (fs.existsSync(htmlPath)) fs.unlinkSync(htmlPath);
+    console.log(`Removed stale weekly-run page: ${slug}`);
+  }
+});
+
+if (currentRunSlugs.length && fs.existsSync(WEEKLY_RUN_TEMPLATE_FILE)) {
+  const runTemplate = fs.readFileSync(WEEKLY_RUN_TEMPLATE_FILE, 'utf8');
+
+  runs.forEach((run) => {
+    if (!run.slug) {
+      console.warn(`Skipping weekly run with no slug: ${run.name}`);
+      return;
+    }
+
+    const chipHtml = run.venueLogo
+      ? `<img class="run-logo" src="${escapeAttr(run.venueLogo)}" alt="${escapeAttr(run.location)} logo" loading="lazy" id="run-chip">`
+      : (run.type ? `<span class="run-type" id="run-chip">${escapeHtml(run.type)}</span>` : '<span id="run-chip"></span>');
+
+    const content = `<div class="run-top" id="run-top">
+            <h2 style="font-size:1.5rem; font-weight:900; text-transform:uppercase;">${escapeHtml(run.name)}</h2>
+            ${chipHtml}
+        </div>
+        <div id="run-when">
+            <div class="ws-irow">${CLOCK_SVG}<div><span class="ws-big">${escapeHtml(run.dayName)}s &bull; ${escapeHtml(run.time)}</span></div></div>
+            <div class="ws-irow">${PIN_SVG}<div><span class="ws-big">${run.map ? `<a href="${escapeAttr(run.map)}" target="_blank" rel="noopener">${escapeHtml(run.location)}</a>` : escapeHtml(run.location)}</span><div class="ws-subline">Stillwater, OK</div></div></div>
+        </div>
+        ${run.about ? `<p class="run-about">${escapeHtml(run.about)}</p>` : ''}
+        <script>window.STRR_RUN = ${jsonForScript(run)};</script>`;
+
+    let html = runTemplate.replace('<title>Weekly Run | STRR</title>', buildWeeklyRunSeoHead(run));
+    html = html
+      .replace('Weekly Run</h1>', `${escapeHtml(run.name)}</h1>`)
+      .replace('id="run-banner"', `id="run-banner" style="background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('${escapeAttr(absoluteUrl(run.image))}');"`);
+
+    const sIdx = html.indexOf('<!-- WEEKLY_RUN_CONTENT_START');
+    const sCommentEnd = sIdx === -1 ? -1 : html.indexOf('-->', sIdx);
+    const eIdx = html.indexOf('<!-- WEEKLY_RUN_CONTENT_END -->');
+    if (sIdx !== -1 && sCommentEnd !== -1 && eIdx !== -1) {
+      html = html.slice(0, sCommentEnd + 3) + '\n        ' + content + '\n        ' + html.slice(eIdx);
+    }
+
+    fs.writeFileSync(path.join(ROOT, `${run.slug}.html`), html);
+    console.log(`Generated: ${run.slug}.html`);
+  });
+}
+
+fs.writeFileSync(WEEKLY_MANIFEST_FILE, JSON.stringify(currentRunSlugs, null, 2));
+
+// --- 4. Sitemap: static pages + every generated race page + every weekly-run page ---
+const today = new Date().toISOString().slice(0, 10);
+const sitemapUrls = [
+  '', 'weekly-runs.html', 'contact.html',
+  ...currentSlugs.map((s) => `${s}.html`),
+  ...currentRunSlugs.map((s) => `${s}.html`),
+];
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sitemapUrls.map((u) => `  <url><loc>${SITE_URL}/${u}</loc><lastmod>${today}</lastmod></url>`).join('\n')}
+</urlset>
+`;
+fs.writeFileSync(SITEMAP_FILE, sitemap);
+console.log('Generated: sitemap.xml');
+
+// --- 5. Bake the homepage weekly schedule: crawlable fallback cards + live-widget data + schema ---
+if (weeklyHome && runs.length) {
+  try {
+    const fallback = runs.map((r) => `            <div class="ws-card">
                 <div class="ws-body">
                     <div class="ws-top"><span class="ws-name">${escapeHtml(r.name)}</span>${r.venueLogo ? `<img class="ws-logo" src="${escapeAttr(r.venueLogo)}" alt="${escapeAttr(r.location)} logo" loading="lazy">` : (r.type ? `<span class="ws-type">${escapeHtml(r.type)}</span>` : '')}</div>
                     <div class="ws-irow">${CLOCK_SVG}<div><span class="ws-big">${escapeHtml(r.dayName)}s &bull; ${escapeHtml(r.time)}</span></div></div>
@@ -186,43 +313,42 @@ try {
                 </div>
             </div>`).join('\n');
 
-  // schema.org recurring events; cancellations become exceptDate entries
-  const cap = (w) => w ? w.charAt(0).toUpperCase() + w.slice(1).toLowerCase() : '';
-  const graph = [
-    { '@type': 'SportsOrganization', '@id': `${SITE_URL}/#org`, name: 'Stillwater Trail and Road Runners', url: SITE_URL, areaServed: 'Stillwater, OK' },
-    ...runs.filter((r) => r.time24 && r.dayNum !== null).map((r) => ({
-      '@type': 'Event',
-      name: r.name,
-      organizer: { '@id': `${SITE_URL}/#org` },
-      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      isAccessibleForFree: true,
-      eventSchedule: Object.assign(
-        { '@type': 'Schedule', byDay: 'https://schema.org/' + cap(r.dayName.trim()), startTime: r.time24 + ':00', scheduleTimezone: 'America/Chicago', repeatFrequency: 'P1W' },
-        r.cancellations.length ? { exceptDate: r.cancellations.map((c) => c.date) } : {}
-      ),
-      location: { '@type': 'Place', name: r.location, address: { '@type': 'PostalAddress', addressLocality: 'Stillwater', addressRegion: 'OK', addressCountry: 'US' } },
-    })),
-  ];
+    // schema.org recurring events; cancellations become exceptDate entries
+    const cap = (w) => (w ? w.charAt(0).toUpperCase() + w.slice(1).toLowerCase() : '');
+    const graph = [
+      { '@type': 'SportsOrganization', '@id': `${SITE_URL}/#org`, name: 'Stillwater Trail and Road Runners', url: SITE_URL, areaServed: 'Stillwater, OK' },
+      ...runs.filter((r) => r.time24 && r.dayNum !== null).map((r) => ({
+        '@type': 'Event',
+        name: r.name,
+        organizer: { '@id': `${SITE_URL}/#org` },
+        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+        isAccessibleForFree: true,
+        eventSchedule: Object.assign(
+          { '@type': 'Schedule', byDay: 'https://schema.org/' + cap(r.dayName.trim()), startTime: r.time24 + ':00', scheduleTimezone: 'America/Chicago', repeatFrequency: 'P1W' },
+          r.cancellations.length ? { exceptDate: r.cancellations.map((c) => c.date) } : {}
+        ),
+        location: { '@type': 'Place', name: r.location, address: { '@type': 'PostalAddress', addressLocality: 'Stillwater', addressRegion: 'OK', addressCountry: 'US' } },
+      })),
+    ];
 
-  // \u003c-escape so no string can break out of the inline <script> blocks
-  const jsonForScript = (obj) => JSON.stringify(obj).replace(/</g, '\\u003c');
-  const lead = home.weeklyIntro ? `        <p class="weekly-lead">${escapeHtml(home.weeklyIntro.trim())}</p>\n` : '';
-  const block = `\n${lead}        <script type="application/ld+json">${jsonForScript({ '@context': 'https://schema.org', '@graph': graph })}</script>\n        <script>window.STRR_SCHEDULE = ${jsonForScript(runs)};</script>\n        <div id="ws-list" aria-live="polite">\n${fallback}\n        </div>\n        `;
+    const lead = weeklyHome.weeklyIntro ? `        <p class="weekly-lead">${escapeHtml(weeklyHome.weeklyIntro.trim())}</p>\n` : '';
+    const block = `\n${lead}        <script type="application/ld+json">${jsonForScript({ '@context': 'https://schema.org', '@graph': graph })}</script>\n        <script>window.STRR_SCHEDULE = ${jsonForScript(runs)};</script>\n        <div id="ws-list" aria-live="polite">\n${fallback}\n        </div>\n        `;
 
-  const homeFile = path.join(ROOT, 'index.html');
-  let html = fs.readFileSync(homeFile, 'utf8');
-  const sIdx = html.indexOf('<!-- WEEKLY_SCHEDULE_START');
-  const sCommentEnd = sIdx === -1 ? -1 : html.indexOf('-->', sIdx);
-  const eIdx = html.indexOf('<!-- WEEKLY_SCHEDULE_END -->');
-  if (sIdx !== -1 && sCommentEnd !== -1 && eIdx !== -1) {
-    html = html.slice(0, sCommentEnd + 3) + block + html.slice(eIdx);
-    fs.writeFileSync(homeFile, html);
-    console.log('Baked: homepage weekly schedule');
-  } else {
-    console.warn('Homepage schedule markers not found; skipped');
+    const homeFile = path.join(ROOT, 'index.html');
+    let html = fs.readFileSync(homeFile, 'utf8');
+    const sIdx = html.indexOf('<!-- WEEKLY_SCHEDULE_START');
+    const sCommentEnd = sIdx === -1 ? -1 : html.indexOf('-->', sIdx);
+    const eIdx = html.indexOf('<!-- WEEKLY_SCHEDULE_END -->');
+    if (sIdx !== -1 && sCommentEnd !== -1 && eIdx !== -1) {
+      html = html.slice(0, sCommentEnd + 3) + block + html.slice(eIdx);
+      fs.writeFileSync(homeFile, html);
+      console.log('Baked: homepage weekly schedule');
+    } else {
+      console.warn('Homepage schedule markers not found; skipped');
+    }
+  } catch (err) {
+    console.warn('Could not bake homepage schedule:', err.message);
   }
-} catch (err) {
-  console.warn('Could not bake homepage schedule:', err.message);
 }
 
 console.log('Done.');

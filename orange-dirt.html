@@ -114,7 +114,10 @@
                     <a href="index.html#races" id="race-link">Our Events &#9662;</a>
                     <ul class="dropdown-menu" id="dropdown-menu"></ul>
                 </li>
-                <li><a href="weekly-runs.html">Weekly Runs</a></li>
+                <li class="dropdown" id="weekly-dropdown">
+                    <a href="weekly-runs.html" id="weekly-link">Weekly Runs &#9662;</a>
+                    <ul class="dropdown-menu" id="weekly-dropdown-menu"></ul>
+                </li>
                 <li><a href="https://www.bonfire.com/store/stillwater-trail-and-road-runners/" target="_blank">Merch</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
@@ -170,6 +173,8 @@
         const navMenu = document.getElementById('nav-menu');
         const raceLink = document.getElementById('race-link');
         const raceDropdown = document.getElementById('race-dropdown');
+        const weeklyLink = document.getElementById('weekly-link');
+        const weeklyDropdown = document.getElementById('weekly-dropdown');
 
         menuBtn.addEventListener('click', () => {
             navMenu.classList.toggle('active');
@@ -191,11 +196,26 @@
             }
         });
 
+        weeklyLink.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                const opening = !weeklyDropdown.classList.contains('active');
+                weeklyDropdown.classList.toggle('active');
+                if (opening) {
+                    // Briefly block taps so the tap that opened the list
+                    // can't "fall through" onto a run link.
+                    const menu = document.getElementById('weekly-dropdown-menu');
+                    menu.style.pointerEvents = 'none';
+                    setTimeout(() => { menu.style.pointerEvents = ''; }, 400);
+                }
+            }
+        });
+
         // Close the mobile menu after tapping any real link so it
         // doesn't stay covering the page you just navigated to.
         navMenu.addEventListener('click', (e) => {
             const link = e.target.closest('a');
-            if (link && link.id !== 'race-link' && navMenu.classList.contains('active')) {
+            if (link && link.id !== 'race-link' && link.id !== 'weekly-link' && navMenu.classList.contains('active')) {
                 navMenu.classList.remove('active');
                 menuBtn.innerHTML = '☰';
             }
@@ -212,6 +232,16 @@
                 `).join('');
             })
             .catch(err => console.error('Failed to load nav events:', err));
+
+        // Populate the weekly runs dropdown
+        fetch('data/homepage.json')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('weekly-dropdown-menu').innerHTML =
+                    `<li><a href="weekly-runs.html">All Weekly Runs</a></li>` +
+                    (data.schedule || []).map(r => `<li><a href="${r.slug}.html">${r.event}</a></li>`).join('');
+            })
+            .catch(err => console.error('Failed to load nav weekly runs:', err));
 
         // --- RENDER THIS PAGE'S CONTENT ---
         // The slug is derived from this file's own name, so this template

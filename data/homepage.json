@@ -18,7 +18,8 @@
       "image": "/assets/weekly-trail-tuesday.jpeg",
       "day": "Tuesday",
       "description": "All paces welcome — hikers, walkers, and runners with 1 mile, 3.5 mile, 7 mile, or out-and-back options. Meet at the East Pavilion. Lake McMurtry charges a $6 day pass if you don't have an annual pass. In the darker months, bring a headlamp.",
-      "lat": "36.204"
+      "lat": "36.204",
+      "slug": "trail-tuesday"
     },
     {
       "lon": "-97.059",
@@ -32,7 +33,8 @@
       "image": "/assets/weekly-pub-run.jpeg",
       "day": "Wednesday",
       "description": "A social road run from Stonecloud Brewing through downtown Stillwater. Routes are short and flexible, and the real point is the patio afterward. Walkers welcome.",
-      "lat": "36.116"
+      "lat": "36.116",
+      "slug": "pub-run"
     },
     {
       "lon": "-97.058",
@@ -46,7 +48,8 @@
       "image": "/assets/weekly-aspen-run.jpeg",
       "day": "Saturday",
       "description": "The Saturday morning staple. Meet at Aspen Coffee downtown for anything from an easy few miles to a long run, then stick around for coffee with the crew.",
-      "lat": "36.116"
+      "lat": "36.116",
+      "slug": "aspen-run"
     }
   ],
   "featuredReel": "",

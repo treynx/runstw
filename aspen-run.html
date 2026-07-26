@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Aspen Run | Weekly Run | STRR</title>
+    <meta name="description" content="The Saturday morning staple. Meet at Aspen Coffee downtown for anything from an easy few miles to a long run, then stick around for coffee with the crew.">
+    <link rel="canonical" href="https://runstw.com/aspen-run.html">
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://runstw.com/aspen-run.html">
+    <meta property="og:title" content="Aspen Run | Weekly Run | STRR">
+    <meta property="og:description" content="The Saturday morning staple. Meet at Aspen Coffee downtown for anything from an easy few miles to a long run, then stick around for coffee with the crew.">
+    <meta property="og:image" content="https://runstw.com/assets/weekly-aspen-run.jpeg">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Event","name":"Aspen Run","description":"The Saturday morning staple. Meet at Aspen Coffee downtown for anything from an easy few miles to a long run, then stick around for coffee with the crew.","image":["https://runstw.com/assets/weekly-aspen-run.jpeg"],"url":"https://runstw.com/aspen-run.html","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","isAccessibleForFree":true,"eventSchedule":{"@type":"Schedule","byDay":"https://schema.org/Saturday","startTime":"07:00:00","scheduleTimezone":"America/Chicago","repeatFrequency":"P1W"},"location":{"@type":"Place","name":"Aspen Coffee Co.","address":{"@type":"PostalAddress","addressLocality":"Stillwater","addressRegion":"OK","addressCountry":"US"}},"organizer":{"@type":"Organization","name":"Stillwater Trail and Road Runners","url":"https://runstw.com"}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <script defer src="/_vercel/insights/script.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+        body { font-family: 'Montserrat', sans-serif; color: #333; background-color: #fcfcfc; line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+
+        /* --- HEADER NAVIGATION --- */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background-color: #fff; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .logo-img { height: 50px; width: auto; display: block; }
+        .logo-link { display: flex; align-items: center; z-index: 1001; position: relative; }
+        .menu-toggle { display: none; order: 3; font-size: 1.8rem; cursor: pointer; z-index: 1001; position: relative; color: #333; }
+        nav ul { list-style: none; display: flex; gap: 30px; align-items: center; }
+        nav ul li a { font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; padding: 10px 0; display: block; }
+        nav ul li a:hover { color: #e65100; }
+        .dropdown { position: relative; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background-color: #fff; min-width: 250px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 10px 0; border-radius: 0 0 5px 5px; z-index: 1000; }
+        @media (hover: hover) { .dropdown:hover .dropdown-menu { display: flex; flex-direction: column; gap: 0; } }
+        .dropdown-menu li { padding: 0; }
+        .dropdown-menu li a { display: block; padding: 12px 20px; font-size: 0.85rem; font-weight: 700; text-transform: none; }
+        .dropdown-menu li a:hover { background-color: #f5f5f5; }
+
+        /* --- BANNER --- */
+        .run-banner { height: 40vh; min-height: 280px; background-color: #333; background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; text-align: center; color: #fff; padding-top: 80px; }
+        .run-banner h1 { font-size: 2.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; padding: 0 20px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+
+        /* --- CONTENT --- */
+        .run-wrap { max-width: 680px; margin: 0 auto; padding: 40px 20px 20px 20px; }
+        .run-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+        .run-type { flex: none; background: #f5f5f5; color: #666; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 12px; border-radius: 50px; }
+        .run-logo { flex: none; width: 64px; height: 64px; object-fit: contain; border-radius: 8px; background: #fff; }
+        .run-cancel-chip { flex: none; background: #c62828; color: #fff; font-weight: 900; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 12px; border-radius: 50px; }
+        .ws-irow { display: flex; gap: 12px; margin-top: 14px; align-items: flex-start; }
+        .ws-irow svg { width: 22px; height: 22px; flex: none; margin-top: 3px; stroke: #999; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .ws-big { font-weight: 700; font-size: 1.15rem; }
+        .run-cancelled .ws-time { text-decoration: line-through; color: #999; }
+        .ws-wx { font-weight: 600; color: #666; font-size: 0.95rem; margin-left: 8px; white-space: nowrap; }
+        .ws-subline { color: #888; font-size: 0.9rem; margin-top: 2px; font-weight: 400; }
+        .ws-irow a { color: inherit; text-decoration: none; }
+        .ws-irow a:hover { color: #e65100; text-decoration: underline; }
+        .run-reason { margin-top: 6px; color: #c62828; font-weight: 700; font-size: 0.95rem; }
+        .run-about { margin-top: 28px; color: #555; }
+        .run-ctas { max-width: 680px; margin: 10px auto 60px auto; padding: 0 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+        .run-ctas a { color: #e65100; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; }
+        .run-ctas a:hover { text-decoration: underline; }
+        .run-fb-note { max-width: 680px; margin: 0 auto 60px auto; padding: 0 20px; }
+        .run-fb-note div { text-align: center; background: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 5px; padding: 20px; color: #666; font-size: 0.95rem; }
+        .run-fb-note a { color: #e65100; font-weight: 700; }
+        .run-fb-note a:hover { text-decoration: underline; }
+
+        /* --- FOOTER --- */
+        footer { background-color: #111; color: #fff; text-align: center; padding: 40px; }
+        .social-links { margin: 15px 0; display: flex; justify-content: center; gap: 20px; }
+        .social-links a { color: #fff; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; transition: color 0.3s; }
+        .social-links a:hover { color: #e65100; }
+        footer p { font-size: 0.9rem; color: #888; }
+
+        /* --- MOBILE --- */
+        @media (max-width: 768px) {
+            .run-banner h1 { font-size: 1.8rem; }
+            .menu-toggle { display: block; }
+            nav ul {
+                position: fixed; top: 0; right: -100%; height: 100vh; width: 80%; max-width: 300px;
+                background-color: #fff; flex-direction: column; justify-content: center; gap: 20px;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: right 0.3s ease; padding: 40px;
+            }
+            nav ul.active { right: 0; }
+            .dropdown-menu { position: relative; box-shadow: none; display: flex; flex-direction: column; background-color: transparent; padding-left: 15px; top: 0; min-width: auto; display: none; }
+            .dropdown.active .dropdown-menu { display: flex; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo-link">
+            <img src="assets/runstw-logo.jpg" alt="RUN STW Logo" class="logo-img">
+        </a>
+        <div class="menu-toggle" id="mobile-menu-btn">☰</div>
+        <nav>
+            <ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li class="dropdown" id="race-dropdown">
+                    <a href="index.html#races" id="race-link">Our Events &#9662;</a>
+                    <ul class="dropdown-menu" id="dropdown-menu"></ul>
+                </li>
+                <li class="dropdown" id="weekly-dropdown">
+                    <a href="weekly-runs.html" id="weekly-link">Weekly Runs &#9662;</a>
+                    <ul class="dropdown-menu" id="weekly-dropdown-menu"></ul>
+                </li>
+                <li><a href="https://www.bonfire.com/store/stillwater-trail-and-road-runners/" target="_blank">Merch</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="run-banner" id="run-banner" style="background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('https://runstw.com/assets/weekly-aspen-run.jpeg');">
+        <h1 id="run-banner-title">Aspen Run</h1>
+    </section>
+
+    <div class="run-wrap">
+        <!-- WEEKLY_RUN_CONTENT_START -->
+        <div class="run-top" id="run-top">
+            <h2 style="font-size:1.5rem; font-weight:900; text-transform:uppercase;">Aspen Run</h2>
+            <img class="run-logo" src="/assets/aspen-logo_orig.png" alt="Aspen Coffee Co. logo" loading="lazy" id="run-chip">
+        </div>
+        <div id="run-when">
+            <div class="ws-irow"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 3h6"/></svg><div><span class="ws-big">Saturdays &bull; 7:00 AM</span></div></div>
+            <div class="ws-irow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.3-7-11a7 7 0 0 1 14 0c0 5.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg><div><span class="ws-big"><a href="https://maps.app.goo.gl/7E1UXJM6JxDLsmUL9" target="_blank" rel="noopener">Aspen Coffee Co.</a></span><div class="ws-subline">Stillwater, OK</div></div></div>
+        </div>
+        <p class="run-about">The Saturday morning staple. Meet at Aspen Coffee downtown for anything from an easy few miles to a long run, then stick around for coffee with the crew.</p>
+        <script>window.STRR_RUN = {"name":"Aspen Run","slug":"aspen-run","type":"Coffee","venueLogo":"/assets/aspen-logo_orig.png","image":"/assets/weekly-aspen-run.jpeg","dayNum":6,"dayName":"Saturday","time":"7:00 AM","time24":"07:00","location":"Aspen Coffee Co.","map":"https://maps.app.goo.gl/7E1UXJM6JxDLsmUL9","lat":36.116,"lon":-97.058,"about":"The Saturday morning staple. Meet at Aspen Coffee downtown for anything from an easy few miles to a long run, then stick around for coffee with the crew.","cancellations":[]};</script>
+        <!-- WEEKLY_RUN_CONTENT_END -->
+    </div>
+
+    <div class="run-fb-note">
+        <div>
+            Times and meeting spots can shift with the seasons. Week-to-week details are always posted in our
+            <a href="https://www.facebook.com/groups/stillwatertrailandroadrunners" target="_blank">Facebook group</a>.
+        </div>
+    </div>
+
+    <div class="run-ctas">
+        <a href="weekly-runs.html">&larr; All Weekly Runs</a>
+        <a href="index.html#races">See Our Races &rarr;</a>
+    </div>
+
+    <footer>
+        <img src="assets/runstw-logo.jpg" alt="RUN STW Logo" style="height: 40px; margin-bottom: 10px; border-radius: 50%;">
+        <div class="social-links">
+            <a href="https://www.facebook.com/groups/stillwatertrailandroadrunners" target="_blank">Facebook</a>
+            <a href="https://www.instagram.com/stwtrailandroadrunners/" target="_blank">Instagram</a>
+            <a href="https://strava.app.link/sDLJMLKBR4b" target="_blank">Strava</a>
+            <a href="mailto:info@runstw.com">Email</a>
+        </div>
+        <p>Stillwater Trail and Road Runners &bull; <a href="mailto:info@runstw.com" style="color:#888;">info@runstw.com</a></p>
+        <p>&copy; 2026 runstw.com. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const navMenu = document.getElementById('nav-menu');
+        const raceLink = document.getElementById('race-link');
+        const raceDropdown = document.getElementById('race-dropdown');
+        const weeklyLink = document.getElementById('weekly-link');
+        const weeklyDropdown = document.getElementById('weekly-dropdown');
+
+        menuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            menuBtn.innerHTML = navMenu.classList.contains('active') ? '✕' : '☰';
+        });
+
+        raceLink.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                const opening = !raceDropdown.classList.contains('active');
+                raceDropdown.classList.toggle('active');
+                if (opening) {
+                    const menu = document.getElementById('dropdown-menu');
+                    menu.style.pointerEvents = 'none';
+                    setTimeout(() => { menu.style.pointerEvents = ''; }, 400);
+                }
+            }
+        });
+
+        weeklyLink.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                const opening = !weeklyDropdown.classList.contains('active');
+                weeklyDropdown.classList.toggle('active');
+                if (opening) {
+                    const menu = document.getElementById('weekly-dropdown-menu');
+                    menu.style.pointerEvents = 'none';
+                    setTimeout(() => { menu.style.pointerEvents = ''; }, 400);
+                }
+            }
+        });
+
+        navMenu.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (link && link.id !== 'race-link' && link.id !== 'weekly-link' && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                menuBtn.innerHTML = '☰';
+            }
+        });
+    </script>
+
+    <script>
+        // Populate the races dropdown
+        fetch('data/events.json')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('dropdown-menu').innerHTML = data.events.map(e => `
+                    <li><a href="${e.slug}.html">${e.navLabel}</a></li>
+                `).join('');
+            })
+            .catch(err => console.error('Failed to load nav events:', err));
+
+        // Populate the weekly runs dropdown
+        fetch('data/homepage.json')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('weekly-dropdown-menu').innerHTML =
+                    `<li><a href="weekly-runs.html">All Weekly Runs</a></li>` +
+                    (data.schedule || []).map(r => `<li><a href="${r.slug}.html">${r.event}</a></li>`).join('');
+            })
+            .catch(err => console.error('Failed to load nav weekly runs:', err));
+    </script>
+
+    <script>
+        // --- LIVE NEXT-OCCURRENCE WIDGET ---
+        // Upgrades the baked static day/time into the actual next date, adds a
+        // weather forecast, and reflects cancellations. Mirrors the homepage
+        // schedule widget, scoped to just this one run.
+        (function () {
+            const RUN = window.STRR_RUN;
+            const box = document.getElementById('run-when');
+            if (!RUN || !box || RUN.dayNum == null || !RUN.time24) return;
+
+            const pad = n => String(n).padStart(2, '0');
+            const dateKey = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+            const hourKey = d => dateKey(d) + 'T' + pad(d.getHours()) + ':00';
+            const fmtTime = d => d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+            const CLOCK = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 3h6"/></svg>';
+            const PIN = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.3-7-11a7 7 0 0 1 14 0c0 5.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>';
+
+            function nextOccurrence() {
+                const parts = RUN.time24.split(':');
+                const winStart = new Date(); winStart.setHours(0, 0, 0, 0);
+                for (let i = 0; i < 14; i++) {
+                    const d = new Date(winStart); d.setDate(winStart.getDate() + i);
+                    if (d.getDay() !== RUN.dayNum) continue;
+                    const start = new Date(d); start.setHours(+parts[0], +parts[1], 0, 0);
+                    const cx = (RUN.cancellations || []).find(c => c.date === dateKey(start));
+                    return { start, cancelled: !!cx, reason: cx ? cx.reason : '' };
+                }
+                return null;
+            }
+
+            function render() {
+                const o = nextOccurrence();
+                if (!o) return;
+                const fullDate = o.start.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+                box.classList.toggle('run-cancelled', o.cancelled);
+                const chipEl = document.getElementById('run-chip');
+                if (o.cancelled) { chipEl.outerHTML = '<span class="run-cancel-chip" id="run-chip">Cancelled</span>'; }
+                box.innerHTML =
+                    '<div class="ws-irow">' + CLOCK
+                    + '<div><span class="ws-big"><span class="ws-time">' + fmtTime(o.start) + '</span>'
+                    + (o.cancelled ? '' : '<span class="ws-wx" id="run-wx"></span>') + '</span>'
+                    + '<div class="ws-subline">' + fullDate + '</div></div></div>'
+                    + '<div class="ws-irow">' + PIN
+                    + '<div><span class="ws-big">' + (RUN.map
+                        ? '<a href="' + RUN.map + '" target="_blank" rel="noopener">' + RUN.location + '</a>'
+                        : RUN.location) + '</span>'
+                    + '<div class="ws-subline">Stillwater, OK</div>'
+                    + (o.cancelled && o.reason ? '<div class="run-reason">' + o.reason + '</div>' : '')
+                    + '</div></div>';
+
+                if (!o.cancelled && RUN.lat != null && RUN.lon != null) {
+                    fetch('https://api.open-meteo.com/v1/forecast?latitude=' + RUN.lat + '&longitude=' + RUN.lon
+                        + '&hourly=temperature_2m,weather_code,is_day&temperature_unit=fahrenheit&timezone=auto&forecast_days=16')
+                        .then(r => r.ok ? r.json() : null)
+                        .then(j => {
+                            if (!j) return;
+                            const idx = j.hourly.time.indexOf(hourKey(o.start));
+                            if (idx === -1) return;
+                            const code = j.hourly.weather_code[idx], day = j.hourly.is_day[idx], temp = Math.round(j.hourly.temperature_2m[idx]);
+                            const icon = (code === 0 || code === 1) ? (day ? '☀️' : '🌙')
+                                : code === 2 ? (day ? '⛅' : '☁️')
+                                : code === 3 ? '☁️'
+                                : (code === 45 || code === 48) ? '🌫️'
+                                : (code >= 51 && code <= 67) ? '🌧️'
+                                : ((code >= 71 && code <= 77) || code === 85 || code === 86) ? '🌨️'
+                                : (code >= 80 && code <= 82) ? '🌧️'
+                                : code >= 95 ? '⛈️' : (day ? '☀️' : '🌙');
+                            const el = document.getElementById('run-wx');
+                            if (el) el.textContent = icon + ' ' + temp + '°';
+                        })
+                        .catch(() => {});
+                }
+            }
+
+            render();
+        })();
+    </script>
+</body>
+</html>
