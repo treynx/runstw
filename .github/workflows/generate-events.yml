@@ -7,6 +7,11 @@ on:
       - 'data/events.json'
       - 'data/homepage.json'
       - 'templates/event-template.html'
+      - 'templates/weekly-run-template.html'
+  schedule:
+    # Daily refresh so weekly-run structured data always lists upcoming
+    # dates (not stale ones) even if nobody edits the CMS for a while.
+    - cron: '0 13 * * *'
   workflow_dispatch:
 
 permissions:

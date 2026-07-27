@@ -40,6 +40,83 @@ function absoluteUrl(src) {
 // <-escape so no string can break out of an inline <script> block
 const jsonForScript = (obj) => JSON.stringify(obj).replace(/</g, '\\u003c');
 
+// Lowest advertised price found in a race's pricing accordion(s), for
+// structured-data "offers". Returns null if no dollar amount is found.
+function extractStartingPrice(accordions) {
+  const text = (accordions || []).map((a) => a.content || '').join(' ');
+  const amounts = [...text.matchAll(/\$(\d+(?:\.\d{2})?)/g)].map((m) => parseFloat(m[1]));
+  return amounts.length ? Math.min(...amounts) : null;
+}
+
+const TZ = 'America/Chicago';
+
+// DST-aware UTC offset (e.g. "-05:00") for a given 'YYYY-MM-DD' date in Stillwater.
+function chicagoOffset(dateStr) {
+  const probe = new Date(dateStr + 'T12:00:00Z');
+  const parts = new Intl.DateTimeFormat('en-US', { timeZone: TZ, timeZoneName: 'shortOffset', hour: 'numeric' }).formatToParts(probe);
+  const tz = parts.find((p) => p.type === 'timeZoneName');
+  const m = tz && /GMT([+-]\d+)/.exec(tz.value);
+  const hours = m ? parseInt(m[1], 10) : -6;
+  return `${hours < 0 ? '-' : '+'}${String(Math.abs(hours)).padStart(2, '0')}:00`;
+}
+
+function isoDateTime(dateStr, time24) {
+  return `${dateStr}T${time24}:00${chicagoOffset(dateStr)}`;
+}
+
+// Adds `minutes` to a 'HH:MM' time, rolling the date forward/back as needed.
+function addMinutesToTime(dateStr, time24, minutes) {
+  const [h, m] = time24.split(':').map(Number);
+  let total = h * 60 + m + minutes;
+  let dayOffset = 0;
+  while (total >= 24 * 60) { total -= 24 * 60; dayOffset += 1; }
+  while (total < 0) { total += 24 * 60; dayOffset -= 1; }
+  const d = new Date(dateStr + 'T00:00:00Z');
+  d.setUTCDate(d.getUTCDate() + dayOffset);
+  return { date: d.toISOString().slice(0, 10), time: `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}` };
+}
+
+// The next `count` upcoming calendar dates (YYYY-MM-DD) matching a weekday.
+function nextOccurrenceDates(dayNum, count) {
+  const out = [];
+  const winStart = new Date(); winStart.setHours(0, 0, 0, 0);
+  for (let i = 0; out.length < count && i < 400; i++) {
+    const d = new Date(winStart); d.setDate(winStart.getDate() + i);
+    if (d.getDay() !== dayNum) continue;
+    const pad = (n) => String(n).padStart(2, '0');
+    out.push(`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`);
+  }
+  return out;
+}
+
+// Google's Event rich results don't support a single recurring Event - each
+// occurrence needs its own dated Event entry. Builds the next few for a run,
+// keeping cancelled dates present (per Google's guidance) but marked EventCancelled.
+function buildRunOccurrenceEvents(run, pageUrl, count = 4, durationMinutes = 90) {
+  if (!run.time24 || run.dayNum === null) return [];
+  const image = absoluteUrl(run.image);
+  const description = stripHtml(run.about).slice(0, 300) || `${run.name} — a free weekly group run in Stillwater, OK.`;
+  return nextOccurrenceDates(run.dayNum, count).map((dateStr) => {
+    const cancelled = (run.cancellations || []).some((c) => c.date === dateStr);
+    const end = addMinutesToTime(dateStr, run.time24, durationMinutes);
+    return {
+      '@type': 'Event',
+      name: run.name,
+      startDate: isoDateTime(dateStr, run.time24),
+      endDate: isoDateTime(end.date, end.time),
+      eventStatus: `https://schema.org/${cancelled ? 'EventCancelled' : 'EventScheduled'}`,
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      isAccessibleForFree: true,
+      description,
+      image: image ? [image] : undefined,
+      url: pageUrl,
+      location: { '@type': 'Place', name: run.location, address: { '@type': 'PostalAddress', addressLocality: 'Stillwater', addressRegion: 'OK', addressCountry: 'US' } },
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: pageUrl },
+      organizer: { '@type': 'Organization', name: 'Stillwater Trail and Road Runners', url: SITE_URL },
+    };
+  });
+}
+
 // Static <head> SEO block baked into each generated race page so crawlers get
 // real titles/descriptions without executing the page's JavaScript.
 function buildSeoHead(event) {
@@ -65,11 +142,15 @@ function buildSeoHead(event) {
 
   // Google event rich results, only when a real date is set in the CMS
   if (event.eventDate) {
+    const price = extractStartingPrice(event.accordions);
+    const endDate = event.eventEndDate || new Date(new Date(event.eventDate).getTime() + 6 * 60 * 60 * 1000).toISOString();
+    const registerUrl = event.registerLink && event.registerLink !== '#' ? event.registerLink : pageUrl;
     const schema = {
       '@context': 'https://schema.org',
       '@type': 'Event',
       name: event.eventTitle,
       startDate: event.eventDate,
+      endDate,
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
       eventStatus: 'https://schema.org/EventScheduled',
       description: description,
@@ -79,6 +160,13 @@ function buildSeoHead(event) {
         '@type': 'Place',
         name: event.venue || 'Stillwater, Oklahoma',
         address: { '@type': 'PostalAddress', addressLocality: 'Stillwater', addressRegion: 'OK', addressCountry: 'US' },
+      },
+      offers: {
+        '@type': 'Offer',
+        url: registerUrl,
+        price: price != null ? String(price) : '0',
+        priceCurrency: 'USD',
+        availability: 'https://schema.org/InStock',
       },
       organizer: { '@type': 'Organization', name: 'Stillwater Trail and Road Runners', url: SITE_URL },
     };
@@ -95,7 +183,6 @@ function buildWeeklyRunSeoHead(run) {
   const description = stripHtml(run.about).slice(0, 155) || `Join us for ${run.name} in Stillwater, Oklahoma.`;
   const pageUrl = `${SITE_URL}/${run.slug}.html`;
   const image = absoluteUrl(run.image);
-  const cap = (w) => (w ? w.charAt(0).toUpperCase() + w.slice(1).toLowerCase() : '');
 
   let head = [
     `<title>${escapeAttr(title)}</title>`,
@@ -112,24 +199,11 @@ function buildWeeklyRunSeoHead(run) {
     `    <meta property="og:image" content="${escapeAttr(image)}">`,
   ].join('\n');
 
-  if (run.time24 && run.dayNum !== null) {
-    const schema = {
-      '@context': 'https://schema.org',
-      '@type': 'Event',
-      name: run.name,
-      description: description,
-      image: image ? [image] : undefined,
-      url: pageUrl,
-      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      isAccessibleForFree: true,
-      eventSchedule: Object.assign(
-        { '@type': 'Schedule', byDay: 'https://schema.org/' + cap(run.dayName.trim()), startTime: run.time24 + ':00', scheduleTimezone: 'America/Chicago', repeatFrequency: 'P1W' },
-        run.cancellations.length ? { exceptDate: run.cancellations.map((c) => c.date) } : {}
-      ),
-      location: { '@type': 'Place', name: run.location, address: { '@type': 'PostalAddress', addressLocality: 'Stillwater', addressRegion: 'OK', addressCountry: 'US' } },
-      organizer: { '@type': 'Organization', name: 'Stillwater Trail and Road Runners', url: SITE_URL },
-    };
-    head += `\n    <script type="application/ld+json">${JSON.stringify(schema)}</script>`;
+  // Google's Event rich results require a dated startDate per occurrence -
+  // list the next several actual dates rather than a recurrence rule.
+  const events = buildRunOccurrenceEvents(run, pageUrl);
+  if (events.length) {
+    head += `\n    <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': events })}</script>`;
   }
 
   return head;
@@ -313,22 +387,11 @@ if (weeklyHome && runs.length) {
                 </div>
             </div>`).join('\n');
 
-    // schema.org recurring events; cancellations become exceptDate entries
-    const cap = (w) => (w ? w.charAt(0).toUpperCase() + w.slice(1).toLowerCase() : '');
+    // Google's Event rich results require a dated startDate per occurrence -
+    // list the next several actual dates for each run rather than a recurrence rule.
     const graph = [
       { '@type': 'SportsOrganization', '@id': `${SITE_URL}/#org`, name: 'Stillwater Trail and Road Runners', url: SITE_URL, areaServed: 'Stillwater, OK' },
-      ...runs.filter((r) => r.time24 && r.dayNum !== null).map((r) => ({
-        '@type': 'Event',
-        name: r.name,
-        organizer: { '@id': `${SITE_URL}/#org` },
-        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-        isAccessibleForFree: true,
-        eventSchedule: Object.assign(
-          { '@type': 'Schedule', byDay: 'https://schema.org/' + cap(r.dayName.trim()), startTime: r.time24 + ':00', scheduleTimezone: 'America/Chicago', repeatFrequency: 'P1W' },
-          r.cancellations.length ? { exceptDate: r.cancellations.map((c) => c.date) } : {}
-        ),
-        location: { '@type': 'Place', name: r.location, address: { '@type': 'PostalAddress', addressLocality: 'Stillwater', addressRegion: 'OK', addressCountry: 'US' } },
-      })),
+      ...runs.flatMap((r) => buildRunOccurrenceEvents(r, r.slug ? `${SITE_URL}/${r.slug}.html` : `${SITE_URL}/weekly-runs.html`)),
     ];
 
     const lead = weeklyHome.weeklyIntro ? `        <p class="weekly-lead">${escapeHtml(weeklyHome.weeklyIntro.trim())}</p>\n` : '';
