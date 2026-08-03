@@ -19,7 +19,7 @@ collections:
     label: "Homepage"
     files:
       - file: "data/homepage.json"
-        label: "Homepage & Weekly Runs"
+        label: "✏️ Click to edit Homepage & Weekly Runs"
         name: "homepage"
         fields:
           - label: "Homepage Hero"
@@ -69,7 +69,7 @@ collections:
     label: "Events"
     files:
       - file: "data/events.json"
-        label: "All Events"
+        label: "✏️ Click to edit Race Events"
         name: "events"
         fields:
           - label: "Events"
