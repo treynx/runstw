@@ -142,9 +142,24 @@
         const weeklyLink = document.getElementById('weekly-link');
         const weeklyDropdown = document.getElementById('weekly-dropdown');
 
+        // Resets the whole mobile nav back to its top-level state. Without this,
+        // closing the menu while a submenu (Our Events / Weekly Runs) was left
+        // expanded meant reopening it showed the submenu again instead of the
+        // main list — the only way out was a hard refresh.
+        function closeMobileMenu() {
+            navMenu.classList.remove('active');
+            menuBtn.innerHTML = '☰';
+            raceDropdown.classList.remove('active');
+            weeklyDropdown.classList.remove('active');
+        }
+
         menuBtn.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            menuBtn.innerHTML = navMenu.classList.contains('active') ? '✕' : '☰';
+            if (navMenu.classList.contains('active')) {
+                closeMobileMenu();
+            } else {
+                navMenu.classList.add('active');
+                menuBtn.innerHTML = '✕';
+            }
         });
 
         raceLink.addEventListener('click', (e) => {
@@ -176,8 +191,7 @@
         navMenu.addEventListener('click', (e) => {
             const link = e.target.closest('a');
             if (link && link.id !== 'race-link' && link.id !== 'weekly-link' && navMenu.classList.contains('active')) {
-                navMenu.classList.remove('active');
-                menuBtn.innerHTML = '☰';
+                closeMobileMenu();
             }
         });
     </script>
