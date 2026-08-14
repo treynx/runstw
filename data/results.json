@@ -7,6 +7,14 @@
       "date": "2026-08-07",
       "raceId": 211158,
       "eventId": 1185082
+    },
+    {
+      "slug": "starr-vs-osu-2026",
+      "name": "STARR vs OSU",
+      "year": 2026,
+      "date": "2026-04-04",
+      "raceId": 205014,
+      "eventId": 1145673
     }
   ]
 }
