@@ -363,7 +363,7 @@ fs.writeFileSync(WEEKLY_MANIFEST_FILE, JSON.stringify(currentRunSlugs, null, 2))
 // --- 4. Sitemap: static pages + every generated race page + every weekly-run page ---
 const today = new Date().toISOString().slice(0, 10);
 const sitemapUrls = [
-  '', 'weekly-runs.html', 'contact.html',
+  '', 'weekly-runs.html', 'contact.html', 'results.html',
   ...currentSlugs.map((s) => `${s}.html`),
   ...currentRunSlugs.map((s) => `${s}.html`),
 ];

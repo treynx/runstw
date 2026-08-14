@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Results | STRR</title>
+    <meta name="description" content="Race results for Stillwater Trail and Road Runners events.">
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="canonical" href="https://runstw.com/results.html">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+        body { font-family: 'Montserrat', sans-serif; color: #333; background-color: #fcfcfc; line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+
+        /* --- HEADER NAVIGATION --- */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background-color: #fff; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .logo-img { height: 50px; width: auto; display: block; }
+        .logo-link { display: flex; align-items: center; z-index: 1001; position: relative; }
+        .menu-toggle { display: none; order: 3; font-size: 1.8rem; cursor: pointer; z-index: 1001; position: relative; color: #333; }
+        nav ul { list-style: none; display: flex; gap: 30px; align-items: center; }
+        nav ul li a { font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; padding: 10px 0; display: block; }
+        nav ul li a:hover { color: #e65100; }
+        .dropdown { position: relative; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background-color: #fff; min-width: 250px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 10px 0; border-radius: 0 0 5px 5px; z-index: 1000; }
+        @media (hover: hover) { .dropdown:hover .dropdown-menu { display: flex; flex-direction: column; gap: 0; } }
+        .dropdown-menu li { padding: 0; }
+        .dropdown-menu li a { display: block; padding: 12px 20px; font-size: 0.85rem; font-weight: 700; text-transform: none; }
+        .dropdown-menu li a:hover { background-color: #f5f5f5; }
+
+        /* --- RESULTS PAGE --- */
+        .results-wrap { max-width: 900px; margin: 0 auto; padding: 140px 20px 80px 20px; }
+        .results-wrap h1 { font-size: 2.2rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        .results-wrap .intro { color: #666; margin-bottom: 30px; }
+        .back-link { display: inline-block; margin-bottom: 20px; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #e65100; }
+        .back-link:hover { text-decoration: underline; }
+        .race-meta { color: #666; margin-bottom: 20px; }
+
+        /* Race selector list */
+        .race-list { list-style: none; border-top: 1px solid #eee; }
+        .race-list li { border-bottom: 1px solid #eee; }
+        .race-list a { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 4px; transition: background-color 0.2s; }
+        .race-list a:hover { background-color: #f9f9f9; }
+        .race-list .race-name { font-weight: 700; font-size: 1.05rem; }
+        .race-list .race-year { color: #666; font-size: 0.9rem; }
+        .empty-state, .error-state { padding: 40px 4px; color: #666; }
+        .error-state { color: #b71c1c; }
+
+        /* Results viewer */
+        .status-bar {
+            display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+            padding: 10px 14px; background: #f9f9f9; border: 1px solid #eee; border-radius: 6px;
+            margin-bottom: 20px; font-size: 0.9rem;
+        }
+        .status-bar .updated { color: #666; }
+        .status-bar button {
+            margin-left: auto; border: 1px solid #ddd; background: #fff; border-radius: 4px;
+            padding: 6px 14px; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; color: #333;
+        }
+        .status-bar button:hover { background: #f5f5f5; }
+
+        .controls { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+        .controls input, .controls select {
+            padding: 10px 12px; border: 1px solid #ddd; border-radius: 4px;
+            font-family: 'Montserrat', sans-serif; font-size: 0.9rem; background: #fff;
+        }
+        .controls input:focus, .controls select:focus { outline: none; border-color: #e65100; }
+        .controls input { flex: 1; min-width: 160px; }
+
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+        thead th {
+            text-align: left; padding: 10px 8px; border-bottom: 2px solid #ddd; color: #666;
+            font-weight: 700; white-space: nowrap; cursor: pointer; user-select: none;
+        }
+        thead th:hover { color: #333; }
+        thead th.sorted::after { content: " \25BE"; font-size: 0.75em; }
+        thead th.sorted.asc::after { content: " \25B4"; font-size: 0.75em; }
+        tbody td { padding: 9px 8px; border-bottom: 1px solid #eee; white-space: nowrap; }
+        tbody tr:nth-child(even) { background: #f9f9f9; }
+        .place-1 { font-weight: 900; color: #e65100; }
+
+        /* --- FOOTER --- */
+        footer { background-color: #111; color: #fff; text-align: center; padding: 40px; }
+        .social-links { margin: 15px 0; display: flex; justify-content: center; gap: 20px; }
+        .social-links a { color: #fff; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; transition: color 0.3s; }
+        .social-links a:hover { color: #e65100; }
+        footer p { font-size: 0.9rem; color: #888; }
+
+        /* --- MOBILE --- */
+        @media (max-width: 768px) {
+            .results-wrap h1 { font-size: 1.6rem; }
+            .menu-toggle { display: block; }
+            nav ul {
+                position: fixed; top: 0; right: -100%; height: 100vh; width: 80%; max-width: 300px;
+                background-color: #fff; flex-direction: column; justify-content: center; gap: 20px;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1); transition: right 0.3s ease; padding: 40px;
+            }
+            nav ul.active { right: 0; }
+            .dropdown-menu { position: relative; box-shadow: none; display: flex; flex-direction: column; background-color: transparent; padding-left: 15px; top: 0; min-width: auto; display: none; }
+            .dropdown.active .dropdown-menu { display: flex; }
+            .status-bar button { margin-left: 0; }
+        }
+    </style>
+    <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-link">
+            <img src="assets/runstw-logo.jpg" alt="RUN STW Logo" class="logo-img">
+        </a>
+        <div class="menu-toggle" id="mobile-menu-btn">☰</div>
+        <nav>
+            <ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li class="dropdown" id="race-dropdown">
+                    <a href="index.html#races" id="race-link">Our Events &#9662;</a>
+                    <ul class="dropdown-menu" id="dropdown-menu"></ul>
+                </li>
+                <li class="dropdown" id="weekly-dropdown">
+                    <a href="weekly-runs.html" id="weekly-link">Weekly Runs &#9662;</a>
+                    <ul class="dropdown-menu" id="weekly-dropdown-menu"></ul>
+                </li>
+                <li><a href="results.html">Results</a></li>
+                <li><a href="https://www.bonfire.com/store/stillwater-trail-and-road-runners/" target="_blank">Merch</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="results-wrap">
+        <div id="selector-view">
+            <h1>Results</h1>
+            <p class="intro">Pick a race to see its results.</p>
+            <ul class="race-list" id="race-list">
+                <li class="empty-state">Loading races…</li>
+            </ul>
+        </div>
+
+        <div id="viewer-view" style="display:none;">
+            <a href="results.html" class="back-link">&larr; All Results</a>
+            <h1 id="race-name">Loading results…</h1>
+            <div class="race-meta" id="race-meta"></div>
+
+            <div class="status-bar">
+                <span class="updated" id="last-updated">Fetching results…</span>
+                <button id="refresh-btn">Refresh</button>
+            </div>
+
+            <div class="controls">
+                <input type="text" id="search" placeholder="Search by name or bib…">
+                <select id="gender-filter">
+                    <option value="">All</option>
+                    <option value="M">Men</option>
+                    <option value="F">Women</option>
+                </select>
+            </div>
+
+            <div class="table-wrap">
+                <table id="results-table">
+                    <thead>
+                        <tr>
+                            <th data-key="place" data-type="num">Place</th>
+                            <th data-key="bib" data-type="num">Bib</th>
+                            <th data-key="name" data-type="str">Name</th>
+                            <th data-key="location" data-type="str">City/State</th>
+                            <th data-key="gender" data-type="str">Gender</th>
+                            <th data-key="age" data-type="num">Age</th>
+                            <th data-key="chip_time" data-type="time">Chip Time</th>
+                            <th data-key="pace" data-type="time">Pace</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-body">
+                        <tr><td colspan="8" class="empty-state">Loading…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <img src="assets/runstw-logo.jpg" alt="RUN STW Logo" style="height: 40px; margin-bottom: 10px; border-radius: 50%;">
+        <div class="social-links">
+            <a href="https://www.facebook.com/groups/stillwatertrailandroadrunners" target="_blank">Facebook</a>
+            <a href="https://www.instagram.com/stwtrailandroadrunners/" target="_blank">Instagram</a>
+            <a href="https://strava.app.link/sDLJMLKBR4b" target="_blank">Strava</a>
+            <a href="mailto:info@runstw.com">Email</a>
+            <a href="https://runsignup.com/MemberOrg/runstw/Page/Newsletter-signup" target="_blank" rel="noopener">Newsletter</a>
+        </div>
+        <p>Stillwater Trail and Road Runners &bull; <a href="mailto:info@runstw.com" style="color:#888;">info@runstw.com</a></p>
+        <p>&copy; 2026 runstw.com. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const navMenu = document.getElementById('nav-menu');
+        const raceLink = document.getElementById('race-link');
+        const raceDropdown = document.getElementById('race-dropdown');
+        const weeklyLink = document.getElementById('weekly-link');
+        const weeklyDropdown = document.getElementById('weekly-dropdown');
+
+        // Resets the whole mobile nav back to its top-level state. Without this,
+        // closing the menu while a submenu (Our Events / Weekly Runs) was left
+        // expanded meant reopening it showed the submenu again instead of the
+        // main list — the only way out was a hard refresh.
+        function closeMobileMenu() {
+            navMenu.classList.remove('active');
+            menuBtn.innerHTML = '☰';
+            raceDropdown.classList.remove('active');
+            weeklyDropdown.classList.remove('active');
+        }
+
+        menuBtn.addEventListener('click', () => {
+            if (navMenu.classList.contains('active')) {
+                closeMobileMenu();
+            } else {
+                navMenu.classList.add('active');
+                menuBtn.innerHTML = '✕';
+            }
+        });
+
+        raceLink.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                const opening = !raceDropdown.classList.contains('active');
+                raceDropdown.classList.toggle('active');
+                if (opening) {
+                    const menu = document.getElementById('dropdown-menu');
+                    menu.style.pointerEvents = 'none';
+                    setTimeout(() => { menu.style.pointerEvents = ''; }, 400);
+                }
+            }
+        });
+
+        weeklyLink.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                const opening = !weeklyDropdown.classList.contains('active');
+                weeklyDropdown.classList.toggle('active');
+                if (opening) {
+                    const menu = document.getElementById('weekly-dropdown-menu');
+                    menu.style.pointerEvents = 'none';
+                    setTimeout(() => { menu.style.pointerEvents = ''; }, 400);
+                }
+            }
+        });
+
+        navMenu.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (link && link.id !== 'race-link' && link.id !== 'weekly-link' && navMenu.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        });
+    </script>
+
+    <script>
+        // Populate the races dropdown
+        fetch('data/events.json')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('dropdown-menu').innerHTML = data.events.map(e => `
+                    <li><a href="${e.slug}.html">${e.navLabel}</a></li>
+                `).join('');
+            })
+            .catch(err => console.error('Failed to load nav events:', err));
+
+        // Populate the weekly runs dropdown
+        fetch('data/homepage.json')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('weekly-dropdown-menu').innerHTML =
+                    `<li><a href="weekly-runs.html">All Weekly Runs</a></li>` +
+                    (data.schedule || []).map(r => `<li><a href="${r.slug}.html">${r.event}</a></li>`).join('');
+            })
+            .catch(err => console.error('Failed to load nav weekly runs:', err));
+    </script>
+
+    <script>
+    (function () {
+        // ---- Race index + selected race ----
+        const params = new URLSearchParams(window.location.search);
+        const raceSlug = params.get('race');
+
+        const selectorView = document.getElementById('selector-view');
+        const viewerView = document.getElementById('viewer-view');
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            const d = document.createElement('div');
+            d.textContent = str;
+            return d.innerHTML;
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const d = new Date(dateStr + 'T00:00:00');
+            return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        }
+
+        function renderSelector(races) {
+            const list = document.getElementById('race-list');
+            if (races.length === 0) {
+                list.innerHTML = '<li class="empty-state">No results posted yet — check back after race day.</li>';
+                return;
+            }
+            list.innerHTML = races.map(r => `
+                <li><a href="results.html?race=${encodeURIComponent(r.slug)}">
+                    <span class="race-name">${escapeHtml(r.name)}</span>
+                    <span class="race-year">${escapeHtml(String(r.year))}</span>
+                </a></li>
+            `).join('');
+        }
+
+        fetch('data/results.json')
+            .then(res => res.json())
+            .then(data => {
+                const races = (data.races || []).slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+                if (!raceSlug) {
+                    selectorView.style.display = '';
+                    viewerView.style.display = 'none';
+                    renderSelector(races);
+                    return;
+                }
+
+                const race = races.find((r) => r.slug === raceSlug);
+                selectorView.style.display = 'none';
+                viewerView.style.display = '';
+
+                if (!race) {
+                    document.getElementById('race-name').textContent = 'Race not found';
+                    document.getElementById('race-meta').textContent = '';
+                    document.querySelector('.status-bar').style.display = 'none';
+                    document.querySelector('.controls').style.display = 'none';
+                    document.getElementById('results-body').innerHTML =
+                        '<tr><td colspan="8" class="empty-state">That race isn\'t in our results list. <a href="results.html">See all results &rarr;</a></td></tr>';
+                    return;
+                }
+
+                document.title = `${race.name} ${race.year} Results | STRR`;
+                document.getElementById('race-name').textContent = `${race.name} — ${race.year}`;
+                document.getElementById('race-meta').textContent = formatDate(race.date);
+                initResultsTable(race);
+            })
+            .catch((err) => {
+                console.error('Failed to load results index', err);
+                document.getElementById('race-list').innerHTML =
+                    '<li class="error-state">Couldn\'t load the race list right now. Try refreshing.</li>';
+            });
+
+        // ---- Results table for a selected race ----
+        function initResultsTable(race) {
+            const API_URL = `https://runsignup.com/rest/race/${race.raceId}/results?event_id=${race.eventId}&format=json`;
+
+            let allResults = [];
+            let sortKey = 'place';
+            let sortAsc = true;
+
+            const el = {
+                lastUpdated: document.getElementById('last-updated'),
+                refreshBtn: document.getElementById('refresh-btn'),
+                search: document.getElementById('search'),
+                genderFilter: document.getElementById('gender-filter'),
+                tbody: document.getElementById('results-body'),
+                headers: document.querySelectorAll('#results-table thead th'),
+            };
+
+            function timeToSeconds(t) {
+                if (!t) return Infinity;
+                const parts = t.split(':').map(Number);
+                if (parts.some(isNaN)) return Infinity;
+                return parts.reduce((acc, p) => acc * 60 + p, 0);
+            }
+
+            async function fetchResults() {
+                el.lastUpdated.textContent = 'Fetching results…';
+                try {
+                    const res = await fetch(API_URL, { cache: 'no-store' });
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    const data = await res.json();
+
+                    const set = (data.individual_results_sets || [])[0];
+                    if (!set || !set.results || set.results.length === 0) {
+                        el.tbody.innerHTML = '<tr><td colspan="8" class="empty-state">No results have posted yet. Check back once they\'re in.</td></tr>';
+                        allResults = [];
+                    } else {
+                        allResults = set.results.map((r) => ({
+                            place: r.place,
+                            bib: r.bib,
+                            name: [r.first_name, r.last_name].filter(Boolean).join(' '),
+                            location: [r.city, r.state].filter(Boolean).join(', '),
+                            gender: r.gender,
+                            age: r.age,
+                            chip_time: r.chip_time || r.clock_time,
+                            pace: r.pace,
+                        }));
+                        render();
+                    }
+
+                    el.lastUpdated.textContent = 'Updated ' + new Date().toLocaleTimeString();
+                } catch (err) {
+                    console.error('Failed to load results', err);
+                    el.tbody.innerHTML = '<tr><td colspan="8" class="error-state">Couldn\'t load results right now. Try refreshing.</td></tr>';
+                    el.lastUpdated.textContent = 'Last attempt failed at ' + new Date().toLocaleTimeString();
+                }
+            }
+
+            function render() {
+                const q = el.search.value.trim().toLowerCase();
+                const genderQ = el.genderFilter.value;
+
+                let rows = allResults.filter((r) => {
+                    const matchesSearch = !q || r.name.toLowerCase().includes(q) || String(r.bib).includes(q);
+                    const matchesGender = !genderQ || r.gender === genderQ;
+                    return matchesSearch && matchesGender;
+                });
+
+                rows.sort((a, b) => {
+                    let av = a[sortKey], bv = b[sortKey];
+                    const type = document.querySelector(`th[data-key="${sortKey}"]`)?.dataset.type;
+                    if (type === 'time') { av = timeToSeconds(av); bv = timeToSeconds(bv); }
+                    else if (type === 'num') { av = Number(av) || Infinity; bv = Number(bv) || Infinity; }
+                    else { av = (av || '').toLowerCase(); bv = (bv || '').toLowerCase(); }
+                    if (av < bv) return sortAsc ? -1 : 1;
+                    if (av > bv) return sortAsc ? 1 : -1;
+                    return 0;
+                });
+
+                if (rows.length === 0) {
+                    el.tbody.innerHTML = '<tr><td colspan="8" class="empty-state">No results match your filters.</td></tr>';
+                    return;
+                }
+
+                el.tbody.innerHTML = rows.map((r) => `
+                    <tr>
+                        <td class="${r.place === 1 ? 'place-1' : ''}">${r.place ?? '—'}</td>
+                        <td>${r.bib ?? '—'}</td>
+                        <td>${escapeHtml(r.name) || '—'}</td>
+                        <td>${escapeHtml(r.location) || '—'}</td>
+                        <td>${r.gender ?? '—'}</td>
+                        <td>${r.age ?? '—'}</td>
+                        <td>${r.chip_time ?? '—'}</td>
+                        <td>${r.pace ?? '—'}</td>
+                    </tr>
+                `).join('');
+            }
+
+            el.headers.forEach((th) => {
+                th.addEventListener('click', () => {
+                    const key = th.dataset.key;
+                    if (sortKey === key) { sortAsc = !sortAsc; }
+                    else { sortKey = key; sortAsc = true; }
+                    el.headers.forEach((h) => h.classList.remove('sorted', 'asc'));
+                    th.classList.add('sorted');
+                    if (sortAsc) th.classList.add('asc');
+                    render();
+                });
+            });
+
+            el.search.addEventListener('input', render);
+            el.genderFilter.addEventListener('change', render);
+            el.refreshBtn.addEventListener('click', fetchResults);
+
+            fetchResults();
+        }
+    })();
+    </script>
+
+</body>
+</html>

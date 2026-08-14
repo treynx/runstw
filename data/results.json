@@ -1,0 +1,12 @@
+{
+  "races": [
+    {
+      "slug": "1mile-pr-2026",
+      "name": "1 Mile PR",
+      "year": 2026,
+      "date": "2026-08-07",
+      "raceId": 211158,
+      "eventId": 1185082
+    }
+  ]
+}
