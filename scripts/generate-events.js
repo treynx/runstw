@@ -210,6 +210,73 @@ function buildWeeklyRunSeoHead(run) {
   return head;
 }
 
+// Bakes the real banner, action bar, event info, gallery, and race-details
+// content into a race page so crawlers see the actual event instead of the
+// empty placeholder elements the client JS would otherwise fill in after
+// fetch()ing data/events/{slug}.json. The client script still runs on top
+// of this (harmless — it re-sets the same values) so the CMS preview flow
+// is unaffected.
+function bakeEventBody(html, event) {
+  const title = escapeHtml(event.eventTitle || '');
+  const bannerImage = escapeAttr(absoluteUrl(event.bannerImage));
+  const color = escapeAttr(event.actionBarColor || '#e65100');
+
+  const bannerTitleHtml = event.eventLogo
+    ? `<h1 id="banner-title" style="display:none">${title}</h1><img src="${escapeAttr(event.eventLogo)}" alt="${escapeAttr(event.eventTitle || '')}" class="banner-logo">`
+    : `<h1 id="banner-title">${title}</h1>`;
+
+  html = html
+    .replace('<section class="banner" id="banner">', `<section class="banner" id="banner" style="background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('${bannerImage}');">`)
+    .replace('<h1 id="banner-title">Event Name</h1>', bannerTitleHtml)
+    .replace('<section class="action-bar" id="action-bar">', `<section class="action-bar" id="action-bar" style="background-color:${color}">`);
+
+  const registerAttrs = event.registerLink && event.registerLink !== '#'
+    ? `href="${escapeAttr(event.registerLink)}" style="color:${color}"`
+    : `style="color:${color};cursor:default"`;
+  html = html.replace(
+    '<a href="#" id="register-btn" class="btn" target="_blank"><span class="btn-icon">&raquo;</span><span id="register-label">Register Now</span></a>',
+    `<a ${registerAttrs} id="register-btn" class="btn" target="_blank"><span class="btn-icon">&raquo;</span><span id="register-label">${escapeHtml(event.registerButtonText || 'Register Now')}</span></a>`
+  );
+
+  if (event.volunteerLink) {
+    html = html.replace(
+      '<a id="volunteer-btn" class="btn" target="_blank" hidden><span class="btn-icon">&#9998;</span><span id="volunteer-label">Volunteer</span></a>',
+      `<a href="${escapeAttr(event.volunteerLink)}" id="volunteer-btn" class="btn" target="_blank" style="color:${color}"><span class="btn-icon">&#9998;</span><span id="volunteer-label">${escapeHtml(event.volunteerButtonText || 'Volunteer')}</span></a>`
+    );
+  }
+
+  html = html.replace(
+    '<div class="event-info-body" id="event-info-body"></div>',
+    `<div class="event-info-body" id="event-info-body">${event.eventInfo || ''}</div>`
+  );
+
+  const gallery = event.gallery || [];
+  if (gallery.length) {
+    const strip = gallery.map((src) => `<a href="${escapeAttr(src)}" target="_blank"><img src="${escapeAttr(src)}" alt="${escapeAttr(event.eventTitle || '')} race photo" loading="lazy"></a>`).join('\n            ');
+    html = html
+      .replace('<section class="gallery-section" id="gallery-section" hidden>', '<section class="gallery-section" id="gallery-section">')
+      .replace('<div class="gallery-strip" id="gallery-strip"></div>', `<div class="gallery-strip" id="gallery-strip">\n            ${strip}\n        </div>`);
+    if (event.galleryLink) {
+      html = html
+        .replace('<p class="gallery-link" id="gallery-link-wrap" hidden>', '<p class="gallery-link" id="gallery-link-wrap">')
+        .replace('<a id="gallery-link" target="_blank">See all race photos &rarr;</a>', `<a id="gallery-link" href="${escapeAttr(event.galleryLink)}" target="_blank">See all race photos &rarr;</a>`);
+    }
+  }
+
+  const accordions = event.accordions || [];
+  if (accordions.length) {
+    const accHtml = accordions.map((acc) => `<details>
+            <summary>▸ ${escapeHtml(acc.title || '')}</summary>
+            <div style="padding-top: 10px; line-height: 1.6;">${acc.content || ''}</div>
+        </details>`).join('\n        ');
+    html = html.replace('<div id="accordion-container"></div>', `<div id="accordion-container">\n        ${accHtml}\n        </div>`);
+  } else {
+    html = html.replace('<section class="details-section">', '<section class="details-section" style="display:none">');
+  }
+
+  return html;
+}
+
 const CLOCK_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 3h6"/></svg>';
 const PIN_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-5.3-7-11a7 7 0 0 1 14 0c0 5.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>';
 
@@ -249,7 +316,8 @@ events.forEach((event) => {
   }
 
   const htmlPath = path.join(ROOT, `${slug}.html`);
-  const pageHtml = template.replace('<title>Event | STRR</title>', buildSeoHead(event));
+  let pageHtml = template.replace('<title>Event | STRR</title>', buildSeoHead(event));
+  pageHtml = bakeEventBody(pageHtml, event);
   fs.writeFileSync(htmlPath, pageHtml);
 
   const jsonPath = path.join(EVENTS_DATA_DIR, `${slug}.json`);
@@ -259,6 +327,32 @@ events.forEach((event) => {
 });
 
 fs.writeFileSync(MANIFEST_FILE, JSON.stringify(currentSlugs, null, 2));
+
+// --- 1b. Bake the homepage race grid: real <a href> cards so crawlers and
+// no-JS visitors see (and can follow links to) the actual race pages ---
+try {
+  const homeEventsFile = path.join(ROOT, 'index.html');
+  let homeHtml = fs.readFileSync(homeEventsFile, 'utf8');
+  const cards = events.filter((e) => e.showOnHomepage && e.slug).map((e) => `<a href="${e.slug}.html" class="race-card" style="background-image: url('${escapeAttr(e.bannerImage)}');">
+                <div class="race-content">
+                    <h2>${escapeHtml(e.eventTitle || '')}</h2>
+                    <p>${escapeHtml(e.homepageSubtitle || '')}</p>
+                </div>
+            </a>`).join('\n            ');
+
+  const sIdx = homeHtml.indexOf('<!-- RACE_GRID_START');
+  const sCommentEnd = sIdx === -1 ? -1 : homeHtml.indexOf('-->', sIdx);
+  const eIdx = homeHtml.indexOf('<!-- RACE_GRID_END -->');
+  if (sIdx !== -1 && sCommentEnd !== -1 && eIdx !== -1) {
+    homeHtml = homeHtml.slice(0, sCommentEnd + 3) + '\n            ' + cards + '\n            ' + homeHtml.slice(eIdx);
+    fs.writeFileSync(homeEventsFile, homeHtml);
+    console.log('Baked: homepage race grid');
+  } else {
+    console.warn('Homepage race-grid markers not found; skipped');
+  }
+} catch (err) {
+  console.warn('Could not bake homepage race grid:', err.message);
+}
 
 // --- 2. Compute the weekly-run data shared by the individual run pages and the homepage bake ---
 let runs = [];
