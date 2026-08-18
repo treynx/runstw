@@ -64,6 +64,16 @@ collections:
                 fields:
                   - { label: "Date", name: "date", widget: "datetime", time_format: false, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD" }
                   - { label: "Reason (shown on the site)", name: "reason", widget: "string", required: false, hint: "e.g. Iced trails — see Facebook" }
+              - label: "One-Off Relocations"
+                name: "relocations"
+                widget: "list"
+                required: false
+                summary: "{{date}} → {{location}}"
+                hint: "Move a single date to a different spot (trail closure, construction) without changing the usual Location above. The homepage shows that date as MOVED with the new spot. Delete the entry to move it back."
+                fields:
+                  - { label: "Date", name: "date", widget: "datetime", time_format: false, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD" }
+                  - { label: "New Location", name: "location", widget: "string", hint: "e.g. Sanborn Lake" }
+                  - { label: "Google Maps Link", name: "mapLink", widget: "string", required: false, hint: "Optional. Makes the new location tap-to-open in Maps." }
 
   - name: "events"
     label: "Events"

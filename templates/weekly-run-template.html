@@ -37,6 +37,8 @@
         .run-type { flex: none; background: #f5f5f5; color: #666; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 12px; border-radius: 50px; }
         .run-logo { flex: none; width: 64px; height: 64px; object-fit: contain; border-radius: 8px; background: #fff; }
         .run-cancel-chip { flex: none; background: #c62828; color: #fff; font-weight: 900; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 12px; border-radius: 50px; }
+        .run-move-chip { flex: none; background: #e65100; color: #fff; font-weight: 900; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 4px 12px; border-radius: 50px; }
+        .run-moved-note { margin-top: 6px; color: #e65100; font-weight: 700; font-size: 0.95rem; }
         .ws-irow { display: flex; gap: 12px; margin-top: 14px; align-items: flex-start; }
         .ws-irow svg { width: 22px; height: 22px; flex: none; margin-top: 3px; stroke: #999; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
         .ws-big { font-weight: 700; font-size: 1.15rem; }
@@ -244,7 +246,11 @@
                     if (d.getDay() !== RUN.dayNum) continue;
                     const start = new Date(d); start.setHours(+parts[0], +parts[1], 0, 0);
                     const cx = (RUN.cancellations || []).find(c => c.date === dateKey(start));
-                    return { start, cancelled: !!cx, reason: cx ? cx.reason : '' };
+                    const rx = (RUN.relocations || []).find(c => c.date === dateKey(start));
+                    return {
+                        start, cancelled: !!cx, reason: cx ? cx.reason : '',
+                        relocated: !cx && !!rx, newLocation: rx ? rx.location : '', newMapLink: rx ? rx.mapLink : '',
+                    };
                 }
                 return null;
             }
@@ -256,20 +262,24 @@
                 box.classList.toggle('run-cancelled', o.cancelled);
                 const chipEl = document.getElementById('run-chip');
                 if (o.cancelled) { chipEl.outerHTML = '<span class="run-cancel-chip" id="run-chip">Cancelled</span>'; }
+                else if (o.relocated) { chipEl.outerHTML = '<span class="run-move-chip" id="run-chip">Moved</span>'; }
+                const locationText = o.relocated ? o.newLocation : RUN.location;
+                const locationLink = o.relocated ? o.newMapLink : RUN.map;
                 box.innerHTML =
                     '<div class="ws-irow">' + CLOCK
                     + '<div><span class="ws-big"><span class="ws-time">' + fmtTime(o.start) + '</span>'
-                    + (o.cancelled ? '' : '<span class="ws-wx" id="run-wx"></span>') + '</span>'
+                    + (o.cancelled || o.relocated ? '' : '<span class="ws-wx" id="run-wx"></span>') + '</span>'
                     + '<div class="ws-subline">' + fullDate + '</div></div></div>'
                     + '<div class="ws-irow">' + PIN
-                    + '<div><span class="ws-big">' + (RUN.map
-                        ? '<a href="' + RUN.map + '" target="_blank" rel="noopener">' + RUN.location + '</a>'
-                        : RUN.location) + '</span>'
+                    + '<div><span class="ws-big">' + (locationLink
+                        ? '<a href="' + locationLink + '" target="_blank" rel="noopener">' + locationText + '</a>'
+                        : locationText) + '</span>'
                     + '<div class="ws-subline">Stillwater, OK</div>'
                     + (o.cancelled && o.reason ? '<div class="run-reason">' + o.reason + '</div>' : '')
+                    + (o.relocated ? '<div class="run-moved-note">Moved from ' + RUN.location + ' today</div>' : '')
                     + '</div></div>';
 
-                if (!o.cancelled && RUN.lat != null && RUN.lon != null) {
+                if (!o.cancelled && !o.relocated && RUN.lat != null && RUN.lon != null) {
                     fetch('https://api.open-meteo.com/v1/forecast?latitude=' + RUN.lat + '&longitude=' + RUN.lon
                         + '&hourly=temperature_2m,weather_code,is_day&temperature_unit=fahrenheit&timezone=auto&forecast_days=16')
                         .then(r => r.ok ? r.json() : null)

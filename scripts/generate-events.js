@@ -98,6 +98,7 @@ function buildRunOccurrenceEvents(run, pageUrl, count = 4, durationMinutes = 90)
   const description = stripHtml(run.about).slice(0, 300) || `${run.name} — a free weekly group run in Stillwater, OK.`;
   return nextOccurrenceDates(run.dayNum, count).map((dateStr) => {
     const cancelled = (run.cancellations || []).some((c) => c.date === dateStr);
+    const relocation = (run.relocations || []).find((c) => c.date === dateStr);
     const end = addMinutesToTime(dateStr, run.time24, durationMinutes);
     return {
       '@type': 'Event',
@@ -110,7 +111,7 @@ function buildRunOccurrenceEvents(run, pageUrl, count = 4, durationMinutes = 90)
       description,
       image: image ? [image] : undefined,
       url: pageUrl,
-      location: { '@type': 'Place', name: run.location, address: { '@type': 'PostalAddress', addressLocality: 'Stillwater', addressRegion: 'OK', addressCountry: 'US' } },
+      location: { '@type': 'Place', name: relocation ? relocation.location : run.location, address: { '@type': 'PostalAddress', addressLocality: 'Stillwater', addressRegion: 'OK', addressCountry: 'US' } },
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: pageUrl },
       organizer: { '@type': 'Organization', name: 'Stillwater Trail and Road Runners', url: SITE_URL },
     };
@@ -295,6 +296,9 @@ try {
     cancellations: (r.cancellations || [])
       .map((c) => ({ date: String(c.date || '').slice(0, 10), reason: c.reason || '' }))
       .filter((c) => c.date),
+    relocations: (r.relocations || [])
+      .map((c) => ({ date: String(c.date || '').slice(0, 10), location: c.location || '', mapLink: c.mapLink || '' }))
+      .filter((c) => c.date && c.location),
   })).filter((r) => r.name);
 } catch (err) {
   console.warn('Could not read data/homepage.json for weekly runs:', err.message);
