@@ -1,6 +1,24 @@
 {
   "redirects": [
-    { "source": "/mcmurtry.html", "destination": "/mcmurtrytrailrun.html", "permanent": true },
-    { "source": "/mcmurtry", "destination": "/mcmurtrytrailrun.html", "permanent": true }
+    {
+      "source": "/mcmurtry.html",
+      "destination": "/mcmurtrytrailrun.html",
+      "permanent": true
+    },
+    {
+      "source": "/mcmurtry",
+      "destination": "/mcmurtrytrailrun.html",
+      "permanent": true
+    },
+    {
+      "source": "/tracking",
+      "destination": "/tracking.html",
+      "permanent": false
+    },
+    {
+      "source": "/megamidsouth",
+      "destination": "/tracking.html",
+      "permanent": false
+    }
   ]
 }
