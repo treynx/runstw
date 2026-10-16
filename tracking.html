@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mega Mid South Live Tracking | STRR</title>
-    <meta name="description" content="Follow Mega Mid South riders live: map, leaderboard by route mile, and favorites, from the bikepacking race that starts in Stillwater, Oklahoma.">
+    <meta name="description" content="Follow Mega Mid South riders live: race clock, leaderboard by route mile, and favorites, from the bikepacking race that starts in Stillwater, Oklahoma.">
     <link rel="icon" href="/favicon.ico" sizes="48x48">
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="canonical" href="https://runstw.com/tracking.html">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -47,8 +46,6 @@
         .stat .num { font-size: 1.5rem; font-weight: 900; line-height: 1.2; }
         .stat .lbl { font-size: 0.72rem; color: #666; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
 
-        .track-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 16px; align-items: start; }
-        #map { height: 640px; border-radius: 6px; border: 1px solid #eee; background: #eef1ee; position: sticky; top: 96px; z-index: 1; }
 
         .panel { background: #fff; border: 1px solid #eee; border-radius: 6px; }
         .status-bar { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid #eee; font-size: 0.82rem; color: #666; }
@@ -63,8 +60,7 @@
         .chip.on { background: #e65100; border-color: #e65100; color: #fff; }
 
         .board { list-style: none; max-height: 560px; overflow-y: auto; }
-        .rider { display: grid; grid-template-columns: 30px 34px minmax(0,1fr) auto; gap: 10px; align-items: center; padding: 9px 12px; border-bottom: 1px solid #f1f1f1; cursor: pointer; }
-        .rider:hover, .rider.sel { background: #fff4ec; }
+        .rider { display: grid; grid-template-columns: 30px 34px minmax(0,1fr) auto; gap: 10px; align-items: center; padding: 9px 12px; border-bottom: 1px solid #f1f1f1; }
         .rider .rank { font-weight: 900; color: #999; text-align: right; font-size: 0.9rem; }
         .rider.top .rank { color: #e65100; }
         .badge { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-weight: 900; font-size: 0.72rem; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,0.15); }
@@ -83,29 +79,27 @@
         .empty-state, .error-state { padding: 30px 14px; color: #666; text-align: center; }
         .error-state { color: #b71c1c; }
 
-        /* Map markers + popups */
-        .tl-marker { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; color: #fff; font: 900 10px 'Montserrat', sans-serif; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.4); }
-        .tl-marker.fav { box-shadow: 0 0 0 3px #f5a623, 0 1px 4px rgba(0,0,0,0.4); }
-        .tl-marker.old { opacity: 0.55; }
-        .leaflet-popup-content { font-family: 'Montserrat', sans-serif; font-size: 0.82rem; margin: 12px 14px; }
-        .pop { display: flex; gap: 10px; min-width: 220px; }
-        .pop img { width: 64px; height: 64px; object-fit: cover; border-radius: 6px; flex: none; background: #eee; }
-        .pop h3 { font-size: 0.95rem; font-weight: 900; margin-bottom: 2px; }
-        .pop .row { color: #555; line-height: 1.45; }
-        .pop a { color: #e65100; font-weight: 700; }
         .credit { font-size: 0.75rem; color: #888; margin-top: 14px; }
         .credit a { color: #e65100; font-weight: 700; }
 
-        @media (max-width: 900px) {
-            .track-grid { grid-template-columns: 1fr; }
-            #map { height: 420px; position: relative; top: 0; }
-            .board { max-height: none; }
+        /* Race clock: sized for a TV across the room */
+        .race-clock { background: #111; color: #fff; border-radius: 8px; text-align: center; padding: 18px 16px 22px; margin-bottom: 14px; }
+        .race-clock .clk-label { font-size: clamp(0.85rem, 1.6vw, 1.4rem); font-weight: 700; text-transform: uppercase; letter-spacing: 3px; color: #ff8a3d; }
+        .race-clock .clk-time { font-size: clamp(3.2rem, 11vw, 10rem); font-weight: 900; line-height: 1.05; font-variant-numeric: tabular-nums; letter-spacing: 2px; }
+        .race-clock .clk-sub { font-size: clamp(0.8rem, 1.3vw, 1.15rem); color: #aaa; }
+        .board { max-height: none; }
+        .board .rider { padding: 12px 16px; }
+        @media (min-width: 1100px) {
+            /* Two columns of riders on a wide screen so more fit without scrolling */
+            .board { display: grid; grid-template-columns: 1fr 1fr; column-gap: 0; }
+            .board .rider:nth-child(odd) { border-right: 1px solid #f1f1f1; }
+            .board .empty-state, .board .error-state { grid-column: 1 / -1; }
+            .rider .nm { font-size: 1.05rem; }
         }
         @media (max-width: 768px) {
             .track-wrap { padding-top: 95px; }
             .track-head h1 { font-size: 1.5rem; }
             .stats { grid-template-columns: repeat(2, 1fr); }
-            #map { height: 360px; }
         }
 
         /* --- FOOTER --- */
@@ -164,6 +158,12 @@
             </div>
         </div>
 
+        <div class="race-clock" aria-live="off">
+            <div class="clk-label" id="clk-label">Race starts in</div>
+            <div class="clk-time" id="clk-time">--:--:--</div>
+            <div class="clk-sub" id="clk-sub">Saturday, October 17 &bull; 8:00 AM</div>
+        </div>
+
         <div class="stats">
             <div class="stat"><div class="num" id="st-riders">–</div><div class="lbl">Riders</div></div>
             <div class="stat"><div class="num" id="st-moving">–</div><div class="lbl">Moving now</div></div>
@@ -171,10 +171,7 @@
             <div class="stat"><div class="num" id="st-fin">–</div><div class="lbl">Finished</div></div>
         </div>
 
-        <div class="track-grid">
-            <div id="map" aria-label="Map of rider positions"></div>
-
-            <div class="panel">
+        <div class="panel">
                 <div class="status-bar">
                     <span id="last-updated">Loading riders…</span>
                     <button id="refresh-btn" type="button">Refresh</button>
@@ -189,7 +186,6 @@
                     <button class="chip" data-chip="moving" type="button">Moving</button>
                 </div>
                 <ul class="board" id="board"><li class="empty-state">Loading riders…</li></ul>
-            </div>
         </div>
 
         <p class="credit">Positions from SPOT trackers via <a id="tl-link" href="https://trackleaders.com/megamidsouth26f.php" target="_blank" rel="noopener">Trackleaders</a>. Refreshes every minute. Ranked by route mile.</p>
@@ -292,7 +288,6 @@
             .catch(err => console.error('Failed to load nav weekly runs:', err));
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <script>
     // Live tracking page. Reads Trackleaders' undocumented feeds through our own
     // /api/trackleaders proxy (Trackleaders sends no CORS headers) and parses the
@@ -401,65 +396,28 @@
         const isMoving = (r) => phase(r) === 'racing' && r.speed >= 2 && minutesSince(r) <= MOVING_MIN_AGE;
         const ORDER = { done: 0, racing: 1, pre: 2, out: 3 };
 
-        // ---------- map ----------
-        const map = L.map('map', { scrollWheelZoom: false, zoomControl: true }).setView([36.115, -97.06], 9);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18, attribution: '&copy; OpenStreetMap contributors',
-        }).addTo(map);
-        map.on('focus', () => map.scrollWheelZoom.enable());
-        map.on('blur', () => map.scrollWheelZoom.disable());
+        // ---------- race clock ----------
+        // Counts down to the start, then shows elapsed time as H:MM:SS with hours
+        // that keep climbing past 24 (25:00:00, 48:00:00 ...). Change START for
+        // another race, or pass ?start=2026-10-17T08:00:00-05:00 in the URL.
+        const START = new Date(params.get('start') || '2026-10-17T08:00:00-05:00');
+        const clk = { label: document.getElementById('clk-label'), time: document.getElementById('clk-time'), sub: document.getElementById('clk-sub') };
+        const two = (n) => String(n).padStart(2, '0');
+        function tickClock() {
+            const diff = Date.now() - START.getTime();
+            const secs = Math.floor(Math.abs(diff) / 1000);
+            const h = Math.floor(secs / 3600), m = Math.floor((secs % 3600) / 60), s = secs % 60;
+            const started = diff >= 0;
+            clk.label.textContent = started ? 'Race clock' : 'Race starts in';
+            clk.time.textContent = `${started ? h : two(h)}:${two(m)}:${two(s)}`;
+            clk.sub.innerHTML = started ? 'Started Saturday, October 17 at 8:00 AM' : 'Saturday, October 17 &bull; 8:00 AM';
+        }
+        tickClock();
+        setInterval(tickClock, 250);
 
-        let routeLayer = null;
-        const markers = new Map();
         let riders = [];
-        let selected = null;
         let favs = new Set(store.get('tl-favs-' + RACE, []));
         const chips = new Set(store.get('tl-chips', []));
-        let fittedOnce = false;
-
-        function markerIcon(r) {
-            const cls = ['tl-marker'];
-            if (favs.has(r.id)) cls.push('fav');
-            if (minutesSince(r) > STALE_AGE || phase(r) === 'out') cls.push('old');
-            return L.divIcon({ className: '', html: `<div class="${cls.join(' ')}" style="background:${esc(r.color)}">${esc(r.initials)}</div>`, iconSize: [28, 28], iconAnchor: [14, 14], popupAnchor: [0, -14] });
-        }
-
-        function popupHtml(r) {
-            const img = r.avatar ? `<img src="${esc(r.avatar)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : '';
-            return `<div class="pop">${img}<div>
-                <h3>${esc(r.name)}</h3>
-                <div class="row"><b>${esc(r.status)}</b> &bull; mile ${r.mile.toFixed(1)} &bull; ${r.speed.toFixed(1)} mph</div>
-                <div class="row">Last ping ${esc(ago(r.reported))}</div>
-                ${r.format ? `<div class="row">${esc(r.format)}${r.age ? ', age ' + esc(r.age) : ''}</div>` : ''}
-                ${r.from ? `<div class="row">${esc(r.from)}</div>` : ''}
-                ${r.bike ? `<div class="row">Bike: ${esc(r.bike)}</div>` : ''}
-                <div class="row"><a href="https://trackleaders.com/${esc(RACE)}i.php?name=${encodeURIComponent(r.id)}" target="_blank" rel="noopener">Full history &rarr;</a></div>
-            </div></div>`;
-        }
-
-        function drawMarkers() {
-            const seen = new Set();
-            riders.forEach((r) => {
-                seen.add(r.id);
-                let m = markers.get(r.id);
-                if (!m) {
-                    m = L.marker([r.lat, r.lng]).addTo(map);
-                    m.on('click', () => select(r.id, false));
-                    markers.set(r.id, m);
-                }
-                m.setLatLng([r.lat, r.lng]);
-                m.setIcon(markerIcon(r));
-                m.setZIndexOffset(favs.has(r.id) ? 1000 : (ORDER[phase(r)] === 1 ? 500 : 0));
-                m.bindPopup(popupHtml(r), { maxWidth: 320 });
-            });
-            markers.forEach((m, id) => { if (!seen.has(id)) { map.removeLayer(m); markers.delete(id); } });
-        }
-
-        function fitField() {
-            const pts = riders.filter((r) => phase(r) !== 'out').map((r) => [r.lat, r.lng]);
-            if (routeLayer) map.fitBounds(routeLayer.getBounds(), { padding: [20, 20] });
-            else if (pts.length) map.fitBounds(pts, { padding: [30, 30], maxZoom: 13 });
-        }
 
         // ---------- leaderboard ----------
         function ranked() {
@@ -494,7 +452,7 @@
                 else if (isMoving(r)) tag = '<span class="tag moving">Moving</span>';
                 else if (p === 'racing' && mins > STALE_AGE) tag = '<span class="tag stale">No recent ping</span>';
                 else if (p === 'racing') tag = '<span class="tag">Stopped</span>';
-                return `<li class="rider${rank && rank <= 3 ? ' top' : ''}${selected === r.id ? ' sel' : ''}" data-id="${esc(r.id)}">
+                return `<li class="rider${rank && rank <= 3 ? ' top' : ''}" data-id="${esc(r.id)}">
                     <span class="rank">${rank ?? ''}</span>
                     <span class="badge" style="background:${esc(r.color)}">${esc(r.initials)}</span>
                     <span class="who">
@@ -519,21 +477,6 @@
             document.getElementById('live-pill').textContent = allPre ? 'Pre-race' : 'Live tracking';
         }
 
-        function select(id, pan = true) {
-            selected = id;
-            const r = riders.find((x) => x.id === id);
-            const m = markers.get(id);
-            if (r && m) {
-                if (pan) map.setView([r.lat, r.lng], Math.max(map.getZoom(), 12));
-                m.openPopup();
-            }
-            render();
-            if (!pan) {
-                const li = el.board.querySelector(`[data-id="${CSS.escape(id)}"]`);
-                if (li) li.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-            }
-        }
-
         // ---------- data loading ----------
         async function getFeed(file) {
             const r = await fetch(`/api/trackleaders?race=${encodeURIComponent(RACE)}&file=${file}`, { cache: 'no-store' });
@@ -541,25 +484,12 @@
             return r.text();
         }
 
-        async function loadRoute() {
-            try {
-                const route = parseRoute(await getFeed('route.js'));
-                if (!route.lines.length) return;
-                routeLayer = L.featureGroup(route.lines.map((pts) => L.polyline(pts, { color: '#e65100', weight: 3, opacity: 0.75 }))).addTo(map);
-                routeLayer.bringToBack();
-                if (route.miles) document.getElementById('race-sub').innerHTML = `Bikepacking race from Stillwater, OK &bull; ${route.miles.toFixed(0)} miles`;
-            } catch (e) { console.warn('Route not loaded', e); }
-        }
-
         async function loadRiders() {
             el.updated.textContent = 'Updating…';
             try {
                 riders = parseRiders(await getFeed('mainpoints.js'));
-                drawMarkers();
                 renderStats();
                 render();
-                if (!fittedOnce) { fitField(); fittedOnce = true; }
-                if (selected) { const m = markers.get(selected); if (m && m.isPopupOpen()) m.openPopup(); }
                 el.updated.textContent = `Updated ${new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
             } catch (e) {
                 console.error(e);
@@ -575,11 +505,9 @@
                 const id = star.dataset.star;
                 favs.has(id) ? favs.delete(id) : favs.add(id);
                 store.set('tl-favs-' + RACE, [...favs]);
-                drawMarkers(); render();
+                render();
                 return;
             }
-            const li = e.target.closest('.rider');
-            if (li) select(li.dataset.id);
         });
         el.chips.forEach((c) => {
             c.classList.toggle('on', chips.has(c.dataset.chip));
@@ -595,7 +523,6 @@
         el.format.addEventListener('change', render);
         el.refresh.addEventListener('click', loadRiders);
 
-        loadRoute().then(() => { if (fittedOnce) fitField(); });
         loadRiders();
         setInterval(() => { if (!document.hidden) loadRiders(); }, REFRESH_MS);
         document.addEventListener('visibilitychange', () => { if (!document.hidden) loadRiders(); });
