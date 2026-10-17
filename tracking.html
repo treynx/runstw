@@ -177,7 +177,6 @@
                     <button id="refresh-btn" type="button">Refresh</button>
                 </div>
                 <div class="controls">
-                    <input type="search" id="search" placeholder="Search rider or hometown…">
                     <select id="format-filter"><option value="">All formats</option></select>
                 </div>
                 <div class="chip-row">
@@ -188,7 +187,7 @@
                 <ul class="board" id="board"><li class="empty-state">Loading riders…</li></ul>
         </div>
 
-        <p class="credit">Positions from SPOT trackers via <a id="tl-link" href="https://trackleaders.com/megamidsouth26f.php" target="_blank" rel="noopener">Trackleaders</a>. Refreshes every minute. Ranked by route mile.</p>
+        <p class="credit">Positions from SPOT trackers via <a id="tl-link" href="https://trackleaders.com/megamidsouth26f.php" target="_blank" rel="noopener">Trackleaders</a>. Refreshes every minute. Riders still on course, most miles first. Finished riders drop off the list.</p>
     </main>
 
     <footer>
@@ -308,7 +307,6 @@
         const el = {
             board: document.getElementById('board'),
             updated: document.getElementById('last-updated'),
-            search: document.getElementById('search'),
             format: document.getElementById('format-filter'),
             refresh: document.getElementById('refresh-btn'),
             chips: document.querySelectorAll('.chip'),
@@ -424,23 +422,24 @@
             return riders.slice().sort((a, b) => (ORDER[phase(a)] - ORDER[phase(b)]) || (b.mile - a.mile) || a.name.localeCompare(b.name));
         }
 
+        // The board answers "who finishes next?": riders still on course, most
+        // miles first. Finished and scratched riders drop off (Finished count
+        // stays in the stats bar). Pre-start riders sit at the bottom unranked.
         function render() {
-            const q = el.search.value.trim().toLowerCase();
             const fmt = el.format.value;
             let rank = 0;
-            const rows = ranked().map((r) => {
+            const rows = ranked().filter((r) => phase(r) === 'racing' || phase(r) === 'pre').map((r) => {
                 const p = phase(r);
-                if (p === 'racing' || p === 'done') rank += 1;
-                return { r, rank: (p === 'racing' || p === 'done') ? rank : null };
+                if (p === 'racing') rank += 1;
+                return { r, rank: p === 'racing' ? rank : null };
             }).filter(({ r }) =>
-                (!q || (r.name + ' ' + r.from + ' ' + r.bike).toLowerCase().includes(q)) &&
                 (!fmt || r.format === fmt) &&
                 (!chips.has('favs') || favs.has(r.id)) &&
                 (!chips.has('ok') || r.state === 'OK') &&
                 (!chips.has('moving') || isMoving(r)));
 
             if (!rows.length) {
-                el.board.innerHTML = `<li class="empty-state">${riders.length ? 'No riders match those filters.' : 'No riders in the feed yet.'}</li>`;
+                el.board.innerHTML = `<li class="empty-state">${riders.length ? (riders.some((x) => phase(x) === 'racing' || phase(x) === 'pre') ? 'No riders match those filters.' : 'Everyone is in. Congratulations, riders!') : 'No riders in the feed yet.'}</li>`;
                 return;
             }
 
@@ -519,7 +518,6 @@
                 render();
             });
         });
-        el.search.addEventListener('input', render);
         el.format.addEventListener('change', render);
         el.refresh.addEventListener('click', loadRiders);
 
