@@ -1,11 +1,9 @@
 {
-  "registerButtonText": "Register Now",
-  "volunteerLink": "https://runsignup.com/Race/Volunteer/OK/Stillwater/OrangeDirtTrailSeries",
+  "registerButtonText": "See Results",
   "eventLogo": "",
   "actionBarColor": "#e65100",
   "eventDate": "2026-10-17T07:00:00.000-05:00",
   "eventInfo": "<p>Join us for the ultimate fall trail series. Technical single-track, beautiful lake views, and the best post-race community in Stillwater.</p><p><strong>Location:</strong> East Side Pavilion, Lake McMurtry<br><strong>Start Times:</strong> Marathon 7:00 AM | Half 7:30 AM | 10K 8:00 AM | 5K 8:30 AM</p>",
-  "volunteerButtonText": "Volunteer",
   "accordions": [
     {
       "title": "Registration Pricing",
@@ -35,6 +33,6 @@
     "/assets/og3.jpg",
     "/assets/og.jpg"
   ],
-  "registerLink": "https://runsignup.com/Race/OK/Stillwater/OrangeDirtTrailSeries",
+  "registerLink": "results.html",
   "eventTitle": "Orange Dirt Trail Series"
 }

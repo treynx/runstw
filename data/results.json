@@ -15,6 +15,38 @@
       "date": "2026-04-04",
       "raceId": 205014,
       "eventId": 1145673
+    },
+    {
+      "slug": "orange-dirt-5k-2026",
+      "name": "Orange Dirt — 5K",
+      "year": 2026,
+      "date": "2026-10-17",
+      "raceId": 132887,
+      "eventId": 1179579
+    },
+    {
+      "slug": "orange-dirt-10k-2026",
+      "name": "Orange Dirt — 10K",
+      "year": 2026,
+      "date": "2026-10-17",
+      "raceId": 132887,
+      "eventId": 1179580
+    },
+    {
+      "slug": "orange-dirt-half-marathon-2026",
+      "name": "Orange Dirt — Half Marathon",
+      "year": 2026,
+      "date": "2026-10-17",
+      "raceId": 132887,
+      "eventId": 1179581
+    },
+    {
+      "slug": "orange-dirt-marathon-2026",
+      "name": "Orange Dirt — Marathon",
+      "year": 2026,
+      "date": "2026-10-17",
+      "raceId": 132887,
+      "eventId": 1179582
     }
   ]
 }
