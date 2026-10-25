@@ -68,6 +68,14 @@
         .gallery-link a { color: #e65100; }
         .gallery-link a:hover { text-decoration: underline; }
 
+        /* --- SPONSORS --- */
+        .sponsors-section { max-width: 900px; margin: 0 auto; padding: 0 20px 60px 20px; }
+        .sponsors-section h2 { font-size: 2rem; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; text-align: center; }
+        .sponsors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; }
+        .sponsor-card { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 18px; display: flex; align-items: center; justify-content: center; height: 90px; transition: box-shadow 0.2s ease; }
+        .sponsor-card:has(a):hover { box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+        .sponsor-card img { max-width: 100%; max-height: 64px; object-fit: contain; }
+
         /* --- ACCORDIONS --- */
         .details-section { max-width: 800px; margin: 0 auto; padding: 0 20px 60px 20px; }
         .details-section h2 { font-size: 2rem; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; }
@@ -179,6 +187,11 @@
     <section class="instagram-section" id="instagram-section" hidden>
         <h2>Follow Along</h2>
         <div id="behold-container"></div>
+    </section>
+
+    <section class="sponsors-section" id="sponsors-section" hidden>
+        <h2>Our Sponsors</h2>
+        <div class="sponsors-grid" id="sponsors-grid"></div>
     </section>
 
     <footer>
@@ -352,6 +365,15 @@
                     `).join('');
                 } else {
                     document.querySelector('.details-section').style.display = 'none';
+                }
+
+                const sponsors = data.sponsors || [];
+                if (sponsors.length) {
+                    document.getElementById('sponsors-section').hidden = false;
+                    document.getElementById('sponsors-grid').innerHTML = sponsors.map(s => {
+                        const img = `<img src="${s.logo}" alt="${s.name}" loading="lazy">`;
+                        return `<div class="sponsor-card">${s.link ? `<a href="${s.link}" target="_blank" rel="noopener">${img}</a>` : img}</div>`;
+                    }).join('');
                 }
 
                 // Instagram feed via Behold — only when a feed ID is set in the CMS

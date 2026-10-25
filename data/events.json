@@ -39,6 +39,20 @@
         "/assets/og3.jpg",
         "/assets/og.jpg"
       ],
+      "sponsors": [
+        { "name": "VisitStillwater.org", "logo": "/assets/sponsors/visit-stillwater.png" },
+        { "name": "Stonecloud Brewing Co.", "logo": "/assets/sc-mediakit_s-color-logo2.png" },
+        { "name": "District Bicycles", "logo": "/assets/sponsors/district-bicycles.png" },
+        { "name": "Stillwater Summit Co.", "logo": "/assets/sponsors/stillwater-summit-co.png" },
+        { "name": "MidSouth", "logo": "/assets/sponsors/midsouth.png" },
+        { "name": "Podiatry - Stillwater Medical", "logo": "/assets/sponsors/podiatry-stillwater-medical.png" },
+        { "name": "OCTS - Oklahoma Closing & Title Services", "logo": "/assets/sponsors/octs.png" },
+        { "name": "TREVI", "logo": "/assets/sponsors/trevi.png" },
+        { "name": "Total Health - Stillwater Medical", "logo": "/assets/sponsors/total-health-stillwater-medical.png" },
+        { "name": "Aspen Coffee Company", "logo": "/assets/aspen-logo_orig.png" },
+        { "name": "HATCH - Early Mood Food", "logo": "/assets/sponsors/hatch.png" },
+        { "name": "Exchange Bank", "logo": "/assets/sponsors/exchange-bank.png" }
+      ],
       "registerLink": "results.html",
       "eventTitle": "Orange Dirt Trail Series"
     },
