@@ -31,27 +31,56 @@
       "bannerImage": "/assets/trail_series_composite_big.jpg",
       "venue": "Lake McMurtry East Recreation Area",
       "navLabel": "Orange Dirt Trail Series",
-      "gallery": [
-        "/assets/race_132887_178763_a52e1b25-cfec-4893-8b3c-606b8dc2329f.jpg",
-        "/assets/race_132887_178763_a5d332b9-a71c-4f5f-a769-c04980e01864.jpg",
-        "/assets/race_132887_178763_a5f2857e-19d0-413d-b555-6b3f301c8e9b.jpg",
-        "/assets/race_132887_178763_a5a2309f-e5a3-40f9-a466-3da1837cda02.jpg",
-        "/assets/og3.jpg",
-        "/assets/og.jpg"
-      ],
+      "gallery": [],
       "sponsors": [
-        { "name": "VisitStillwater.org", "logo": "/assets/sponsors/visit-stillwater.png" },
-        { "name": "Stonecloud Brewing Co.", "logo": "/assets/sc-mediakit_s-color-logo2.png" },
-        { "name": "District Bicycles", "logo": "/assets/sponsors/district-bicycles.png" },
-        { "name": "Stillwater Summit Co.", "logo": "/assets/sponsors/stillwater-summit-co.png" },
-        { "name": "MidSouth", "logo": "/assets/sponsors/midsouth.png" },
-        { "name": "Podiatry - Stillwater Medical", "logo": "/assets/sponsors/podiatry-stillwater-medical.png" },
-        { "name": "OCTS - Oklahoma Closing & Title Services", "logo": "/assets/sponsors/octs.png" },
-        { "name": "TREVI", "logo": "/assets/sponsors/trevi.png" },
-        { "name": "Total Health - Stillwater Medical", "logo": "/assets/sponsors/total-health-stillwater-medical.png" },
-        { "name": "Aspen Coffee Company", "logo": "/assets/aspen-logo_orig.png" },
-        { "name": "HATCH - Early Mood Food", "logo": "/assets/sponsors/hatch.png" },
-        { "name": "Exchange Bank", "logo": "/assets/sponsors/exchange-bank.png" }
+        {
+          "name": "VisitStillwater.org",
+          "logo": "/assets/sponsors/visit-stillwater.png"
+        },
+        {
+          "name": "Stonecloud Brewing Co.",
+          "logo": "/assets/sc-mediakit_s-color-logo2.png"
+        },
+        {
+          "name": "District Bicycles",
+          "logo": "/assets/sponsors/district-bicycles.png"
+        },
+        {
+          "name": "Stillwater Summit Co.",
+          "logo": "/assets/sponsors/stillwater-summit-co.png"
+        },
+        {
+          "name": "MidSouth",
+          "logo": "/assets/sponsors/midsouth.png"
+        },
+        {
+          "name": "Podiatry - Stillwater Medical",
+          "logo": "/assets/sponsors/podiatry-stillwater-medical.png"
+        },
+        {
+          "name": "OCTS - Oklahoma Closing & Title Services",
+          "logo": "/assets/sponsors/octs.png"
+        },
+        {
+          "name": "TREVI",
+          "logo": "/assets/sponsors/trevi.png"
+        },
+        {
+          "name": "Total Health - Stillwater Medical",
+          "logo": "/assets/sponsors/total-health-stillwater-medical.png"
+        },
+        {
+          "name": "Aspen Coffee Company",
+          "logo": "/assets/aspen-logo_orig.png"
+        },
+        {
+          "name": "HATCH - Early Mood Food",
+          "logo": "/assets/sponsors/hatch.png"
+        },
+        {
+          "name": "Exchange Bank",
+          "logo": "/assets/sponsors/exchange-bank.png"
+        }
       ],
       "registerLink": "results.html",
       "eventTitle": "Orange Dirt Trail Series"
@@ -89,7 +118,7 @@
       "bannerImage": "/assets/mcmurtrycover.jpg",
       "venue": "Lake McMurtry West Recreation Area",
       "navLabel": "Lake McMurtry Trail Run",
-      "registerLink": "https://ultrasignup.com/register.aspx?eid=161",
+      "registerLink": "https://ultrasignup.com/register.aspx?did=145512",
       "eventTitle": "Lake McMurtry Trail Run"
     }
   ]
