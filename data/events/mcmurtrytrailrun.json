@@ -1,9 +1,32 @@
 {
   "registerButtonText": "Register Now",
   "actionBarColor": "#005b96",
-  "eventInfo": "<p><strong>Big news:</strong> Stillwater Trail and Road Runners is taking the reins of the Lake McMurtry Trail Run &mdash; the oldest trail race in Oklahoma.</p><p>The race returns in <strong>April 2027</strong> on the rolling single-track and shaded canopies of Lake McMurtry's east side trails. <strong>Registration is now open!</strong> Watch this page and our <a href='https://www.facebook.com/groups/stillwatertrailandroadrunners' target='_blank' style='color:#005b96; font-weight:700;'>Facebook group</a> for full race details and distances.</p>",
-  "accordions": [],
+  "eventDate": "2027-04-10T07:00:00.000-05:00",
+  "eventInfo": "<p><strong>Oklahoma's Oldest Trail Run.</strong> Started in 1999 by Earl Blewett, carried on by the Tatur organization and race director Ken Childress starting in 2009, and directed by the Outlaw group since 2019 &mdash; the 29th annual running on <strong>April 10, 2027</strong> is the first under Stillwater Trail and Road Runners.</p><p><strong>Registration is open!</strong> Choose from 50K, 25K, 12K, or 5K on Lake McMurtry's beginner-friendly single-track.</p><p><strong>Location:</strong> Lake McMurtry <u>West</u> Recreation Area &mdash; not the East side. Apple Maps gets this wrong; use Google Maps or the directions below.<br><strong>Start Times:</strong> 50K 7:00 AM | 25K &amp; 12K 8:00 AM | 5K 8:30 AM</p>",
+  "accordions": [
+    {
+      "title": "Course Description",
+      "content": "<p>A variety of distances on single track winding through the pines and along the shores of Lake McMurtry &mdash; moderately difficult and suitable for beginners and seasoned trail runners alike. The course is a loop on the west side of the lake, with the longer distances adding an out-and-back to the east side. The 50K has about 2,600 feet of elevation gain.</p><ul style=\"margin-left: 20px; margin-top: 10px; margin-bottom: 15px;\"><li><strong>50K:</strong> 7:00 AM start</li><li><strong>25K:</strong> 8:00 AM start</li><li><strong>12K:</strong> 8:00 AM start</li><li><strong>5K:</strong> 8:30 AM start</li></ul>"
+    },
+    {
+      "title": "Cutoff Times",
+      "content": "<ul style=\"margin-left: 20px; margin-top: 10px; margin-bottom: 15px;\"><li>East Pavilion Aid Station closes at <strong>2:00 PM</strong></li><li>Catfish Cove closes at <strong>5:00 PM</strong></li><li>Overall cutoff for all distances is <strong>7:00 PM</strong></li></ul>"
+    },
+    {
+      "title": "Packet Pickup & Parking",
+      "content": "<p><strong>Packet Pickup:</strong> Friday, April 9, 2027 from 5:00&ndash;8:00 PM at StoneCloud Stillwater Patio &amp; Taproom (917 S Husband St, Stillwater, OK). Also available race morning starting at 6:00 AM at the West Pavilion (Start/Finish).</p><p style=\"margin-top: 10px;\"><strong>Day Permit (parking pass):</strong> Required for Lake McMurtry &mdash; purchase at <a href='https://www.lakemcmurtry.org/day-permit.html' target='_blank' style='color:#005b96; font-weight:700;'>lakemcmurtry.org</a>. Either show your confirmation at their office for a hang tag, or print the receipt and leave it on your dash.</p>"
+    },
+    {
+      "title": "Directions & Travel",
+      "content": "<p><strong>Start/Finish:</strong> Lake McMurtry West Recreation Area, 30285 Bronco Curve, Stillwater, OK 74075. <strong>Apple Maps does not give accurate directions here</strong> &mdash; please use Google Maps or the directions below.</p><p style=\"margin-top: 10px;\"><strong>Driving directions:</strong> From the Hwy 177/51 junction in Stillwater, head west on Hwy 51 (W 6th Ave). Turn north on N. Cottonwood Road for 3 miles, then west on E0590, north on County Road 160, and right on Bronco Curve.</p><p style=\"margin-top: 10px;\">Stillwater has a variety of hotel options. Nearest airports are Will Rogers World Airport (Oklahoma City) and Tulsa International Airport.</p>"
+    },
+    {
+      "title": "FAQ",
+      "content": "<p><strong>Are trekking poles allowed?</strong> Yes.</p><p style=\"margin-top: 10px;\"><strong>Are dogs allowed?</strong> Yes &mdash; all dogs must be on a leash.</p><p style=\"margin-top: 10px;\"><strong>Do I have to run?</strong> No &mdash; many participants walk or hike the entire race, at any distance. You don't have to be fast to take part.</p>"
+    }
+  ],
   "bannerImage": "/assets/mcmurtrycover.jpg",
+  "venue": "Lake McMurtry West Recreation Area",
   "registerLink": "https://ultrasignup.com/register.aspx?did=145512",
   "eventTitle": "Lake McMurtry Trail Run"
 }
