@@ -10,6 +10,7 @@
       "slug": "trail-tuesday",
       "lon": "-97.155",
       "time": "6:00 PM",
+      "paused": true,
       "cancellations": [],
       "relocations": [
         { "date": "2026-08-18", "location": "Sanborn Lake", "mapLink": "https://maps.app.goo.gl/L2eK1X4xqAzDDs616" }

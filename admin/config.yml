@@ -55,6 +55,7 @@ collections:
               - { label: "Type Label", name: "type", widget: "string", required: false, hint: "Optional chip on the homepage card, e.g. Trail, Social, Coffee. Only shown when there's no Venue Logo." }
               - { label: "Latitude", name: "lat", widget: "string", required: false, hint: "Optional. With longitude, shows a weather forecast next to the start time. e.g. 36.204" }
               - { label: "Longitude", name: "lon", widget: "string", required: false, hint: "e.g. -97.155" }
+              - { label: "Paused (hide from homepage)", name: "paused", widget: "boolean", default: false, required: false, hint: "For a seasonal break (e.g. winter). Hides this run from the homepage schedule and nav dropdown. Its own page stays up. Uncheck to bring it back." }
               - label: "Cancellations"
                 name: "cancellations"
                 widget: "list"

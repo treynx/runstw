@@ -386,6 +386,7 @@ try {
     map: r.mapLink || '',
     lat: r.lat ? Number(r.lat) : null,
     lon: r.lon ? Number(r.lon) : null,
+    paused: !!r.paused,
     about: r.description || '',
     cancellations: (r.cancellations || [])
       .map((c) => ({ date: String(c.date || '').slice(0, 10), reason: c.reason || '' }))
@@ -476,7 +477,11 @@ console.log('Generated: sitemap.xml');
 // --- 5. Bake the homepage weekly schedule: crawlable fallback cards + live-widget data + schema ---
 if (weeklyHome && runs.length) {
   try {
-    const fallback = runs.map((r) => `            <div class="ws-card">
+    // Paused runs (seasonal hiatus) keep their own page but drop off the
+    // homepage schedule, nav dropdown, live widget, and event schema.
+    const activeRuns = runs.filter((r) => !r.paused);
+
+    const fallback = activeRuns.map((r) => `            <div class="ws-card">
                 <div class="ws-body">
                     <div class="ws-top"><span class="ws-name">${escapeHtml(r.name)}</span>${r.venueLogo ? `<img class="ws-logo" src="${escapeAttr(r.venueLogo)}" alt="${escapeAttr(r.location)} logo" loading="lazy">` : (r.type ? `<span class="ws-type">${escapeHtml(r.type)}</span>` : '')}</div>
                     <div class="ws-irow">${CLOCK_SVG}<div><span class="ws-big">${escapeHtml(r.dayName)}s &bull; ${escapeHtml(r.time)}</span></div></div>
@@ -489,11 +494,11 @@ if (weeklyHome && runs.length) {
     // list the next several actual dates for each run rather than a recurrence rule.
     const graph = [
       { '@type': 'SportsOrganization', '@id': `${SITE_URL}/#org`, name: 'Stillwater Trail and Road Runners', url: SITE_URL, areaServed: 'Stillwater, OK' },
-      ...runs.flatMap((r) => buildRunOccurrenceEvents(r, r.slug ? `${SITE_URL}/${r.slug}.html` : `${SITE_URL}/weekly-runs.html`)),
+      ...activeRuns.flatMap((r) => buildRunOccurrenceEvents(r, r.slug ? `${SITE_URL}/${r.slug}.html` : `${SITE_URL}/weekly-runs.html`)),
     ];
 
     const lead = weeklyHome.weeklyIntro ? `        <p class="weekly-lead">${escapeHtml(weeklyHome.weeklyIntro.trim())}</p>\n` : '';
-    const block = `\n${lead}        <script type="application/ld+json">${jsonForScript({ '@context': 'https://schema.org', '@graph': graph })}</script>\n        <script>window.STRR_SCHEDULE = ${jsonForScript(runs)};</script>\n        <div id="ws-list" aria-live="polite">\n${fallback}\n        </div>\n        `;
+    const block = `\n${lead}        <script type="application/ld+json">${jsonForScript({ '@context': 'https://schema.org', '@graph': graph })}</script>\n        <script>window.STRR_SCHEDULE = ${jsonForScript(activeRuns)};</script>\n        <div id="ws-list" aria-live="polite">\n${fallback}\n        </div>\n        `;
 
     const homeFile = path.join(ROOT, 'index.html');
     let html = fs.readFileSync(homeFile, 'utf8');
