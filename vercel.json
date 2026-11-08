@@ -21,12 +21,5 @@
       "destination": "/mcmurtrytrailrun.html",
       "permanent": true
     }
-  ],
-  "rewrites": [
-    {
-      "source": "/results.html",
-      "has": [{ "type": "query", "key": "race", "value": "starr-vs-osu-fall-duel-2026" }],
-      "destination": "/results-starr-vs-osu-fall-duel.html"
-    }
   ]
 }
