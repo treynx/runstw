@@ -22,7 +22,15 @@
       "year": 2026,
       "date": "2026-11-08",
       "raceId": 194815,
-      "eventId": 1232602
+      "eventId": 1232602,
+      "teamScoring": {
+        "teams": [
+          { "name": "OSU", "match": "osu" },
+          { "name": "STARR", "match": "starr" }
+        ],
+        "scorers": 10,
+        "displacers": 2
+      }
     },
     {
       "slug": "orange-dirt-5k-2026",

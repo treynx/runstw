@@ -64,6 +64,31 @@
         }
         .status-bar button:hover { background: #f5f5f5; }
 
+        /* Team-scoring / top-3 widgets (only shown for races with teamScoring config) */
+        .xc-widgets { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .xc-card { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        .xc-card h3 { font-size: 0.95rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .xc-card .xc-sub { display: block; font-size: 0.75rem; font-weight: 700; color: #999; text-transform: none; letter-spacing: 0; margin-top: 2px; margin-bottom: 14px; }
+        .xc-team-card { grid-column: span 2; }
+        .xc-team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+        .xc-team { border: 1px solid #eee; border-radius: 6px; padding: 14px; }
+        .xc-team.xc-winner { border-color: #0e7490; background: #f0f9fb; }
+        .xc-team-name { font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; font-size: 1.1rem; }
+        .xc-team-score { font-size: 2rem; font-weight: 900; color: #0e7490; line-height: 1.3; }
+        .xc-incomplete { font-size: 0.8rem; color: #999; margin-bottom: 6px; }
+        .xc-scorer-list, .xc-displacer-list { list-style: none; margin-top: 8px; font-size: 0.88rem; }
+        .xc-scorer-list li, .xc-displacer-list li { display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; border-bottom: 1px dashed #eee; }
+        .xc-displacers-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #999; margin-top: 10px; }
+        .xc-displacer-list li { color: #999; font-style: italic; }
+        .xc-time { font-variant-numeric: tabular-nums; color: #666; }
+        .xc-podium { list-style: none; font-size: 0.95rem; }
+        .xc-podium li { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid #f2f2f2; }
+        .xc-podium li:last-child { border-bottom: none; }
+        .xc-podium .xc-place { font-weight: 900; color: #0e7490; min-width: 22px; }
+        .xc-podium .xc-time { margin-left: auto; }
+        .xc-empty { color: #999; font-style: italic; }
+        @media (max-width: 640px) { .xc-team-card { grid-column: span 1; } }
+
         .controls { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
         .controls input, .controls select {
             padding: 10px 12px; border: 1px solid #ddd; border-radius: 4px;
@@ -147,6 +172,8 @@
             <a href="results.html" class="back-link">&larr; All Results</a>
             <h1 id="race-name">Loading results…</h1>
             <div class="race-meta" id="race-meta"></div>
+
+            <div class="xc-widgets" id="xc-widgets" style="display:none;"></div>
 
             <div class="status-bar">
                 <span class="updated" id="last-updated">Fetching results…</span>
@@ -404,11 +431,107 @@
                     }
 
                     el.lastUpdated.textContent = 'Updated ' + new Date().toLocaleTimeString();
+                    renderWidgets();
                 } catch (err) {
                     console.error('Failed to load results', err);
                     el.tbody.innerHTML = '<tr><td colspan="8" class="error-state">Couldn\'t load results right now. Try refreshing.</td></tr>';
                     el.lastUpdated.textContent = 'Last attempt failed at ' + new Date().toLocaleTimeString();
                 }
+            }
+
+            // ---- Optional team-scoring / top-3 widgets (races with a teamScoring config) ----
+            function topByGender(gender, n) {
+                return allResults
+                    .filter((r) => r.gender === gender)
+                    .slice()
+                    .sort((a, b) => timeToSeconds(a.chip_time) - timeToSeconds(b.chip_time))
+                    .slice(0, n);
+            }
+
+            function podiumHtml(results) {
+                if (!results.length) return '<li class="xc-empty">No results yet</li>';
+                return results.map((r) => `
+                    <li><span class="xc-place">#${r.place ?? '—'}</span> ${escapeHtml(r.name) || '—'} <span class="xc-time">${r.chip_time ?? '—'}</span></li>
+                `).join('');
+            }
+
+            function computeTeams(config) {
+                const sorted = allResults.slice().sort((a, b) => timeToSeconds(a.chip_time) - timeToSeconds(b.chip_time));
+                const teams = config.teams.map((t) => ({ name: t.name, match: (t.match || '').toLowerCase(), finishers: [] }));
+                sorted.forEach((r) => {
+                    const nameLower = (r.name || '').toLowerCase();
+                    const team = teams.find((t) => nameLower.includes(t.match));
+                    if (team) team.finishers.push(r);
+                });
+                const scorersCount = config.scorers || 5;
+                const displacersCount = config.displacers || 0;
+                teams.forEach((t) => {
+                    t.scorers = t.finishers.slice(0, scorersCount);
+                    t.displacers = t.finishers.slice(scorersCount, scorersCount + displacersCount);
+                    t.complete = t.scorers.length === scorersCount;
+                    t.score = t.complete ? t.scorers.reduce((sum, r) => sum + (Number(r.place) || 0), 0) : null;
+                });
+                return teams;
+            }
+
+            function teamCardHtml(t, winnerName, scorersNeeded) {
+                const scorerRows = t.scorers.map((r) => `
+                    <li><span>#${r.place ?? '—'} ${escapeHtml(r.name) || '—'}</span><span class="xc-time">${r.chip_time ?? '—'}</span></li>
+                `).join('');
+                const displacerRows = t.displacers.length ? `
+                    <div class="xc-displacers-label">Displacers</div>
+                    <ol class="xc-displacer-list">
+                        ${t.displacers.map((r) => `<li><span>#${r.place ?? '—'} ${escapeHtml(r.name) || '—'}</span><span class="xc-time">${r.chip_time ?? '—'}</span></li>`).join('')}
+                    </ol>
+                ` : '';
+                return `
+                    <div class="xc-team ${t.name === winnerName ? 'xc-winner' : ''}">
+                        <div class="xc-team-name">${escapeHtml(t.name)}</div>
+                        <div class="xc-team-score">${t.complete ? t.score : '—'}</div>
+                        ${!t.complete ? `<div class="xc-incomplete">${t.scorers.length} of ${scorersNeeded} scorers in — waiting on more finishers</div>` : ''}
+                        <ol class="xc-scorer-list">${scorerRows}</ol>
+                        ${displacerRows}
+                    </div>
+                `;
+            }
+
+            function renderWidgets() {
+                const config = race.teamScoring;
+                const wrap = document.getElementById('xc-widgets');
+                if (!config || !allResults.length) { wrap.style.display = 'none'; return; }
+                wrap.style.display = '';
+
+                const teams = computeTeams(config);
+                let winnerName = null;
+                if (teams.every((t) => t.complete)) {
+                    const best = teams.slice().sort((a, b) => a.score - b.score)[0];
+                    winnerName = best.name;
+                }
+
+                const teamCard = `
+                    <div class="xc-card xc-team-card">
+                        <h3>Team Scoring<span class="xc-sub">Top ${config.scorers || 5} score, ${config.displacers || 0} displacers</span></h3>
+                        <div class="xc-team-grid">
+                            ${teams.map((t) => teamCardHtml(t, winnerName, config.scorers || 5)).join('')}
+                        </div>
+                    </div>
+                `;
+
+                const menCard = `
+                    <div class="xc-card">
+                        <h3>Top 3 Men</h3>
+                        <ol class="xc-podium">${podiumHtml(topByGender('M', 3))}</ol>
+                    </div>
+                `;
+
+                const womenCard = `
+                    <div class="xc-card">
+                        <h3>Top 3 Women</h3>
+                        <ol class="xc-podium">${podiumHtml(topByGender('F', 3))}</ol>
+                    </div>
+                `;
+
+                wrap.innerHTML = teamCard + menCard + womenCard;
             }
 
             function render() {
