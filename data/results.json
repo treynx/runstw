@@ -23,6 +23,7 @@
       "date": "2026-11-08",
       "raceId": 194815,
       "eventId": 1232602,
+      "hideColumns": ["location", "age", "pace"],
       "teamScoring": {
         "teams": [
           { "name": "STARR", "bibMin": 171, "bibMax": 200 },

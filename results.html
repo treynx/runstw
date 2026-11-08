@@ -117,6 +117,12 @@
         tbody tr:nth-child(even) { background: #f9f9f9; }
         .place-1 { font-weight: 900; color: #e65100; }
 
+        /* Per-race optional column hiding (results.json "hideColumns"). Column
+           order is fixed: Place, Bib, Name, City/State, Gender, Age, Chip Time, Pace. */
+        #results-table.xc-hide-location th:nth-child(4), #results-table.xc-hide-location td:nth-child(4) { display: none; }
+        #results-table.xc-hide-age th:nth-child(6), #results-table.xc-hide-age td:nth-child(6) { display: none; }
+        #results-table.xc-hide-pace th:nth-child(8), #results-table.xc-hide-pace td:nth-child(8) { display: none; }
+
         /* --- FOOTER --- */
         footer { background-color: #111; color: #fff; text-align: center; padding: 40px; }
         .social-links { margin: 15px 0; display: flex; justify-content: center; gap: 20px; }
@@ -391,6 +397,11 @@
         // ---- Results table for a selected race ----
         function initResultsTable(race) {
             const API_URL = `https://runsignup.com/rest/race/${race.raceId}/results?event_id=${race.eventId}&format=json`;
+
+            if (race.hideColumns && race.hideColumns.length) {
+                const table = document.getElementById('results-table');
+                table.classList.add(...race.hideColumns.map((key) => `xc-hide-${key}`));
+            }
 
             let allResults = [];
             let sortKey = 'place';
