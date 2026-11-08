@@ -28,7 +28,8 @@
           { "name": "STARR", "bibMin": 171, "bibMax": 200 },
           { "name": "OSU", "bibMin": 201, "bibMax": 225 }
         ],
-        "scorers": 10,
+        "scorers": 5,
+        "scorerOptions": [5, 10],
         "displacers": 2
       }
     },
