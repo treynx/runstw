@@ -457,10 +457,20 @@
 
             function computeTeams(config) {
                 const sorted = allResults.slice().sort((a, b) => timeToSeconds(a.chip_time) - timeToSeconds(b.chip_time));
-                const teams = config.teams.map((t) => ({ name: t.name, match: (t.match || '').toLowerCase(), finishers: [] }));
+                const teams = config.teams.map((t) => ({
+                    name: t.name,
+                    bibMin: t.bibMin != null ? Number(t.bibMin) : null,
+                    bibMax: t.bibMax != null ? Number(t.bibMax) : null,
+                    match: (t.match || '').toLowerCase(),
+                    finishers: [],
+                }));
                 sorted.forEach((r) => {
+                    const bib = Number(r.bib);
                     const nameLower = (r.name || '').toLowerCase();
-                    const team = teams.find((t) => nameLower.includes(t.match));
+                    const team = teams.find((t) => {
+                        if (t.bibMin != null && t.bibMax != null) return bib >= t.bibMin && bib <= t.bibMax;
+                        return t.match && nameLower.includes(t.match);
+                    });
                     if (team) team.finishers.push(r);
                 });
                 const scorersCount = config.scorers || 5;

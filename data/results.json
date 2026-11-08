@@ -25,8 +25,8 @@
       "eventId": 1232602,
       "teamScoring": {
         "teams": [
-          { "name": "OSU", "match": "osu" },
-          { "name": "STARR", "match": "starr" }
+          { "name": "STARR", "bibMin": 171, "bibMax": 200 },
+          { "name": "OSU", "bibMin": 201, "bibMax": 225 }
         ],
         "scorers": 10,
         "displacers": 2
