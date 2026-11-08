@@ -37,7 +37,7 @@
       "eventTitle": "Lake McMurtry Trail Run"
     },
     {
-      "registerButtonText": "Free — No Sign-Up Required",
+      "registerButtonText": "See Results",
       "homepageSubtitle": "OSU Cross Country Course • November 8th 2026",
       "actionBarColor": "#0e7490",
       "eventDate": "2026-11-08T11:00:00.000-06:00",
@@ -47,7 +47,7 @@
       "bannerImage": "/assets/starr-vs-osu-fall-duel.jpg",
       "venue": "OSU Cross Country Course",
       "navLabel": "STARR vs OSU Fall Duel",
-      "registerLink": "#",
+      "registerLink": "results.html?race=starr-vs-osu-fall-duel-2026",
       "eventTitle": "STARR vs OSU Running Club — Fall Duel '26"
     },
     {
